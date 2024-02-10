@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posted Events</title>
+</head>
+<body>
+    <nav>
+        <img src="<%=user.image.url%>" alt="user Image" style="height:50px; width: 50px; border-radius: 50%;">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/events/myCheckList">Check your event List to buy ticket</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>  
+    </nav>
+
+    <%if(postedEvents.length != 0){%>
+        <h1>Welcome back <%=user.name%></h1>
+        <h2>Explore our posted events and add to your list.</h2>
+        <p>Ensure you buy your ticket before the deadline Date.</p>
+        <ul>
+            <%for(const event of postedEvents){%>
+              
+            <li>
+              
+                <p><strong>Title: </strong><%=event.title%></p>
+                <p><img src="<%=event.event_image.url%>" alt="event image" style="width: 300px; height: 200px;"></p>
+                <p><strong>Description: </strong><%=event.description%></p>
+                <p><strong>Date: </strong><%=event.event_date%></p>
+                <p><strong>Registartion Deadline: </strong><%=event.registration_deadline%></p>
+                <p><strong>Ticket Price: </strong><%=event.ticket_price%></p>
+                <p><strong>Discount: </strong><%=event.discount%></p>
+                <p><strong>Additional Info: </strong><%=event.additonal_info%></p>
+                <img src="<%=event.creatorId.profileImage.url%>" alt="creator image" style="height:50px; width: 50px; border-radius: 50%;">
+                <p><strong>Phone Number: </strong><%=event.creatorId.phoneNum%></p>
+                <p><strong>Email: </strong><%=event.creatorId.email%></p>
+
+                <form action="/events/chooseEvent/<%=event.id%>" method="PUT">
+                    <button
+                      id="state"
+                      type="submit"
+                      formmethod="post"
+                      title="Click to add the event to your List"
+                    >
+                      Add event to your list
+                    </button>
+                </form>
+
+                <form action="/events/removeEvent/<%=event.id%>" method="PUT">
+                  <button
+                    id="state"
+                    type="submit"
+                    formmethod="post"
+                    title="Click to remove the event from your List"
+                  >
+                    Remove event from your List
+                  </button>
+              </form>
+            </li>
+        <%}%>
+        </ul>    
+    <%}else{%>
+        <h1>Welcome <%=user.name%> to your dashboard</h1>
+        <h2>We have not posted any event for now.Check back later.</h2>
+    <%}%>
+</body>
+</html>

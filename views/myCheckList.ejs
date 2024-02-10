@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myCheckList</title>
+</head>
+<body>
+    <nav>
+        <p><a href="/eventees/eventeeDashboard">Dashboard</a></p>
+    </nav>
+    <%if(lists.length != 0){%>
+        <h1>Buy your Ticket here.</h1>
+        <ul>
+            <%for(const list of lists){%>
+                <li>
+                    <p><strong>Title: </strong><%=list.title%></p>
+                    <p><img src="<%=list.event_image.url%>" alt="event image" style="width: 200px; height: 100px;"></p>
+                    <p><strong>Ticket Price: </strong><%=list.ticket_price%></p>
+                    <span><strong>Pay:</strong></span>
+                    <p><strong>Event Date: </strong><%=list.event_date%></p>
+                    <p><strong>Registration Deadline: </strong><%=list.registration_deadline%></p>
+                </li>
+                <%if(list.ticketedEventeesId.includes(eventeeId)){%>
+                    <p
+                      style="background-color: green; color: white; width:20%; padding: 10px;font-weight: bold;"
+                      class="articleState"
+                    >
+                      Purchased &map;
+                    </p>
+                <%}else{%>
+                    <form action="/eventees/buyTicket/<%=list.id%>/<%=list.ticket_price%>" method="GET" style="margin-bottom: 50px;">
+                        <input type="text" value="<%=list.ticket_price%>" readonly style="border-radius: 100%; padding: 5px; text-align: center; width:50px; height: 50px; background-color: brown; color: white; border: none;font-weight: bold;">
+                        <button
+                          id="state"
+                          type="submit"
+                          formmethod="get"
+                          title="Click to buy Ticket"
+                          style="cursor: pointer;padding: 5px;background-color: white; font-weight: bold; color: green; border-radius: 5px;"
+                        >
+                          Buy Ticket
+                        </button>
+                    </form>
+                <%}%>
+                
+
+                <hr style="margin-bottom: 50px;">
+            <%}%>
+        </ul>
+    <%}else{%>
+        <h1>You have not chosen any event yet.</h1>
+        <h2>Go back to your dashboard to choose an event</h2>
+   <%}%>
+    
+</body>
+</html>

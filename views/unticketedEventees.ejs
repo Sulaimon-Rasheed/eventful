@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unticketed Eventees</title>
+</head>
+<body>
+    <nav>
+        <a href="/creators/creatorDashboard">Dashboard</a>
+       </nav>
+      
+       <%if(unticketedEventees != 0){%>
+        <%if(count == 1){%>
+            <h1><%=count%> Eventee has listed this event</h1>
+            <h2>The person is:</h2>
+           <ol>
+              <% for(const eventee of unticketedEventees){%>
+                   <li>
+                       <img src="<%=eventee.profileImage.url%>" alt="eventee image" style="height:50px; width: 50px; border-radius: 50%;">
+                       <p><%=eventee.first_name%></p>
+                       <p><%=eventee.email%></p>
+                       <p><%=eventee.phoneNum%></p>
+                   </li>
+               <%}%>
+           </ol> 
+        <%}else{%>
+            <h1><%=count%> Eventees have listed this event</h1> 
+            <h2>They are:</h2>
+           <ol>
+              <% for(const eventee of unticketedEventees){%>
+                   <li>
+                       <img src="<%=eventee.profileImage.url%>" alt="eventee image" style="height:50px; width: 50px; border-radius: 50%;">
+                       <p><%=eventee.first_name%></p>
+                       <p><%=eventee.email%></p>
+                       <p><%=eventee.phoneNum%></p>
+                   </li>
+               <%}%>
+           </ol>
+        <%}%>
+           
+       <%}else{%>
+       <h1>You do not have eventees yet. Check back</h1>
+       <%}%>
+   
+</body>
+</html>

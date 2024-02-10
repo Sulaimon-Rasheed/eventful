@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event</title>
+</head>
+<body>
+    <nav>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="/creators/logout">Logout</a></li>
+        </ul>
+      </nav>
+      
+    
+    <h1>Create Event</h1>
+    <form action="/events/createEvent" , method="post" enctype="multipart/form-data">
+    
+        <label for="title" class="label">Title:</label>
+        <input
+          type="text"
+          name="title"
+          class="input"
+        /><br /><br /><br />
+        <label for="description" class="label">Description:</label>
+        <input
+          type="text"
+          ,
+          name="description"
+          class="input"
+        /><br /><br /><br />
+
+        <label for="category" class="label">Category:</label>
+        <select name="category" class="input" type="text">
+          <option value="">--select a category--</option>      
+          <option name="category" value="Charity">Charity</option>
+          <option name="category" value="Concert">Concert</option>
+          <option name="category" value="Conference">Conference</option>
+          <option name="category" value="Exhibition">Exhibition</option>
+          <option name="category" value="Film Show">Film Show</option>
+          <option name="category" value="Product Launch">Product Launch</option>
+          <option name="category" value="Vetworking">Networking</option> 
+          <option name="category" value="Seminar">Seminar</option>
+          <option name="category" value="Sport">Sport</option>
+          <option name="category" value="Symposium">Symposium</option>
+          <option name="category" value="Theater">Theater</option>
+          <option name="category" value="Trade Show">Trade Show</option> 
+          <option name="category" value="Workshop">Workshop</option>    
+        </select>
+        <br /><br /><br />
+
+        <label for="event_date" class="label">Event Date:</label>
+        <input
+          type="date"
+          name="event_date"
+          class="input"
+        /><br /><br /><br />
+
+        <label for="registration_deadline" class="label">Registration Deadline:</label>
+        <input
+          type="date"
+          name="registration_deadline"
+          class="input"
+        /><br /><br /><br />
+
+        <label for="location" class="label">Location:</label>
+        <input
+          type="text"
+          name="location"
+          class="input"
+        /><br /><br /><br />
+    
+        <label for="ticket_price" class="label">Ticket Price:</label>
+        <input
+          type="text"
+          name="ticket_price"
+          class="input"
+        /><br /><br /><br />
+        
+        <label for="discount" class="label">discount:</label>
+        <input
+          type="text"
+          name="discount"
+          class="input"
+        /><br /><br /><br />
+
+        <label for="additional_info" class="label">Additional Info:</label>
+        <input
+          type="text"
+          name="additional_info"
+          class="input"
+        /><br /><br /><br />
+
+        <label for="event_image" class="label">Upload your Event poster:</label>
+        <input
+        style="height:150px; width:150px"
+          type="file"
+          name="event_image"
+          accept="image/*"
+          placeholder="Choose a file"
+          class="input"
+        />
+      </div><br><br><br>
+        <button type="submit" class="submit">submit</button>
+      </form> 
+</body>
+</html>
