@@ -1,11 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseInterceptors, UploadedFile, ValidationPipe, Put, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseInterceptors, UploadedFile, ValidationPipe, Put, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Request, Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
+import * as cron from "node-cron"
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @Controller('events')
+@UseGuards(ThrottlerGuard)
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
@@ -39,19 +42,33 @@ export class EventsController {
     await this.eventsService.removeEvent(eventId,req, res);
   }
 
+
+  @Get('/eventUpdatePage/:eventId')
+  async getEventUpdatePage(@Param("eventId") eventId:string, @Req() req:Request, @Res() res:Response){
+    await this.eventsService.getEventUpdatePage(req, res, eventId)
+  }
+
+  @Post('/updateEvent/:eventId')
+  async updateEvent(@Param("eventId") eventId:string, @Req() req:Request, @Res() res:Response, @Body(new ValidationPipe) UpdateEventDto:UpdateEventDto){
+    await this.eventsService.updateEvent(req, res, eventId, UpdateEventDto)
+  }
+
+  @Post('/deleteEvent/:eventId')
+  async deleteEvent(@Param("eventId") eventId:string, @Req() req:Request, @Res() res:Response){
+    await this.eventsService.deleteEvent(req, res, eventId)
+  }
+
   @Get('/myCheckList')
   async getMyCheckList(@Req() req:Request, @Res() res:Response) {
     const result = await this.eventsService.getMyCheckList(req, res)
     return res.render("myCheckList", {lists:result[0], eventeeId:result[1]})
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
-  //   return this.eventsService.update(+id, updateEventDto);
-  // }
+  @Get('share/:eventId')
+  async shareEvent(@Param('eventId') eventId: string,@Res() res:Response ) {
+    await this.eventsService.shareEvent(eventId, res);
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.eventsService.remove(+id);
-  // }
+  
+
 }

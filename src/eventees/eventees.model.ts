@@ -7,6 +7,7 @@ export const eventeeSchema = new Schema({
     last_name: { type: String, required:true},
     password: { type: String, unique: true, required:true},
     email:{type:String,required:true},
+    eventeeReminder_days:{type:String, default:"1"},
     sex:{type:String, enum:["male", "female"]},
     country:{type:String},
     state:{type:String},
@@ -27,6 +28,7 @@ export interface Eventee extends mongoose.Document{
     last_name:string
     password:string
     email:string
+    eventeeReminder_days:string
     sex:string
     country:string
     state:string
@@ -34,7 +36,7 @@ export interface Eventee extends mongoose.Document{
     profileImage:object
     event_count:number
     passwordResetToken:string
-    passwordResetExpireDate:Date
+    passwordResetExpireDate:any
     verified:boolean
     creationDate:Date
     bought_eventsId:string[]

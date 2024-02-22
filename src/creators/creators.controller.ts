@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, ValidationPipe, UseInterceptors, UploadedFile, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, ValidationPipe, UseInterceptors, UploadedFile, Req, Put, UseGuards, Query } from '@nestjs/common';
 import { CreatorsService } from './creators.service';
 import { CreateCreatorDto } from './dto/create-creator.dto';
 import { UpdateCreatorDto } from './dto/update-creator.dto';
@@ -9,11 +9,16 @@ import { LoginCreatorDto } from './dto/login-creator.dto';
 import { CreateEventDto } from 'src/events/dto/create-event.dto';
 import { EventsService } from 'src/events/events.service';
 import {Event} from "../events/events.model"
+import { UpdateEventDto } from 'src/events/dto/update-event.dto';
+import { ThrottlerGuard } from '@nestjs/throttler';
+import { emailVerifyDto } from './dto/email-verify.dto';
+import { newPasswordDto } from './dto/newPassword.dto';
 // import { MailerService } from 'src/mailer/mailer.service';
 // import { FlashMiddleware } from 'src/middlewares/flash.middleware';
 // import { MiddlewareBuilder } from '@nestjs/core';
 
 @Controller('creators')
+@UseGuards(ThrottlerGuard)
 export class CreatorsController {
   constructor(
     private readonly creatorsService: CreatorsService,
@@ -24,7 +29,6 @@ export class CreatorsController {
   @Post("signup")
   @UseInterceptors(FileInterceptor("profileImage"))
   async createCreator(@UploadedFile() file:Express.Multer.File, @Body(new ValidationPipe) createCreatorDto: CreateCreatorDto, @Req() req:RequestWithFlash , @Res() res:Response) {
-    try{
       // const result:object = await this.creatorsService.createCreator(createCreatorDto, file.path)
       // if(!result){
       //   req.flash('error', 'Signup failed! Please try again.')
@@ -34,12 +38,7 @@ export class CreatorsController {
       //   res.redirect('/creators/signup')
       // }
       
-      return res.render( await this.creatorsService.createCreator(createCreatorDto, file.path), {message:"You are created successfully", createCreatorDto})  
-      
-    }catch(err){
-      
-      console.log(err.message)
-    }
+      await this.creatorsService.createCreator(createCreatorDto, file.path, res)
    
   }
 
@@ -54,7 +53,7 @@ export class CreatorsController {
   // Verify email verification link
   @Get('verify/:userId/:uniqueString')
   async verifyCreator(@Param('userId') userId: string, @Param("uniqueString") uniqueString:string, @Res() res:Response) {
-    return res.render(await this.creatorsService.verifyCreator(userId, uniqueString), {user:"creator"});
+    await this.creatorsService.verifyCreator(userId, uniqueString, res)
   }
 
   // Get login Page
@@ -66,23 +65,37 @@ export class CreatorsController {
   // To login creator
   @Post('login')
   async login(@Body(new ValidationPipe) LoginCreatorDto:LoginCreatorDto,@Res() res:Response) {
-    try{
-      const result = await this.creatorsService.login(LoginCreatorDto, res)
-      res.cookie("jwt", result.token, { maxAge: 60 * 60 * 1000 })
-      return res.redirect(`/creators/creatorDashboard`);
-  }catch(err){
-    res.send(err.message)
+      await this.creatorsService.login(LoginCreatorDto, res)
   }
+
+  @Get('passwordResetPage')
+  getPasswordResetPagePage(@Res() res:Response) {
+    this.creatorsService.getPasswordResetPagePage(res);
+  }
+
+  @Post('verifyEmailForPasswordReset')
+  async verifyEmailForPasswordReset(@Body() emailVerifyDto:emailVerifyDto,@Req() req:Request, @Res() res:Response) {
+    await this.creatorsService.verifyEmailForPasswordReset(emailVerifyDto, req, res)
+  }
+
+  @Get("/resetPassword/newPassword/:resetToken/:email")
+  verifyUserPasswordResetLink(@Param("resetToken") resetToken:string, @Param("email") email:string, @Res() res:Response){
+    this.creatorsService.verifyUserPasswordResetLink(resetToken,email, res)
+  }
+
+  @Post('/newPassword/:userId')
+  async setNewPassword(@Body() newPasswordDto:newPasswordDto,@Param("userId") userId:string, @Req() req:Request, @Res() res:Response) {
+    await this.creatorsService.setNewPassword(newPasswordDto, userId, res)
   }
 
   @Get('/creatorDashboard')
-  async getDashboard(@Res() res:Response, @Req() req:Request) {
-    try{
-    let events = await this.creatorsService.getDashboard(req, res);
-    return res.render("creatorDashboard", {user:res.locals.user, events})
-  }catch(err){
-    res.send(err.message)
+  async getDashboard(@Query("page") page:any , @Res() res:Response, @Req() req:Request) {
+    await this.creatorsService.getDashboard(req, res, page || 0);
   }
+
+  @Get('/event/filter')
+  async filterEventByState(@Query("page") page:any , @Res() res:Response, @Req() req:Request) {
+    await this.creatorsService.filterEventByState(req, res, page || 0);
   }
 
   @Get('/getUnticketedEventees/:eventId')
@@ -103,6 +116,17 @@ export class CreatorsController {
   }catch(err){
     res.send(err.message)
   }
+  }
+
+  @Post("/setReminder/:eventId")
+  async resetReminderDays(@Param("eventId") eventId:string, @Body(new ValidationPipe) UpdateEventDto:UpdateEventDto, @Req() req:Request, @Res() res:Response){
+    await this.creatorsService.resetReminderDays(eventId, UpdateEventDto, req, res)
+  }
+
+  @Get("/logout")
+  logOut(@Res() res:Response){
+   res.clearCookie("jwt")
+   res.redirect("/creators/login")
   }
 
 }

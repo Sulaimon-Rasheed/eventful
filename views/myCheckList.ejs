@@ -8,6 +8,7 @@
 <body>
     <nav>
         <p><a href="/eventees/eventeeDashboard">Dashboard</a></p>
+        <li><a href="/eventees/logout">Logout</a></li>
     </nav>
     <%if(lists.length != 0){%>
         <h1>Buy your Ticket here.</h1>
@@ -28,6 +29,24 @@
                     >
                       Purchased &map;
                     </p>
+                    <form action="/eventees/setReminder/<%=list.id%>/<%=eventeeId%>" method="post">
+                        <h3>Do you need a reminder ? If YES,</h3>
+                        <label for="eventeeReminder_days">then, set number of days to the event you want to be reminded: </label>
+                        <select name="eventeeReminder_days" id="">
+                            <option value="">--choose a number</option>
+                            <option name="eventeeReminder_days" value="1">1</option>
+                            <option name="eventeeReminder_days" value="2">2</option>
+                            <option name="eventeeReminder_days" value="3">3</option>
+                            <option name="eventeeReminder_days" value="4">4</option>
+                            <option name="eventeeReminder_days" value="5">5</option>
+                            <option name="eventeeReminder_days" value="6">6</option>
+                            <option name="eventeeReminder_days" value="7">7</option>
+                            <option name="eventeeReminder_days" value="8">8</option>
+                            <option name="eventeeReminder_days" value="9">9</option>
+                            <option name="eventeeReminder_days" value="10">10</option>
+                          </select>
+                        <button formmethod="post" type="submit">Set</button><span> Note:Don't enter any text (A-Z)</span>
+                      </form>
                 <%}else{%>
                     <form action="/eventees/buyTicket/<%=list.id%>/<%=list.ticket_price%>" method="GET" style="margin-bottom: 50px;">
                         <input type="text" value="<%=list.ticket_price%>" readonly style="border-radius: 100%; padding: 5px; text-align: center; width:50px; height: 50px; background-color: brown; color: white; border: none;font-weight: bold;">

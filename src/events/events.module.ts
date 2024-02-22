@@ -16,12 +16,17 @@ import { EventeesController } from 'src/eventees/eventees.controller';
 import { EventeesService } from 'src/eventees/eventees.service';
 import { eventeeVerificationSchema } from 'src/eventees/verifiedEventee.model';
 import { transactionSchema } from 'src/transactions/transactions.model';
+import { SocialmediaService } from 'src/socialmedia/socialmedia.service';
+import { Auth0Service } from 'src/auth/auth0.service';
+import { ConfigService } from '@nestjs/config';
+import { CronService } from 'src/cron/cron.service';
+import { CacheService } from 'src/cache/cache.service';
 
 @Module({
   imports:[MongooseModule.forFeature([{name:"Event", schema:eventSchema}, {name:"Creator", schema:creatorSchema}, {name:"CreatorVerification", schema:creatorVerificationSchema}, {name:"Eventee", schema:eventeeSchema}, {name:"EventeeVerification", schema:eventeeVerificationSchema}, {name:"Transaction", schema:transactionSchema}]),
   MulterModule.register({dest:"/uploads"})
 ],
   controllers: [EventsController, EventeesController],
-  providers: [EventsService, AuthService, MailerService,  CreatorsService, EventeesService],
+  providers: [EventsService, AuthService, MailerService,  CreatorsService, EventeesService, SocialmediaService, Auth0Service, ConfigService, CronService, CacheService],
 })
 export class EventsModule {}

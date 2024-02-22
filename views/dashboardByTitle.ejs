@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posted events</title>
+</head>
+<body>
+    <nav>
+      <img src="<%=user.image.url%>" alt="user Image" style="height:50px; width: 50px; border-radius: 50%;">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/events/myCheckList">Check your event List to buy ticket</a></li>
+        <li><a href="/eventees/logout">Logout</a></li>
+      </ul>  
+    </nav> 
+
+    <%if(event){%>
+
+    <h1>Welcome back <%=user.name%></h1><span id="date"><strong>Today is: </strong><%=date%></span>
+    <h2>Do you want to add this event to your list ?.</h2>
+    <p>Ensure you buy your ticket before the deadline Date.</p>
+
+<!--------------------------------------------------------------------------------------->
+
+<hr>
+<form action="/eventees/event/filter" method="get">
+  <label for="category"
+    >Filter the events by categories:</label>
+    <select name="category">
+      <option value="">
+        --Select a category--
+      </option> 
+      <option name="category" value="All">All</option>    
+      <option name="category" value="Charity">Charity</option>
+      <option name="category" value="Concert">Concert</option>
+      <option name="category" value="Conference">Conference</option>
+      <option name="category" value="Exhibition">Exhibition</option>
+      <option name="category" value="Film Show">Film Show</option>
+      <option name="category" value="Product Launch">Product Launch</option>
+      <option name="category" value="Vetworking">Networking</option> 
+      <option name="category" value="Seminar">Seminar</option>
+      <option name="category" value="Sport">Sport</option>
+      <option name="category" value="Symposium">Symposium</option>
+      <option name="category" value="Theater">Theater</option>
+      <option name="category" value="Trade Show">Trade Show</option> 
+      <option name="category" value="Workshop">Workshop</option>    
+    </select>
+  
+  <button type="submit" class="searchAndSort">filter</button>
+</form>
+<hr>
+
+
+<!------------------------------------------------------------------------------------------>
+
+
+<hr>
+<form action="/eventees/event/titleSearch" method="get">
+<label for="title">Search for event by "Title": </label>
+<input type="text" name="title" placeholder="Enter the title here">
+<button type="submit">Search</button>
+</form>
+<hr>
+
+<!--------------------------------------------------------------------------------------------->
+    <p style="text-align: center;font-size: 24px;font-weight: bold;"><%=event.title%></p>
+        
+    <p id="time"><b>Posted:</b><%=event.posted_date%> <span>(<%= Math.round(passday)%> days ago)</span></p> 
+   
+    <p><img src="<%=event.event_image.url%>" alt="event image" style="width: 300px; height: 200px;"></p>
+    <p><strong>About: </strong><%=event.description%></p>
+    <p><b>Date: </b><%=event.event_date%></p>
+    <p><b>Time: </b><%=event.starting_time%> - <%=event.ending_time%></p>
+    <p><strong>Registration Deadline: </strong><%=event.registration_deadline%></p>
+    <p><strong>Ticket Price: </strong><%=event.ticket_price%></p>
+    <p><strong>More Info: </strong><%=event.additonal_info%></p>
+    <div>
+    <label for="">Organizer's Contact</label>
+    <p><strong>Profile Picture: </strong><img src="<%=event.creatorId.profileImage.url%>" alt="creator image" style="height:50px; width: 50px; border-radius: 50%;"></p>
+    <p><strong>Phone Number: </strong><%=event.creatorId.phoneNum%></p>
+    <p><strong>Email: </strong><%=event.creatorId.email%></p>
+    </div>
+
+    <div style="display: flex; gap: 20px;">
+        <form action="/events/chooseEvent/<%=event.id%>" method="PUT">
+            <button
+              id="state"
+              type="submit"
+              formmethod="post"
+              title="Click to add the event to your List"
+            >
+              Add event to your list
+            </button>
+        </form>
+
+        <form action="/events/removeEvent/<%=event.id%>" method="PUT">
+          <button
+            id="state"
+            type="submit"
+            formmethod="post"
+            title="Click to remove the event from your List"
+          >
+            Remove event from your List
+          </button>
+      </form>
+
+      <form action="/events/share/<%=event.id%>" method="GET">
+        <button
+          id="state"
+          type="submit"
+          formmethod="get"
+          title="Click to share on facebook"
+        >
+          Share on facebook
+        </button>
+    </form>
+  </div>
+    <%}else{%>
+
+    <!--------------------------------------------------------------------------------------->
+
+<hr>
+<form action="/eventees/event/filter" method="get">
+  <label for="category"
+    >Filter the events by categories:</label>
+    <select name="category">
+      <option value="">
+        --Select a category--
+      </option> 
+      <option name="category" value="All">All</option>    
+      <option name="category" value="Charity">Charity</option>
+      <option name="category" value="Concert">Concert</option>
+      <option name="category" value="Conference">Conference</option>
+      <option name="category" value="Exhibition">Exhibition</option>
+      <option name="category" value="Film Show">Film Show</option>
+      <option name="category" value="Product Launch">Product Launch</option>
+      <option name="category" value="Vetworking">Networking</option> 
+      <option name="category" value="Seminar">Seminar</option>
+      <option name="category" value="Sport">Sport</option>
+      <option name="category" value="Symposium">Symposium</option>
+      <option name="category" value="Theater">Theater</option>
+      <option name="category" value="Trade Show">Trade Show</option> 
+      <option name="category" value="Workshop">Workshop</option>    
+    </select>
+  
+  <button type="submit" class="searchAndSort">filter</button>
+</form>
+<hr>
+
+
+<!------------------------------------------------------------------------------------------>
+
+
+<hr>
+<form action="/eventees/event/titleSearch" method="get">
+<label for="title">Search for event by "Title": </label>
+<input type="text" name="title" placeholder="Enter the title here">
+<button type="submit">Search</button>
+</form>
+<hr>
+
+<!--------------------------------------------------------------------------------------------->
+<h1>Opps!! There is no event with this title</h1>
+    
+<%}%>
+</body>
+</html>

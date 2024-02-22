@@ -3,9 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Error</title>
 </head>
 <body>
-    <h1><%=error%></h1>
-</body>
+    <%if(message=="planError"){%>
+        <h1>Opps!! You are not eligible to post event. Your free plan as expired. You can upgrade to the payment plan</h1>
+        <a href="/creators/makePaymnet"></a>
+
+        <%}else if(message == "existingEventeeError"){%>
+        <h1>Opps!! User already exist</h1>
+        <a href="/eventees/signup">Signup</a>
+    <%}else if(message == "fileUploadError"){%>
+        <h1>Opps!! file upload fails. Try again</h1>
+        <a href="/eventees/signup">Signup</a>
+    <%}else if(message == "eventeeNotFound"){%>
+        <h1>Opps!! User not found.</h1>
+        <a href="/eventees/signup">Signup</a>
+    <%}else if(message == "verificationError"){%>
+    <h1>Opps!! You are not yet verfied.Please, check your email for verification link.</h1>
+    <%}else if(message == "eventeePasswordError"){%>
+    <h1>Opps!! Username or Password is incorrect</h1>
+    <a href="/eventees/login">Login</a>
+
+
+    <%}else if(message == "existingCreatorError"){%>
+        <h1>Opps!! User already exist</h1>
+        <a href="/creators/signup">Signup</a>
+    <%}else if(message == "creatorNotFound"){%>
+        <h1>Opps!! User not found.</h1>
+        <a href="/creators/signup">Signup</a>
+    <%}else if(message == "creatorPasswordError"){%>
+        <h1>Opps!! Username or Password is incorrect</h1>
+        <a href="/creators/login">Login</a>
+    <%}else if(message == "creatorFileUploadError"){%>
+        <h1>Opps!! file upload fails. Try again</h1>
+        <a href="/creators/signup">Signup</a>
+    <%}else if(message=="eventNotfound"){%>
+        <h1>Opps!! Event not found</h1>
+        <a href="/creators/creatorDashboard">Dashboard</a>
+    <%}else if(message=="linkAlteration"){%>
+        <h1>Opps!!. It seems you have altered your verification link. check and try again</h1>
+    <%}else if(message=="eventeeNotfound"){%>
+        <h1>Opps!! Eventee not found</h1>
+
+
+    <%}else if(message=="eventListedBefore"){%>
+        <h1>Opps!! You have listed this event already but have not bought ticket for the event.Check your list to get the ticket.</h1>
+    <%}else if(message== "ticketBoughtBefore"){%>
+        <h1>Opps!! You have bought ticket for this event already</h1>
+    <%}else if(message=="eventNotOnListBefore"){%>
+        <h1>Opps!! This event is not on your list before now</h1>
+    <%}else if(message=="eventNotRemovable"){%>
+        <h1>Opps!! You can't remove this event because you have bought ticket for it.</h1>
+    <%}else if(message == "invalidResetLink"){%>
+        <h1>Opps!! Invalid password reset link.It seems you have altered the link. Check and try again.</h1>
+    <%}else if(message == "expired registration" ){%>
+        <h1>Opps!! Ticket purchase for this event has expired</h1>
+    <%}%>
+    </body>
 </html>

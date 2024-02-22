@@ -1,212 +1,679 @@
-import { ConflictException, Injectable, NotFoundException, Res } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+  Res,
+} from '@nestjs/common';
 import { CreateEventeeDto } from './dto/create-eventee.dto';
 import { UpdateEventeeDto } from './dto/update-eventee.dto';
-import{v2} from "cloudinary"
+import { v2 } from 'cloudinary';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Eventee } from './eventees.model';
 import * as encoding from 'Utils/bcrypt';
-import * as fs from "fs";
-import * as dotenv from "dotenv"
+import * as fs from 'fs';
+import * as dotenv from 'dotenv';
 import { EventeeVerification } from './verifiedEventee.model';
 import { MailerService } from 'src/mailer/mailer.service';
-dotenv.config()
-import {v4 as uuidv4} from "uuid"
+dotenv.config();
+import { v4 as uuidv4 } from 'uuid';
 import { Request, Response } from 'express';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginEventeeDto } from './dto/login-eventee.dto';
-import {Event} from "../events/events.model"
+import { Event } from '../events/events.model';
 import { Transaction } from '../transactions/transactions.model';
-import axios from "axios"
+import axios from 'axios';
+import * as qrcode from 'qrcode';
+import { Auth0Service } from 'src/auth/auth0.service';
+import { UpdateEventDto } from 'src/events/dto/update-event.dto';
+import { CacheService } from 'src/cache/cache.service';
+import { emailVerificationDto } from './dto/emailVerification.dto';
+import { newEpasswordDto } from './dto/newEpassword.dto';
+import { DateTime } from 'luxon';
+
 @Injectable()
 export class EventeesService {
-  
-  constructor(@InjectModel("Eventee") private readonly eventeeModel:Model<Eventee>,
-  @InjectModel("EventeeVerification") private readonly eventeeVerificationModel:Model<EventeeVerification>,
-  @InjectModel("Event") private readonly eventModel:Model<Event>,
-  @InjectModel("Transaction") private readonly transactionModel:Model<Transaction>,
-  private readonly mailservice:MailerService,
-  private readonly Authservice:AuthService
+  constructor(
+    @InjectModel('Eventee') private readonly eventeeModel: Model<Eventee>,
+    @InjectModel('EventeeVerification')
+    private readonly eventeeVerificationModel: Model<EventeeVerification>,
+    @InjectModel('Event') private readonly eventModel: Model<Event>,
+    @InjectModel('Transaction')
+    private readonly transactionModel: Model<Transaction>,
+    private readonly mailservice: MailerService,
+    private readonly Authservice: AuthService,
+    private readonly cacheService: CacheService,
   ) {
     v2.config({
-      cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
-      api_key:process.env.CLOUDINARY_API_KEY,
-      api_secret:process.env.CLOUDINARY_API_SECRET
-    })
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
   }
-  
-  async createEventee(createEventeeDto:CreateEventeeDto, filePath:string) {
-    try{
-      const existingEventee:object = await this.eventeeModel.findOne({email:createEventeeDto.email })
-      if(existingEventee){
-            throw new ConflictException("Creator already exist")
+
+  //-----------------------------------Eventee Creation------------------------------------------------
+
+  async createEventee(
+    createEventeeDto: CreateEventeeDto,
+    filePath: string,
+    res: Response,
+  ) {
+    try {
+      const existingEventee: object = await this.eventeeModel.findOne({
+        email: createEventeeDto.email,
+      });
+      if (existingEventee) {
+        return res.render('error', { message: 'existingEventeeError' });
+      }
+
+      const password = await encoding.encodePassword(createEventeeDto.password);
+      const result = await v2.uploader.upload(filePath, {
+        folder: 'eventful_eventees_ProfileImage',
+      });
+
+      if (!result) {
+        return res.render('error', { message: 'fileUploadError' });
+      }
+
+      const newEventee = await this.eventeeModel.create({
+        first_name: createEventeeDto.first_name,
+        last_name: createEventeeDto.last_name,
+        email: createEventeeDto.email,
+        sex: createEventeeDto.sex,
+        phoneNum: createEventeeDto.phoneNum,
+        country: createEventeeDto.country,
+        state: createEventeeDto.state,
+        profileImage: result,
+        password: password,
+      });
+
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          throw new Error('file unlink failed');
         }
-       
-        const password = await encoding.encodePassword(createEventeeDto.password)
-        const result = await v2.uploader.upload(filePath, {folder:"eventful_eventees_ProfileImage"})
-        
-        if(!result){
-          throw new Error("file upload fails")
-        }
-  
-  
-       const newEventee =  await this.eventeeModel.create({
-          first_name: createEventeeDto.first_name,
-          last_name: createEventeeDto.last_name,
-          email: createEventeeDto.email,
-          sex: createEventeeDto.sex,
-          phoneNum: createEventeeDto.phoneNum,
-          country: createEventeeDto.country,
-          state: createEventeeDto.state,
-          profileImage:result,
-          password:password
-        })
+      });
 
-        fs.unlink(filePath, (err)=>{
-          if(err){
-            throw new Error("file unlink failed")
-          }
-        })
+      const currUrl = 'https://9cbd-102-88-68-64.ngrok-free.app';
+      let uniqueString = newEventee._id + uuidv4();
+      const hashedUniqueString = await encoding.encodePassword(uniqueString);
 
-        const currUrl = "https://9cbd-102-88-68-64.ngrok-free.app"
-        let uniqueString = newEventee._id + uuidv4()
-        const hashedUniqueString = await encoding.encodePassword(uniqueString)
-        
-        await this.eventeeVerificationModel.create({
-          eventeeId:newEventee._id,
-          uniqueString:hashedUniqueString,
-          creation_date:Date.now(),
-          expiring_date:Date.now() + 21600000
-        })
+      await this.eventeeVerificationModel.create({
+        eventeeId: newEventee._id,
+        uniqueString: hashedUniqueString,
+        creation_date: Date.now(),
+        expiring_date: Date.now() + 21600000,
+      });
 
-        await this.mailservice.sendVerificationEmail({
-          email:createEventeeDto.email,
-          subject:"Verify your email",
-          html:`<div style = "background-color:lightgrey; padding:16px"; border-radius:20px>
+      await this.mailservice.sendVerificationEmail({
+        email: createEventeeDto.email,
+        subject: 'Verify your email',
+        html: `<div style = "background-color:lightgrey; padding:16px"; border-radius:20px>
           <p>Hi, ${createEventeeDto.first_name}</P>
           <p>Thank you for opening account with Eventful.</p>
           <p>We need to confirm it is you before being authorized to login to your account</P>
               <p>Click <a href=${
-                currUrl + "/eventees/verify/" + newEventee._id + "/" + uniqueString
+                currUrl +
+                '/eventees/verify/' +
+                newEventee._id +
+                '/' +
+                uniqueString
               }>here</a> to get authorized</P>
               <p>This link <b>will expire in the next 6hrs</b></p>
               <p>With <b>Eventful</b>, You are assured of passport to a world of unforgettable moments.</P>
               <p>Click this link: <a href=${
-                currUrl + "/eventees/verify/" + newEventee._id + "/" + uniqueString
-              } >${currUrl + "/eventees/verify/" + newEventee._id + "/" + uniqueString}<a/></p>
-              </div>`
-        })
-    
-        return 'successfulEventee_creation';
+                currUrl +
+                '/eventees/verify/' +
+                newEventee._id +
+                '/' +
+                uniqueString
+              } >${currUrl + '/eventees/verify/' + newEventee._id + '/' + uniqueString}<a/></p>
+              </div>`,
+      });
 
-    }catch(err){
-      console.log(err.message)
+      return res.render('successfulEventee_creation', {
+        message: 'You are created successfully',
+        createEventeeDto,
+      });
+    } catch (err) {
+      return res.render('error', { catchError: err.message });
     }
   }
 
-  // Getting the signup page
-  getSignUpPage(){
-    return "eventee_signup_page"
+  //---------------------------------- Getting the signup page--------------------------------------------------
+  getSignUpPage() {
+    return 'eventee_signup_page';
   }
 
-  // Verifying the eventee email verification link
-  async verifyEventee(userId:string, uniqueString:string) {
-    try{
-      let user = await this.eventeeVerificationModel.findOne({eventeeId:userId})
-  
-      if(!user){
-        throw new NotFoundException("User not found") 
+  //-------------------------------- Verifying the eventee email verification link----------------------------------------------------
+  async verifyEventee(userId: string, uniqueString: string, res: Response) {
+    try {
+      let user = await this.eventeeVerificationModel.findOne({
+        eventeeId: userId,
+      });
+
+      if (!user) {
+        return res.render('error', { message: 'eventeeNotFound' });
       }
 
-      if(user.expiring_date.getTime() < Date.now()){
-        await this.eventeeVerificationModel.deleteOne({eventeeId:userId})
-        await this.eventeeModel.deleteOne({_id:userId})
-      }
-      
-      const valid = await encoding.validateEncodedString(uniqueString, user.uniqueString)
-      if(!valid){
-        throw new Error("Opps!. It seems you have altered the verification link")
+      if (user.expiring_date.getTime() < Date.now()) {
+        await this.eventeeVerificationModel.deleteOne({ eventeeId: userId });
+        await this.eventeeModel.deleteOne({ _id: userId });
       }
 
-      
+      const valid = await encoding.validateEncodedString(
+        uniqueString,
+        user.uniqueString,
+      );
+      if (!valid) {
+        return res.render('error', { message: 'linkAlteration' });
+      }
 
-      await this.eventeeModel.findByIdAndUpdate({_id:userId}, {verified:true })
-      await this.eventeeVerificationModel.deleteOne({eventeeId:userId})
-     
-      return `successful_verification`;
+      await this.eventeeModel.findByIdAndUpdate(
+        { _id: userId },
+        { verified: true },
+      );
+      await this.eventeeVerificationModel.deleteOne({ eventeeId: userId });
 
-    }catch(err){
-      console.log(err.message)
+      return res.render(`successful_verification`, { user: 'eventee' });
+    } catch (err) {
+      return res.render('error', { catchError: err.message });
     }
-    
   }
 
+  //---------------------------------------Getting login page---------------------------------------------
   getLoginPage() {
     return `eventeeLogin_page`;
   }
 
-  
-  async login(LoginEventeeDto:LoginEventeeDto, res:Response) {
-    try{
-      const {email, password} = LoginEventeeDto
-      let user = await this.eventeeModel.findOne({email})
-      // let dbUser = await this.eventeeModel.findOne({email})
+  async login(LoginEventeeDto: LoginEventeeDto, res: Response) {
+    try {
+      const { email, password } = LoginEventeeDto;
+      let user = await this.eventeeModel.findOne({ email });
 
-      if(!user){
-        throw new NotFoundException("User not found")
+      if (!user) {
+        return res.render('error', { message: 'eventeeNotFound' });
       }
 
-      if(!user.verified){
-        throw new Error("You are not verfied.Please, check your email for verification link.")
+      if (!user.verified) {
+        // throw new Error("")
+        return res.render('error', { message: 'verificationError' });
       }
 
-      const valid = await encoding.validateEncodedString(password, user.password)
+      const valid = await encoding.validateEncodedString(
+        password,
+        user.password,
+      );
 
-      if(!valid){
-        throw new Error("email or passord is incorrect")
+      if (!valid) {
+        return res.render('error', { message: 'eventeePasswordError' });
       }
 
-      const token:string =  this.Authservice.generateJwtToken(user._id, user.email, user.first_name, user.profileImage )
-      
-      res.cookie("jwt", token, { maxAge: 60 * 60 * 1000 })
+      const token: string = this.Authservice.generateJwtToken(
+        user._id,
+        user.email,
+        user.first_name,
+        user.profileImage,
+        res,
+      );
 
-      return `/eventees/eventeeDashboard`;
-    }catch(err){
-      console.log(err.message)
+      res.cookie('jwt', token, { maxAge: 60 * 60 * 1000 });
+
+      return res.redirect(`/eventees/eventeeDashboard`);
+    } catch (err) {
+      return res.render('catchError', { catchError: err.message });
     }
-   
   }
 
-  async getDashboard(req:Request, res:Response) {
-    try{
-      await this.Authservice.ensureLogin(req, res)
-      const postedEvents = await this.eventModel.find({state:"Posted"}).populate("creatorId")
-      if(!postedEvents){
-        return []
+  //--------------------------------Getting password reset page-------------------------------------------
+  getPasswordResetPage(res: Response) {
+    return res.render('passwordReset', { user: 'eventee' });
+  }
+
+  //---------------------------------Verifying the email for password reset.-----------------------------------------
+  async verifyEmailForPasswordReset(
+    emailVerifyDto: emailVerificationDto,
+    req: Request,
+    res: Response,
+  ) {
+    try {
+      const eventee: Eventee = await this.eventeeModel.findOne({
+        email: emailVerifyDto.email,
+      });
+      if (!eventee) {
+        return res.render('error', { message: 'eventeeNotFound' });
       }
 
-      return  postedEvents
-  
-    }catch(err){
-      res.send(err.message)
+      const resetToken = uuidv4();
+      const hashedResetToken = await encoding.encodePassword(resetToken);
+      eventee.passwordResetToken = hashedResetToken;
+      eventee.passwordResetExpireDate = Date.now() + 10 * 60 * 1000;
+      eventee.save();
+      const currUrl = 'http://localhost:8000';
+      this.mailservice.sendVerificationEmail({
+        email: eventee.email,
+        subject: 'We received your request for password reset',
+        html: `<div style = "background-color:lightgrey; padding:16px"; border-radius:20px>
+      <p>Hi, ${eventee.first_name}</P>
+      <p>Click the link below to reset your paasword.</P>
+      <p><a href= ${currUrl + '/eventees/resetPassword/newPassword/' + resetToken + '/' + eventee.email}>
+      ${currUrl + '/eventees/resetPassword/newPassword/' + resetToken + '/' + eventee.email}
+      </a>
+      </P>
+      <p>This link <b>will expire in the next 10min</b></P>
+      </div>`,
+      });
+      return res.render('successfulResetRequest');
+    } catch (err) {
+      return res.render('error', { catchError: err.message });
     }
+  }
+
+  //----------------------------------Verifying Password reset Link---------------------------------------------------
+  async verifyUserPasswordResetLink(
+    resetToken: string,
+    email: string,
+    res: Response,
+  ) {
+    try {
+      const user = await this.eventeeModel.findOne({ email: email });
+      if (!user) {
+        return res.render('error', { message: 'eventeeNotFound' });
+      }
+
+      if (user.passwordResetExpireDate > Date.now()) {
+        return res.render('error', { message: 'expiredPasswordResetLink' });
+      }
+
+      const valid = await encoding.validateEncodedString(
+        resetToken,
+        user.passwordResetToken,
+      );
+      if (!valid) {
+        res.render('error', { message: 'invalidResetToken' });
+      }
+
+      user.passwordResetToken = undefined;
+      user.passwordResetExpireDate = undefined;
+      user.save();
+
+      return res.render('newPasswordPage', {
+        userId: user._id,
+        user: 'eventee',
+      });
+    } catch (err) {
+      return res.render('error', { catchError: err.message });
+    }
+  }
+
+  //-----------------------------------Setting new password---------------------------------------------------------
+  async setNewPassword(
+    newPasswordDto: newEpasswordDto,
+    userId: string,
+    res: Response,
+  ) {
+    const user = await this.eventeeModel.findOne({ _id: userId });
+    if (!user) {
+      return res.render('error', { message: 'creatorNotFound' });
+    }
+
+    const newPassword = newPasswordDto.newPassword;
+    console.log(newPassword);
+    const hashedPassword = await encoding.encodePassword(newPassword);
+    console.log(hashedPassword);
+    user.password = hashedPassword;
+    user.save();
+
+    return res.render('successfulNewPassword', { user: 'eventee' });
+  }
+
+  //----------------------------------------Getting Eventee dashboard---------------------------------------------------------
+  async getDashboard(req: Request, res: Response, page: any) {
+    try {
+      await this.Authservice.ensureLogin(req, res);
+
+      const allPages = [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        20,
+      ];
+      let stringifyPage:any = req.query.page || 0 
+      let page = parseInt(stringifyPage)
+     
+          const allEvents = await this.cacheService.get(
+            `eventeeAllEvents_${res.locals.user.id}`,
+          );
+          const postedEvents = await this.cacheService.get(
+            `eventeeDashBoard_${res.locals.user.id}_${page}`,
+          );
+
+          if (!postedEvents) {
+            const eventPerPage: number = 1;
+
+            const allEvents = await this.eventModel
+              .find({ state: 'Posted' })
+              .sort({ created_date: 'desc' })
+              .populate('creatorId');
+
+            const postedEvents = await this.eventModel
+              .find({ state: 'Posted' })
+              .sort({ created_date: 'desc' })
+              .skip(page * eventPerPage)
+              .limit(eventPerPage)
+              .populate('creatorId');
+
+            if (!postedEvents) {
+              return [];
+            }
+
+            const maxPage = Math.round(allEvents.length / eventPerPage);
+            const skip = page * eventPerPage;
+
+            let passdays = [];
+            postedEvents.forEach((event) => {
+              let postDate = event.posted_date;
+              let parsedDate = DateTime.fromFormat(
+                postDate,
+                "LLL d, yyyy",
+              );
+              let currentDate = DateTime.now();
+
+              passdays.push(
+                currentDate.diff(parsedDate, 'days').toObject().days,
+              );
+            });
+
+            await this.cacheService.set(
+              `eventeeAllEvents_${res.locals.user.id}`,
+              allEvents,
+            );
+
+           
+            await this.cacheService.set(
+              `eventeeDashBoard_${res.locals.user.id}_${page}`,
+              postedEvents,
+            );
+            
+
+            return res.render('eventeeDashboard', {
+              user: res.locals.user,
+              postedEvents,
+              page,
+              maxPage,
+              allPages,
+              skip,
+              passdays: passdays,
+              date: DateTime.now().toFormat('LLL d, yyyy'),
+            });
+          }
+          
+          const eventPerPage: number = 1;
+          const maxPage = Math.round(allEvents.length / eventPerPage);
+          const skip = page * eventPerPage;
+
+          let passdays = [];
+          postedEvents.forEach((event) => {
+            let postDate = event.posted_date;
+            let parsedDate = DateTime.fromFormat(
+              postDate,
+              "LLL d, yyyy",
+            );
+            let currentDate = DateTime.now();
+
+            passdays.push(currentDate.diff(parsedDate, 'days').toObject().days);
+          });
+
+          return res.render('eventeeDashboard', {
+            user: res.locals.user,
+            postedEvents,
+            page,
+            maxPage,
+            allPages,
+            skip,
+            passdays: passdays,
+            date: DateTime.now().toFormat('LLL d, yyyy'),
+          });
+      
+    } catch (err) {
+      return res.render('catchError', { catchError: err.message });
+    }
+  }
+
+
+//-----------------------Filtering the events by categories-----------------------
+
+  async filterEvent(req:Request, res:Response, category:string){
+    try{
+      await this.Authservice.ensureLogin(req, res)
+
+      const allPages = [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        20,
+      ];
+
+      const category:any = req.query.category || "All"
+      console.log(category)
+      // const upperCategory = category.toUpperCase()
+
+      let stringifyPage:any = req.query.page || 0 
+      let page = parseInt(stringifyPage)
+     
+          const allEvents = await this.cacheService.get(
+            `eventeeFilterdAllEvents_${res.locals.user.id}`,
+          );
+          const postedEvents = await this.cacheService.get(
+            `eventeeFilterdDashBoard_${res.locals.user.id}_${category}`,
+          );
+
+     if(!postedEvents){
+      // const postedEvents = await this.eventModel.find({category:category})
+      const eventPerPage: number = 1;
+
+      let allEvents:object[] = [];
+      if(category == "All"){
+        allEvents = await this.eventModel
+        .find({ state: 'Posted'})
+        .sort({ created_date: 'desc' })
+        .populate('creatorId');
+      }else{
+        allEvents = await this.eventModel
+        .find({ state: 'Posted', category:category })
+        .sort({ created_date: 'desc' })
+        .populate('creatorId');
+      }
+      
+      let postedEvents:any
+      if(category == "All"){
+        postedEvents = await this.eventModel
+        .find({ state: 'Posted'})
+        .sort({ created_date: 'desc' })
+        .skip(page * eventPerPage)
+        .limit(eventPerPage)
+        .populate('creatorId');
+      }else{
+        postedEvents = await this.eventModel
+        .find({ state: 'Posted', category:category })
+        .sort({ created_date: 'desc' })
+        .skip(page * eventPerPage)
+        .limit(eventPerPage)
+        .populate('creatorId');
+      }
+      
+
+      if (!postedEvents) {
+        return [];
+      }
+
+      const maxPage = Math.round(allEvents.length / eventPerPage);
+      const skip = page * eventPerPage;
+
+      let passdays = [];
+      postedEvents.forEach((event) => {
+        let postDate = event.posted_date;
+        let parsedDate = DateTime.fromFormat(
+          postDate,
+          "LLL d, yyyy",
+        );
+        let currentDate = DateTime.now();
+
+        passdays.push(
+          currentDate.diff(parsedDate, 'days').toObject().days,
+        );
+      });
+
+      await this.cacheService.set(
+        `eventeeFilterdAllEvents_${res.locals.user.id}`,
+        allEvents,
+      );
+
+     
+      await this.cacheService.set(
+        `eventeeFilterdDashBoard_${res.locals.user.id}_${category}`,
+        postedEvents,
+      );
+    
+      return res.render('eventeeDashboard', {
+        user: res.locals.user,
+        postedEvents,
+        page,
+        maxPage,
+        allPages,
+        skip,
+        passdays: passdays,
+        date: DateTime.now().toFormat('LLL d, yyyy'),
+      });
+     }
+
+     const eventPerPage: number = 1;
+     const maxPage = Math.round(allEvents.length / eventPerPage);
+     const skip = page * eventPerPage;
+
+     let passdays = [];
+     postedEvents.forEach((event) => {
+       let postDate = event.posted_date
+       let parsedDate = DateTime.fromFormat(
+         postDate,
+         "LLL d, yyyy",
+       );
+       let currentDate = DateTime.now();
+
+       passdays.push(currentDate.diff(parsedDate, 'days').toObject().days);
+     });
+
+     return res.render('eventeeDashboard', {
+       user: res.locals.user,
+       postedEvents,
+       page,
+       maxPage,
+       allPages,
+       skip,
+       passdays: passdays,
+       date: DateTime.now().toFormat('LLL d, yyyy'),
+     });
+
+    }catch(err){
+      return res.render('catchError', { catchError: err.message });
+    }
+  }
+
+//--------------------------Searching for event by Title------------------------
+  async searchForTitle(req:Request, res:Response, title:string){
+    try{
+      await this.Authservice.ensureLogin(req,res)
+      const lowerCaseTitle = req.query.title.toString()
+      const upperCaseTittle = lowerCaseTitle.toUpperCase()
+
+      let event = await this.cacheService.get(`searchedTitle_${res.locals.user.id}_${upperCaseTittle}`)
+
+        if(!event){
+         
+
+        const event = await this.eventModel.findOne({state:"Posted", title:upperCaseTittle}).populate("creatorId")
+
+        if(!event){
+          return res.render("dashboardByTitle", {
+            event,
+            user: res.locals.user,
+            date: DateTime.now().toFormat('LLL d, yyyy'),
+          })
+        }
+
+        await this.cacheService.set(`searchedTitle_${res.locals.user.id}_${upperCaseTittle}`, event)
+
+
+        let postDate = event.posted_date
+        let parsedDate = DateTime.fromFormat(
+          postDate,
+          "LLL d, yyyy",
+        );
+        let currentDate = DateTime.now();
+
+        const passday = currentDate.diff(parsedDate, 'days').toObject().days
+
+        
+        return res.render("dashboardByTitle", {
+          event,
+          user: res.locals.user,
+          date: DateTime.now().toFormat('LLL d, yyyy'),
+          passday:passday
+
+        })
+      }
+
+
+      let postDate = event.posted_date
+      let parsedDate = DateTime.fromFormat(
+        postDate,
+        "LLL d, yyyy",
+      );
+      let currentDate = DateTime.now();
+
+      const passday = currentDate.diff(parsedDate, 'days').toObject().days
+
+      
+      return res.render("dashboardByTitle", {
+        event,
+        user: res.locals.user,
+        date: DateTime.now().toFormat('LLL d, yyyy'),
+        passday:passday
+
+      })
+
+      
+    }catch(err){
+      return res.render('catchError', { catchError: err.message });
+    }
+   
     
   }
 
-  async buyTicket(eventId:string, price:number, req:Request, res:Response) {
-    try{
-      await this.Authservice.ensureLogin(req, res)
-      const eventee = await this.eventeeModel.findOne({_id:res.locals.user.id})
-      if(eventee.bought_eventsId.includes(eventId)){
-        res.send("Opps! Duplicate transaction. You have bought the ticket for the Event before.")
+
+  //------------------------------------Initializing transaction to buy ticket-----------------------------------------
+  
+  async buyTicket(eventId: string, price: number, req: Request, res: Response) {
+    try {
+      await this.Authservice.ensureLogin(req, res);
+
+      const event = await this.eventModel.findOne({_id:eventId})
+      if(!event){
+        return res.render("error", {message:"eventNotFound"})
       }
 
-      const transaction = await this.transactionModel.create({
-        amount:price,
-        eventId:eventId,
-        eventeeId:eventee._id
+      let regDeadline = DateTime.fromFormat(event.registration_deadline, "LLL d, yyyy")
+      let currentDate = DateTime.now();
+      let difference = currentDate.diff(regDeadline, 'days').toObject().days
+      
+      if(difference > 0){
+        return res.render("error", {message:"expired registration"})
+      }
 
-      })
+      const eventee = await this.eventeeModel.findOne({
+        _id: res.locals.user.id,
+      });
+
+      const transaction = await this.transactionModel.create({
+        amount: price,
+        eventId: eventId,
+        eventeeId: eventee._id,
+      });
 
       const data = {
         amount: price * 100,
@@ -219,64 +686,125 @@ export class EventeesService {
       };
 
       const response = await axios.post(
-        "https://api.paystack.co/transaction/initialize",
+        'https://api.paystack.co/transaction/initialize',
         data,
-        { headers }
+        { headers },
       );
 
-      
-      return response
-
-    }catch(err){
-      res.send(err.message)
+      return res.redirect(response.data.data.authorization_url)
+    } catch (err) {
+      res.render('catchError', { catchError: err.message });
     }
-    
   }
 
-
-  async processPaystackCallBack(req:Request, res:Response) {
-    try{
-      const body = req.body
+  //-------------------------------Paystack call back after successful or failed transaction----------------------------------------
+  async processPaystackCallBack(req: Request, res: Response) {
+    try {
+      const body = req.body;
       let transaction = await this.transactionModel
-      .findOne({ _id: body.data.reference })
-      .populate("eventeeId").populate("eventId");
+        .findOne({ _id: body.data.reference })
+        .populate('eventeeId')
+        .populate('eventId');
 
-    if (!transaction) {
-      res.send("Transaction is not found")
+      if (!transaction) {
+        res.send('Transaction is not found');
+      }
+
+      if (body.event === 'charge.success') {
+        transaction.status = 'success';
+        transaction.save();
+
+        const event = await this.eventModel.findOne({
+          _id: transaction.eventId,
+        });
+        event.ticketedEventeesId.push(transaction.eventeeId);
+        event.unticketedEventeesId.splice(
+          event.unticketedEventeesId.indexOf(transaction.eventeeId),
+          1,
+        );
+        event.save();
+
+        const eventee = await this.eventeeModel.findOne({
+          _id: transaction.eventeeId,
+        });
+        eventee.event_count = eventee.event_count + 1;
+        eventee.bought_eventsId.push(event._id);
+        eventee.save();
+
+        const data = {
+          name: `${eventee.first_name} ${eventee.last_name}`,
+          TransactionID: transaction._id,
+          Event: event.title,
+          Amount: `N${transaction.amount}`,
+          Ticketed_Date: transaction.created_date,
+        };
+
+        const stData = JSON.stringify(data);
+
+        const codeURL = await qrcode.toDataURL(stData);
+
+        console.log(codeURL);
+
+        await this.mailservice.sendVerificationEmail({
+          email: eventee.email,
+          subject: 'Here is your Ticket',
+          html: `<div>
+        <p>Congratulation!!</p>
+        <p>We are delighted to have you as an attendee for the event titled <b>"${event.title}"</b></p>
+        <p>Below is your QR code.It is your Ticket to the event. Meaning this email must be presented at the venue for Verification.</p>
+        <img src="${codeURL}" alt="Qr code" style="width: 200px; height: 200px"/>
+        <p><strong>Note:</strong> A screenshot of the code is not verifiable.</p>
+        <p>Your compliance will be appreciated. Thanks.</p>
+        </div>`,
+        });
+      }
+
+      if (body.event === 'charge.failed') {
+        transaction.status = 'failed';
+        transaction.save();
+      }
+
+      return res.send('call back received')
+    } catch (err) {
+      res.render('catchError', { catchError: err.message });
     }
-
-    if (body.event === "charge.success") {
-      transaction.status = "success";
-      transaction.save();
-      
-      const event = await this.eventModel.findOne({_id:transaction.eventId})
-      event.ticketedEventeesId.push(transaction.eventeeId)
-      event.unticketedEventeesId.splice(event.unticketedEventeesId.indexOf(transaction.eventeeId), 1)
-      event.save()
-
-      const eventee = await this.eventeeModel.findOne({_id:transaction.eventeeId})
-      eventee.event_count = eventee.event_count + 1
-      eventee.bought_eventsId.push(event._id)
-      eventee.save()
-    }
-  
-  if (body.event === "charge.failed") {
-      transaction.status = "failed";
-      transaction.save();
-    }
-
-    return "call back received"
-
-
-    }catch(err){
-      res.send(err.message)
-    }
-      
   }
 
-  async getPaymentSuccessPage() {
-    return "paymentSuccess"
-}
+  //-------------------------------Paystack call for successful transaction page---------------------------------------
+  async getPaymentSuccessPage(res:Response) {
+    try{
+      return res.render('paymentSuccess');
+    }catch(err){
+      return res.render("catchError", {catchError:err.message});
+    }
+  }
 
-//
+  //--------------------------------Setting days to get reminded of coming events-----------------------------------
+  async resetReminderDays(
+    eventId: String,
+    eventeeId: string,
+    UpdateEventeeDto: UpdateEventeeDto,
+    req: Request,
+    res: Response,
+  ) {
+    try {
+      await this.Authservice.ensureLogin(req, res);
+      const event = await this.eventModel.findOne({ _id: eventId });
+      if (!event) {
+        return res.render('error', { message: 'eventNotfound' });
+      }
+
+      const eventee = await this.eventeeModel.findOne({ _id: eventeeId });
+      if (!eventee) {
+        return res.render('error', { message: 'eventeeNotfound' });
+      }
+
+      eventee.eventeeReminder_days = UpdateEventeeDto.eventeeReminder_days;
+      eventee.save();
+
+      return res.redirect('/events/MyCheckList');
+    } catch (err) {
+      return res.render('catchError', { catchError: err.message });
+    }
+  }
 }

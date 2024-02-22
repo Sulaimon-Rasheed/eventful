@@ -8,6 +8,7 @@
 <body>
     <nav>
         <a href="/creators/creatorDashboard">Dashboard</a>
+        <li><a href="/creators/logout">Logout</a></li>
        </nav>
       
        <%if(unticketedEventees != 0){%>
@@ -40,7 +41,8 @@
         <%}%>
            
        <%}else{%>
-       <h1>You do not have eventees yet. Check back</h1>
+       <h1>Opps!!No one has listed this event yet OR those that listed it had bought the event ticketed.</h1>
+       <h2>So, check the <b>ticketed eventees</b> list</h2>
        <%}%>
    
 </body>

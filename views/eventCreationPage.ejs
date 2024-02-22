@@ -24,12 +24,8 @@
           class="input"
         /><br /><br /><br />
         <label for="description" class="label">Description:</label>
-        <input
-          type="text"
-          ,
-          name="description"
-          class="input"
-        /><br /><br /><br />
+        <textarea name="description" id="info" cols="30" rows="10"></textarea>
+        <br /><br /><br />
 
         <label for="category" class="label">Category:</label>
         <select name="category" class="input" type="text">
@@ -57,6 +53,28 @@
           class="input"
         /><br /><br /><br />
 
+        <label for="starting_time" class="label">Starting Time:</label>
+        <input
+          type="time"
+          name="starting_time"
+          class="input"
+        /><br /><br /><br />
+
+        <label for="ending_time" class="label">Ending Time:</label>
+        <input
+          type="time"
+          name="ending_time"
+          class="input"
+        /><br /><br /><br />
+
+        <label for="reminder_days" class="label">How many days to the event do you want Eventful to send reminder to Eventees: e.g</label>
+        <input
+          type="text"
+          name="reminder_days"
+          class="input"
+          placeholder="2"
+        /><span>Note: Enter NUMBER ONLY. Don't enter text.<span></span><br /><br /><br />
+
         <label for="registration_deadline" class="label">Registration Deadline:</label>
         <input
           type="date"
@@ -64,10 +82,10 @@
           class="input"
         /><br /><br /><br />
 
-        <label for="location" class="label">Location:</label>
+        <label for="venue" class="label">Venue/Address:</label>
         <input
           type="text"
-          name="location"
+          name="venue"
           class="input"
         /><br /><br /><br />
     
@@ -86,11 +104,8 @@
         /><br /><br /><br />
 
         <label for="additional_info" class="label">Additional Info:</label>
-        <input
-          type="text"
-          name="additional_info"
-          class="input"
-        /><br /><br /><br />
+        <textarea name="additional_info" id="info" cols="30" rows="10"></textarea>
+        <br /><br /><br />
 
         <label for="event_image" class="label">Upload your Event poster:</label>
         <input
@@ -101,7 +116,7 @@
           placeholder="Choose a file"
           class="input"
         />
-      </div><br><br><br>
+      </div><br>
         <button type="submit" class="submit">submit</button>
       </form> 
 </body>

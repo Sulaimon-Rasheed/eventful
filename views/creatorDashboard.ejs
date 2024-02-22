@@ -11,36 +11,102 @@
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/events/createEvent">Create Event</a></li>
-        <li><a href="/logout">Logout</a></li>
+        <li><a href="/creators/logout">Logout</a></li>
       </ul>  
     </nav>
 
     <% if(events.length != 0){%>
     <h2>Welcome back</h2>
+
+    <%if(skip == 0){%> 
+      <p style="text-align: center; margin:10px auto; background-color: black; color: white; width: 20%; padding: 5px;margin-top: 20px;">Page 1</p>
+      <ul class="page" style="display: flex; gap:5px;list-style-type:none;margin: 10px auto;justify-content: center;">
+       
+          <span style="font-weight: bold;">Next page/s &rArr;</span>
+          <%for(let i = 1; i<= maxPage - 1; i++){%>
+        <li>
+          <a style="text-decoration: none;"
+            href="http://localhost:8000/creators/creatorDashboard?page=<%=allPages[i]%>"
+            >Page <%=allPages[i] + 1%></a
+          >
+        </li>
+        
+        <%}%>
+        </ul>
+        
+        <%}%>
+      
+        <%if(skip != 0){%>
+          <p style="text-align: center; margin:10px auto; background-color: black; color: white;width: 20%; padding: 5px; margin-top: 20px;">Page <%=page + 1%></p>
+      <ul class="page" style="display: flex; gap:5px;list-style-type:none;margin: 10px auto;justify-content: center;">
+        
+        <li>
+          <a style="text-decoration: none;" href="http://localhost:8000/creators/creatorDashboard?page=0"
+            >Page 1</a
+          >
+        </li>
+        <span style="font-weight: bold;">&rArr;</span>
+        
+        <span style="font-weight: bold;">Next page/s &rArr;</span>
+        
+        <%for(let i = 1; i<= maxPage - 1; i++){%>
+          
+        <li>
+          <a style="text-decoration: none;"
+            href="http://localhost:8000/creators/creatorDashboard?page=<%=allPages[i]%>"
+            >Page <%=allPages[i] + 1%></a
+          >
+        </li>
+        
+        <%}%>
+      </ul>
+      
+      <%}%>
+
+
+
+      <hr>
+            <form action="/creators/event/filter" method="get">
+              <label for="state"
+                >Filter the events by state (Draft or Posted):</label>
+                <select name="state">
+                  <option value="">
+                    --Select a state--
+                  </option> 
+                  <option name="state" value="All">All</option>    
+                  <option name="state" value="Draft">Draft</option>
+                  <option name="state" value="Posted">Posted</option>
+              
+                </select>
+              
+              <button type="submit">filter</button>
+            </form>
+          <hr>
     
     <ul>
-        <%for(const event of events){%>
+
+        <%for(let i = 0; i < events.length; i++){%>
             <li>
-                <p><%=event.title%></p>
-                <p><%=event.tag%></p>
-                <p><img src="<%=event.event_image.url%>" alt="event image" style="width: 300px; height: 200px;"></p>
-                <p><%=event.description%></p>
-                <p><%=event.event_date%></p>
-                <p><%=event.registration_deadline%></p>
-                <p><%=event.ticket_price%></p>
-                <p><%=event.discount%></p>
-                <p><%=event.additonal_info%></p>
+                <p><b>Title: </b><%=events[i].title%></p>
+                <p><img src="<%=events[i].event_image.url%>" alt="event image" style="width: 300px; height: 200px;"></p>
+                <p><b>About: </b><%=events[i].description%></p>
+                <p><b>Date: </b><%=events[i].event_date%></p>
+                <p><b>Time: </b><%=events[i].starting_time%> - <%=events[i].ending_time%></p>
+                <p><b>Venue: </b><%=events[i].venue%></p>
+                <p><b>Registaration deadline</b><%=events[i].registration_deadline%></p>
+                <p><b>Ticket Price</b><%=events[i].ticket_price%></p>
+                <p><b>More Info: </b><%=events[i].additonal_info%></p>
 
               
-                <%if(event.state==="Draft"){%>
+                <%if(events[i].state==="Draft"){%>
                   <p
                       style="background-color: brown; color: white; width:20%; padding: 10px;"
                       class="eventState"
                     >
-                      <%=event.state%>
+                      <%=events[i].state%>
                     </p>
                 <form
-                  action="/events/postEvent/<%=event.id%>"
+                  action="/events/postEvent/<%=events[i].id%>"
                   method="PUT">
                   <button
                     id="state"
@@ -56,18 +122,84 @@
                       style="background-color: green; color: white; width:20%; padding: 10px;"
                       class="articleState"
                     >
-                      <%=event.state%>
+                      <%=events[i].state%>
                     </p>
-                  <p><a href="/creators/getUnticketedEventees/<%=event.id%>">Unticketed Eventees</a></p>
-                  <p><a href="/creators/getTicketedEventees/<%=event.id%>">Ticketed Eventees</a></p>
+                <div style="display: flex; gap: 20px;">
+                  <p><a href="/creators/getUnticketedEventees/<%=events[i].id%>">Unticketed Eventees</a></p>
+                  <p><a href="/creators/getTicketedEventees/<%=events[i].id%>">Ticketed Eventees</a></p>
+                </div>
+                  <form action="/creators/setReminder/<%=events[i].id%>" method="post">
+                    <label for="reminder_days">Update number of days to the Event to send reminder to Eventees: </label>
+                    <!-- <input type="text" name="reminder_days" placeholder="Enter number ONLY"> -->
+                    <select name="reminder_days" id="">
+                      <option value="">--choose a number</option>
+                      <option name="reminder_days" value="1">1</option>
+                      <option name="reminder_days" value="2">2</option>
+                      <option name="reminder_days" value="3">3</option>
+                      <option name="reminder_days" value="4">4</option>
+                      <option name="reminder_days" value="5">5</option>
+                      <option name="reminder_days" value="6">6</option>
+                      <option name="reminder_days" value="7">7</option>
+                      <option name="reminder_days" value="8">8</option>
+                      <option name="reminder_days" value="9">9</option>
+                      <option name="reminder_days" value="10">10</option>
+                    </select>
+                    <button formmethod="post" type="submit">Update</button><span> Note:Don't enter any text (A-Z)</span>
+                  </form>
                 <%}%>
               
+                <a href="/events/eventUpdatePage/<%=events[i].id%>">Update or Delete event from here</a>
             </li>
         <%}%>
     </ul>
+
+    <%if(skip == 0){%> 
+      <p style="text-align: center; margin:10px auto; background-color: black; color: white; width: 20%; padding: 5px;margin-top: 20px;">Page 1</p>
+    <ul class="page" style="display: flex; gap:5px;list-style-type:none; margin: 10px auto;justify-content: center;">
+     
+        <span style="font-weight: bold;">Next page/s &rArr;</span>
+        <%for(let i = 1; i<= maxPage - 1; i++){%>
+      <li>
+        <a style="text-decoration: none;"
+          href="http://localhost:8000/creators/creatorDashboard?page=<%=allPages[i]%>"
+          >Page <%=allPages[i] + 1%></a
+        >
+      </li>
+      
+      <%}%>
+      </ul>
+      
+      <%}%>
+    
+      <%if(skip != 0){%>
+        <p style="text-align: center; margin:10px auto; background-color: black; color: white;width: 20%; padding: 5px; margin-top: 20px;">Page <%=page + 1%></p>
+    <ul class="page" style="display: flex; gap:5px;list-style-type:none;margin: 10px auto;justify-content: center;">
+      
+      <li>
+        <a style="text-decoration: none;" href="http://localhost:8000/creators/creatorDashboard?page=0"
+          >Page 1</a
+        >
+      </li>
+      <span style="font-weight: bold;">&rArr;</span>
+      
+      <span style="font-weight: bold;">Next page/s &rArr;</span>
+      
+      <%for(let i = 1; i<= maxPage - 1; i++){%>
+        
+      <li>
+        <a style="text-decoration: none;"
+          href="http://localhost:8000/creators/creatorDashboard?page=<%=allPages[i]%>"
+          >Page <%=allPages[i] + 1%></a
+        >
+      </li>
+      
+      <%}%>
+    </ul>
+    <%}%>
+
 <%}else{%>
     <h1>Welcome <%=user.name%> to your dashboard</h1>
-    <h2>You can now begin to create Events</h2>
+    <h2>There is no drafted or posted event yet.</h2>
     <a href="/events/createEvent">Create Event</a>
 <%}%>
 </body>

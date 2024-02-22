@@ -12,6 +12,12 @@ import { MailerModule } from './mailer/mailer.module';
 import { AuthService } from './auth/auth.service';
 import { MailerService } from './mailer/mailer.service';
 import { TransactionsModule } from './transactions/transactions.module';
+import { SocialmediaService } from './socialmedia/socialmedia.service';
+import { CronService } from './cron/cron.service';
+import { eventSchema } from './events/events.model';
+import { eventeeSchema } from './eventees/eventees.model';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { CacheService } from './cache/cache.service';
 dotenv.config()
 
 @Module({
@@ -20,10 +26,13 @@ dotenv.config()
    EventsModule,
     EventeesModule,
       MongooseModule.forRoot(process.env.DB_URL),
+      MongooseModule.forFeature([{name:"Event", schema:eventSchema},{name:"Eventee", schema:eventeeSchema} ]),
       MailerModule,
-      TransactionsModule],
+      TransactionsModule,
+      ThrottlerModule.forRoot([{ ttl: 60 * 1000, limit: 10 }])
+    ],
   controllers: [AppController],
-  providers: [AppService, FlashMiddleware, AuthService, MailerService],
+  providers: [AppService, FlashMiddleware, AuthService, MailerService, SocialmediaService, CronService, CacheService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

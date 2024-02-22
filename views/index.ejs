@@ -8,12 +8,13 @@
 </head>
 <body>
     <nav>
-        <ul>
-          <li><a href="/about">About</a></li>
-          <li><a href="/eventees/signup">Register</a></li>
+        <ul style="display:flex;justify-content: center;gap: 20px;list-style-type:none;padding: 0;margin-bottom:50px;">
+          <li><a style="text-decoration: none;" href="/about">About</a></li>
+          <li><a style="text-decoration: none;" href="./creators/login">Creator Login</a></li>
+        <li><a style="text-decoration: none;" href="/eventees/login">Eventee Login</a></li>
         </ul>
       </nav>
-<div style="line-height:0.5;margin-bottom: 30px;">
+<div style="line-height:0.5;margin-bottom: 30px; text-align: center;">
     <h1><%=message%></h1>
     <p>...your passport to a world of unforgettable moments</p>
 </div>
@@ -21,8 +22,10 @@
         From pulsating concerts to captivating theater performances, and thrilling sports events to enlightening cultural gatherings, we curate a diverse array of experiences that cater to every taste and passion.
     </p>
 
-    <h2>Will you like to post events on Eventful ?</h2>
-    <p><a href="./creators/signup">Apply as an event Creator</a></p>
-
+    <h2 style="text-align: center;">How do you want to use Eventful ?</h2>
+    <div style="display: flex; gap: 10px; justify-content:space-around;">
+        <p><a style="text-decoration: none; background-color: green; color: white; padding: 10px;" href="./creators/signup">Apply as an event Creator</a></p>
+        <p><a style="text-decoration: none; background-color: green; color: white; padding: 10px;" href="/eventees/signup">Get started as an Eventee</a></p>
+    </div>
 </body>
 </html>

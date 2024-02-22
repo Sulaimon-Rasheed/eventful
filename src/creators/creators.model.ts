@@ -16,7 +16,7 @@ export const creatorSchema = new Schema({
     passwordResetExpireDate:{type:Date},
     freePlan:{type:Boolean, default:true},
     paidPlan:{type:Boolean, default:false},
-    paymentStatus:{type:String, default:"Pending", enum:["Pending", "Success", "Failed"]},
+    paymentStatus:{type:Boolean, default:false},
     creationDate:{type:Date},
     eventsId:[{type:Schema.Types.ObjectId, ref:"events"}]
 })
@@ -33,7 +33,7 @@ export interface Creator extends mongoose.Document{
     state:string
     profileImage:Object,
     phoneNum:string
-    paymentStatus:string
+    paymentStatus:boolean
     verified:boolean
     passwordResetToken:string
     passwordResetExpireDate:Date

@@ -11,32 +11,141 @@
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/events/myCheckList">Check your event List to buy ticket</a></li>
-        <li><a href="/logout">Logout</a></li>
+        <li><a href="/eventees/logout">Logout</a></li>
       </ul>  
     </nav>
 
     <%if(postedEvents.length != 0){%>
-        <h1>Welcome back <%=user.name%></h1>
+        <h1>Welcome back <%=user.name%></h1><span id="date"><strong>Today is: </strong><%=date%></span>
         <h2>Explore our posted events and add to your list.</h2>
         <p>Ensure you buy your ticket before the deadline Date.</p>
-        <ul>
-            <%for(const event of postedEvents){%>
+
+        
+        <%if(skip == 0){%> 
+          <p style="text-align: center; margin:10px auto; background-color: black; color: white; width: 20%; padding: 5px;margin-top: 20px;">Page 1</p>
+          <ul class="page" style="display: flex; gap:5px;list-style-type:none;margin: 10px auto;justify-content: center;">
+           
+              <span style="font-weight: bold;">Next page/s &rArr;</span>
+              <%for(let i = 1; i<= maxPage - 1; i++){%>
+            <li>
+              <a style="text-decoration: none;"
+                href="http://localhost:8000/eventees/eventeeDashboard?page=<%=allPages[i]%>"
+                >Page <%=allPages[i] + 1%></a
+              >
+            </li>
+            
+            <%}%>
+            </ul>
+            
+            <%}%>
+          
+            <%if(skip != 0){%>
+              <p style="text-align: center; margin:10px auto; background-color: black; color: white;width: 20%; padding: 5px; margin-top: 20px;">Page <%=page + 1%></p>
+          <ul class="page" style="display: flex; gap:5px;list-style-type:none;margin: 10px auto;justify-content: center;">
+            
+            <li>
+              <a style="text-decoration: none;" href="http://localhost:8000/eventees/eventeeDashboard?page=0"
+                >Page 1</a
+              >
+            </li>
+            <span style="font-weight: bold;">&rArr;</span>
+            
+            <span style="font-weight: bold;">Next page/s &rArr;</span>
+            
+            <%for(let i = 1; i<= maxPage - 1; i++){%>
               
             <li>
-              
-                <p><strong>Title: </strong><%=event.title%></p>
-                <p><img src="<%=event.event_image.url%>" alt="event image" style="width: 300px; height: 200px;"></p>
-                <p><strong>Description: </strong><%=event.description%></p>
-                <p><strong>Date: </strong><%=event.event_date%></p>
-                <p><strong>Registartion Deadline: </strong><%=event.registration_deadline%></p>
-                <p><strong>Ticket Price: </strong><%=event.ticket_price%></p>
-                <p><strong>Discount: </strong><%=event.discount%></p>
-                <p><strong>Additional Info: </strong><%=event.additonal_info%></p>
-                <img src="<%=event.creatorId.profileImage.url%>" alt="creator image" style="height:50px; width: 50px; border-radius: 50%;">
-                <p><strong>Phone Number: </strong><%=event.creatorId.phoneNum%></p>
-                <p><strong>Email: </strong><%=event.creatorId.email%></p>
+              <a style="text-decoration: none;"
+                href="http://localhost:8000/eventees/eventeeDashboard?page=<%=allPages[i]%>"
+                >Page <%=allPages[i] + 1%></a
+              >
+            <!-- </li> -->
+            
+            <%}%>
+          </ul>
+          
+          <%}%>
+  
 
-                <form action="/events/chooseEvent/<%=event.id%>" method="PUT">
+<!--------------------------------------------------------------------------------------->
+
+        <hr>
+            <form action="/eventees/event/filter" method="get">
+              <label for="category"
+                >Filter the events by categories:</label>
+                <select name="category">
+                  <option value="">
+                    --Select a category--
+                  </option> 
+                  <option name="category" value="All">All</option>    
+                  <option name="category" value="Charity">Charity</option>
+                  <option name="category" value="Concert">Concert</option>
+                  <option name="category" value="Conference">Conference</option>
+                  <option name="category" value="Exhibition">Exhibition</option>
+                  <option name="category" value="Film Show">Film Show</option>
+                  <option name="category" value="Product Launch">Product Launch</option>
+                  <option name="category" value="Vetworking">Networking</option> 
+                  <option name="category" value="Seminar">Seminar</option>
+                  <option name="category" value="Sport">Sport</option>
+                  <option name="category" value="Symposium">Symposium</option>
+                  <option name="category" value="Theater">Theater</option>
+                  <option name="category" value="Trade Show">Trade Show</option> 
+                  <option name="category" value="Workshop">Workshop</option>    
+                </select>
+              
+              <button type="submit" class="searchAndSort">filter</button>
+            </form>
+          <hr>
+
+
+<!------------------------------------------------------------------------------------------>
+       
+
+<hr>
+<form action="/eventees/event/titleSearch" method="get">
+  <label for="title">Search for event by "Title": </label>
+  <input type="text" name="title" placeholder="Enter the title here">
+  <button type="submit">Search</button>
+</form>
+<hr>
+
+<!--------------------------------------------------------------------------------------------->
+
+
+
+<ul>
+            <%for(let i = 0; i < postedEvents.length; i++){%>
+              
+            <li>
+              <%if(passdays[i] >=0 && passdays[i]< 0.5){%>
+                <p id="time"><b>Posted:</b><%=postedEvents[i].posted_date%> <span>(today)</span></p> 
+              <%}else if(passdays[i] >=0.5 && passdays[i] < 1.5) {%>
+                <p id="time"><b>Posted:</b><%=postedEvents[i].posted_date%> <span>(yesterday)</span></p> 
+             <% }else if(passdays[i] > 30) {%>
+              <p id="time"><b>Posted:</b><%=postedEvents[i].posted_date%><span>(<%= Math.floor((passdays[i])/30)%> month(s) ago)</span></p>
+             <%}else if(passdays[i] > 365) {%>
+              <p id="time"><b>Posted:</b><%=postedEvents[i].posted_date%> <span>(<%= Math.floor((passdays[i])/365)%> year(s) ago)</span></p>
+             <%}else{%>
+              <p id="time"><b>Posted:</b><%=postedEvents[i].posted_date%> <span>(<%= Math.round(passdays[i])%> days ago)</span></p> 
+             <% }%>
+
+                <p><strong>Title: </strong><%=postedEvents[i].title%></p>
+                <p><img src="<%=postedEvents[i].event_image.url%>" alt="event image" style="width: 300px; height: 200px;"></p>
+                <p><strong>About: </strong><%=postedEvents[i].description%></p>
+                <p><b>Date: </b><%=postedEvents[i].event_date%></p>
+                <p><b>Time: </b><%=postedEvents[i].starting_time%> - <%=postedEvents[i].ending_time%></p>
+                <p><strong>Registration Deadline: </strong><%=postedEvents[i].registration_deadline%></p>
+                <p><strong>Ticket Price: </strong><%=postedEvents[i].ticket_price%></p>
+                <p><strong>More Info: </strong><%=postedEvents[i].additonal_info%></p>
+                <div>
+                  <label for="">Organizer's Contact</label>
+                <p><strong>Profile Picture: </strong><img src="<%=postedEvents[i].creatorId.profileImage.url%>" alt="creator image" style="height:50px; width: 50px; border-radius: 50%;"></p>
+                <p><strong>Phone Number: </strong><%=postedEvents[i].creatorId.phoneNum%></p>
+                <p><strong>Email: </strong><%=postedEvents[i].creatorId.email%></p>
+                </div>
+
+                <div style="display: flex; gap: 20px;">
+                <form action="/events/chooseEvent/<%=postedEvents[i].id%>" method="PUT">
                     <button
                       id="state"
                       type="submit"
@@ -47,7 +156,7 @@
                     </button>
                 </form>
 
-                <form action="/events/removeEvent/<%=event.id%>" method="PUT">
+                <form action="/events/removeEvent/<%=postedEvents[i].id%>" method="PUT">
                   <button
                     id="state"
                     type="submit"
@@ -57,12 +166,70 @@
                     Remove event from your List
                   </button>
               </form>
+
+              <form action="/events/share/<%=postedEvents[i].id%>" method="GET">
+                <button
+                  id="state"
+                  type="submit"
+                  formmethod="get"
+                  title="Click to share on facebook"
+                >
+                  Share on facebook
+                </button>
+            </form>
+          </div>
             </li>
         <%}%>
-        </ul>    
+        </ul>
+
+        <%if(skip == 0){%> 
+          <p style="text-align: center; margin:10px auto; background-color: black; color: white; width: 20%; padding: 5px;margin-top: 20px;">Page 1</p>
+        <ul class="page" style="display: flex; gap:5px;list-style-type:none; margin: 10px auto;justify-content: center;">
+         
+            <span style="font-weight: bold;">Next page/s &rArr;</span>
+            <%for(let i = 1; i<= maxPage - 1; i++){%>
+          <li>
+            <a style="text-decoration: none;"
+              href="http://localhost:8000/eventees/eventeeDashboard?page=<%=allPages[i]%>"
+              >Page <%=allPages[i] + 1%></a
+            >
+          </li>
+          
+          <%}%>
+          </ul>
+          
+          <%}%>
+        
+          <%if(skip != 0){%>
+            <p style="text-align: center; margin:10px auto; background-color: black; color: white;width: 20%; padding: 5px; margin-top: 20px;">Page <%=page + 1%></p>
+        <ul class="page" style="display: flex; gap:5px;list-style-type:none;margin: 10px auto;justify-content: center;">
+          
+          <li>
+            <a style="text-decoration: none;" href="http://localhost:8000/eventees/eventeeDashboard?page=0"
+              >Page 1</a
+            >
+          </li>
+          <span style="font-weight: bold;">&rArr;</span>
+          
+          <span style="font-weight: bold;">Next page/s &rArr;</span>
+          
+          <%for(let i = 1; i<= maxPage - 1; i++){%>
+            
+          <li>
+            <a style="text-decoration: none;"
+              href="http://localhost:8000/eventees/eventeeDashboard?page=<%=allPages[i]%>"
+              >Page <%=allPages[i] + 1%></a
+            >
+          </li>
+          
+          <%}%>
+        </ul>
+        <%}%>
+
+
     <%}else{%>
         <h1>Welcome <%=user.name%> to your dashboard</h1>
-        <h2>We have not posted any event for now.Check back later.</h2>
+        <h2>There is no event post for now or selected event category is not found.Check back later.</h2>
     <%}%>
 </body>
 </html>

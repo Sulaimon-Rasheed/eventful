@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from "nodemailer"
+import * as inlineBase64 from "nodemailer-plugin-inline-base64"
 import * as dotenv from "dotenv"
 dotenv.config()
 
@@ -18,7 +19,7 @@ export class MailerService {
           },
         });
     }
-
+    
     async sendVerificationEmail({email, subject, html}): Promise<void> {
         // Define email content
         const mailOptions: nodemailer.SendMailOptions = {
@@ -28,6 +29,7 @@ export class MailerService {
           html:html
         }
         // Send email
+        this.transporter.use('compile', inlineBase64({cidPrefix: 'somePrefix_'}));
         await this.transporter.sendMail(mailOptions);
     }
 }
