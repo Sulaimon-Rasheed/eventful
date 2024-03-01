@@ -18,6 +18,7 @@ import { eventSchema } from './events/events.model';
 import { eventeeSchema } from './eventees/eventees.model';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { CacheService } from './cache/cache.service';
+// import { QrcodescannerModule } from './qrcodescanner/qrcodescanner.module';
 dotenv.config()
 
 @Module({
@@ -29,7 +30,8 @@ dotenv.config()
       MongooseModule.forFeature([{name:"Event", schema:eventSchema},{name:"Eventee", schema:eventeeSchema} ]),
       MailerModule,
       TransactionsModule,
-      ThrottlerModule.forRoot([{ ttl: 60 * 1000, limit: 10 }])
+      ThrottlerModule.forRoot([{ ttl: 60 * 1000, limit: 10 }]),
+      // QrcodescannerModule
     ],
   controllers: [AppController],
   providers: [AppService, FlashMiddleware, AuthService, MailerService, SocialmediaService, CronService, CacheService],

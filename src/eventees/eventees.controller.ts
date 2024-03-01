@@ -4,7 +4,6 @@ import { CreateEventeeDto } from './dto/create-eventee.dto';
 import { FileInterceptor} from '@nestjs/platform-express';
 import {Request, Response} from "express"
 import { LoginEventeeDto } from './dto/login-eventee.dto';
-import { UpdateEventDto } from 'src/events/dto/update-event.dto';
 import { UpdateEventeeDto } from './dto/update-eventee.dto';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { emailVerificationDto } from './dto/emailVerification.dto';
@@ -19,18 +18,18 @@ export class EventeesController {
   @Post("signup")
   @UseInterceptors(FileInterceptor('profileImage'))
   
-  async createEventee(@UploadedFile() file:Express.Multer.File ,@Body(new ValidationPipe) createEventeeDto: CreateEventeeDto, @Res() res:Response) {
-      await this.eventeesService.createEventee(createEventeeDto, file.path, res)
+  async createEventee(@UploadedFile() file:Express.Multer.File ,@Body(new ValidationPipe) createEventeeDto: CreateEventeeDto,@Req() req:Request, @Res() res:Response) {
+      await this.eventeesService.createEventee(createEventeeDto, file.path,req, res)
   }
 
   @Get("signup")
-  getSignUpPage(@Res() res:Response) {
-    return res.render(this.eventeesService.getSignUpPage()) 
+  getSignUpPage(@Req() req:Request , @Res() res:Response) {
+    this.eventeesService.getSignUpPage(req, res)
   }
 
   @Get("verify/:userId/:uniqueString")
   async verifyEventee(@Param("userId") userId:string, @Param("uniqueString") uniqueString:string, @Res() res:Response) {
-    await this.eventeesService.verifyEventee(userId, uniqueString,res)
+    await this.eventeesService.verifyEventee(userId, uniqueString, res)
   }
 
   @Get('login')
@@ -94,6 +93,16 @@ export class EventeesController {
     async getPaymentSuccessPage(@Res() res:Response) {
       await this.eventeesService.getPaymentSuccessPage(res) 
      }
+
+     @Get('/boughtEvents')
+    async getBoughtEventsPage(@Req() req:Request, @Res() res:Response) {
+      await this.eventeesService. getBoughtEventsPage(req, res) 
+     }
+
+     @Get('/attendedEvents')
+     async getAttendedEventsPage(@Req() req:Request, @Res() res:Response) {
+       await this.eventeesService. getAttendedEventsPage(req, res) 
+      }
  
      @Post("/setReminder/:eventId/:eventeeId")
      async resetReminderDays(@Param("eventId") eventId:string,@Param("eventeeId") eventeeId:string, @Body(new ValidationPipe) UpdateEventeetDto:UpdateEventeeDto, @Req() req:Request, @Res() res:Response){

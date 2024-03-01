@@ -4,27 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Event</title>
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script> -->
 </head>
 <body>
     <nav>
         <ul>
-          <li><a href="/about">About</a></li>
+          <li><a href="/">Home</a></li>
           <li><a href="/creators/logout">Logout</a></li>
+          <li><a href="/creators/creatorDashboard">Dashboard</a></li>
         </ul>
       </nav>
       
-    
     <h1>Create Event</h1>
+    
+    <%if(successfulCreation){%>
+      <p style="color: green; text-align: center; font-size: 24px;"><%=successfulCreation%></p>
+    <%}%>
+
     <form action="/events/createEvent" , method="post" enctype="multipart/form-data">
     
         <label for="title" class="label">Title:</label>
         <input
+          style="width: 40%; padding: 10px;"
           type="text"
           name="title"
           class="input"
         /><br /><br /><br />
         <label for="description" class="label">Description:</label>
-        <textarea name="description" id="info" cols="30" rows="10"></textarea>
+        <textarea name="description" cols="100" rows="10" style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 18px; margin:0 auto;"></textarea>
+        <!-- <textarea name="description" id="editor"></textarea> -->
+        <!-- <script>
+          ClassicEditor
+          .create( document.querySelector('#editor') )
+          .catch( error => {
+              console.error( error );
+          } );
+        </script> -->
         <br /><br /><br />
 
         <label for="category" class="label">Category:</label>
@@ -75,7 +90,7 @@
           placeholder="2"
         /><span>Note: Enter NUMBER ONLY. Don't enter text.<span></span><br /><br /><br />
 
-        <label for="registration_deadline" class="label">Registration Deadline:</label>
+        <label for="registration_deadline" class="label">Ticket Purchase deadline: </label>
         <input
           type="date"
           name="registration_deadline"
@@ -84,6 +99,7 @@
 
         <label for="venue" class="label">Venue/Address:</label>
         <input
+        style="width: 40%; padding: 10px;"
           type="text"
           name="venue"
           class="input"
@@ -104,7 +120,15 @@
         /><br /><br /><br />
 
         <label for="additional_info" class="label">Additional Info:</label>
-        <textarea name="additional_info" id="info" cols="30" rows="10"></textarea>
+        <textarea name="additional_info" cols="100" rows="10" style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 18px; margin:0 auto;"></textarea>
+        <!-- <textarea name="additional_info" id="info"></textarea> -->
+        <!-- <script>
+          ClassicEditor
+          .create( document.querySelector('#info') )
+          .catch( error => {
+              console.error( error );
+          } );
+        </script> -->
         <br /><br /><br />
 
         <label for="event_image" class="label">Upload your Event poster:</label>
@@ -116,7 +140,7 @@
           placeholder="Choose a file"
           class="input"
         />
-      </div><br>
+      </div>
         <button type="submit" class="submit">submit</button>
       </form> 
 </body>

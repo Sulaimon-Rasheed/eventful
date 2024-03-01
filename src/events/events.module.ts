@@ -21,6 +21,7 @@ import { Auth0Service } from 'src/auth/auth0.service';
 import { ConfigService } from '@nestjs/config';
 import { CronService } from 'src/cron/cron.service';
 import { CacheService } from 'src/cache/cache.service';
+// import { QrcodescannerService } from 'src/qrcodescanner/qrcodescanner.service';
 
 @Module({
   imports:[MongooseModule.forFeature([{name:"Event", schema:eventSchema}, {name:"Creator", schema:creatorSchema}, {name:"CreatorVerification", schema:creatorVerificationSchema}, {name:"Eventee", schema:eventeeSchema}, {name:"EventeeVerification", schema:eventeeVerificationSchema}, {name:"Transaction", schema:transactionSchema}]),

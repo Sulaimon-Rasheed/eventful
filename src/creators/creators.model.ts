@@ -16,9 +16,11 @@ export const creatorSchema = new Schema({
     passwordResetExpireDate:{type:Date},
     freePlan:{type:Boolean, default:true},
     paidPlan:{type:Boolean, default:false},
-    paymentStatus:{type:Boolean, default:false},
+    paymentStatus:{type:String, default:"pending", enum:["pending", "failed", "successful"]},
     creationDate:{type:Date},
-    eventsId:[{type:Schema.Types.ObjectId, ref:"events"}]
+    eventsId:[{type:Schema.Types.ObjectId, ref:"events"}],
+    allScannedEventeesId:[{type:Schema.Types.ObjectId, ref:"Eventee"}],
+    allTicketedEventeesId:[{type:Schema.Types.ObjectId, ref:"Eventee"}],
 })
 
 mongoose.model("creators", creatorSchema)
@@ -33,7 +35,7 @@ export interface Creator extends mongoose.Document{
     state:string
     profileImage:Object,
     phoneNum:string
-    paymentStatus:boolean
+    paymentStatus:string
     verified:boolean
     passwordResetToken:string
     passwordResetExpireDate:Date
@@ -41,4 +43,6 @@ export interface Creator extends mongoose.Document{
     paidPlan:boolean
     creationDate:Date
     eventsId:object[]
+    allScannedEventeesId:string[]
+    allTicketedEventeesId:string[]
 }

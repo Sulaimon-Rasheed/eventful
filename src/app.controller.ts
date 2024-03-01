@@ -10,11 +10,6 @@ export class AppController {
   @Get()
   @Render("index")
   getHome(){
-      return {message:'Welcome to Eventful.'}
+      return {message:'Eventful'}
   }
-
-  // @Get("*")
-  // getPageNotFound(@Res() res:Response){
-  //   return res.render(this.appService.getError(), {error:"Page not found"})
-  // }
 }

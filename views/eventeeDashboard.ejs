@@ -10,7 +10,9 @@
         <img src="<%=user.image.url%>" alt="user Image" style="height:50px; width: 50px; border-radius: 50%;">
       <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/events/myCheckList">Check your event List to buy ticket</a></li>
+        <li><a href="/events/myCheckList">Open your checklist to buy ticket</a></li>
+        <li><a href="/eventees/boughtEvents">Bought Events</a></li>
+        <li><a href="/eventees/attendedEvents">Attended Events</a></li>
         <li><a href="/eventees/logout">Logout</a></li>
       </ul>  
     </nav>
@@ -113,71 +115,52 @@
 
 
 
-<ul>
+<ul style="list-style-type: none;padding:0;">
             <%for(let i = 0; i < postedEvents.length; i++){%>
-              
+            <h2 style="color: green; font-weight: bold;"><%=postedEvents[i].title%></h2>
             <li>
               <%if(passdays[i] >=0 && passdays[i]< 0.5){%>
-                <p id="time"><b>Posted:</b><%=postedEvents[i].posted_date%> <span>(today)</span></p> 
+                <p id="time"><b>Posted: </b><%=postedEvents[i].posted_date%> <span>(today)</span></p> 
               <%}else if(passdays[i] >=0.5 && passdays[i] < 1.5) {%>
-                <p id="time"><b>Posted:</b><%=postedEvents[i].posted_date%> <span>(yesterday)</span></p> 
+                <p id="time"><b>Posted: </b><%=postedEvents[i].posted_date%> <span>(yesterday)</span></p> 
              <% }else if(passdays[i] > 30) {%>
-              <p id="time"><b>Posted:</b><%=postedEvents[i].posted_date%><span>(<%= Math.floor((passdays[i])/30)%> month(s) ago)</span></p>
+              <p id="time"><b>Posted: </b><%=postedEvents[i].posted_date%><span>(<%= Math.floor((passdays[i])/30)%> month(s) ago)</span></p>
              <%}else if(passdays[i] > 365) {%>
-              <p id="time"><b>Posted:</b><%=postedEvents[i].posted_date%> <span>(<%= Math.floor((passdays[i])/365)%> year(s) ago)</span></p>
+              <p id="time"><b>Posted: </b><%=postedEvents[i].posted_date%> <span>(<%= Math.floor((passdays[i])/365)%> year(s) ago)</span></p>
              <%}else{%>
-              <p id="time"><b>Posted:</b><%=postedEvents[i].posted_date%> <span>(<%= Math.round(passdays[i])%> days ago)</span></p> 
+              <p id="time"><b>Posted: </b><%=postedEvents[i].posted_date%> <span>(<%= Math.round(passdays[i])%> days ago)</span></p> 
              <% }%>
 
-                <p><strong>Title: </strong><%=postedEvents[i].title%></p>
-                <p><img src="<%=postedEvents[i].event_image.url%>" alt="event image" style="width: 300px; height: 200px;"></p>
-                <p><strong>About: </strong><%=postedEvents[i].description%></p>
-                <p><b>Date: </b><%=postedEvents[i].event_date%></p>
-                <p><b>Time: </b><%=postedEvents[i].starting_time%> - <%=postedEvents[i].ending_time%></p>
-                <p><strong>Registration Deadline: </strong><%=postedEvents[i].registration_deadline%></p>
-                <p><strong>Ticket Price: </strong><%=postedEvents[i].ticket_price%></p>
-                <p><strong>More Info: </strong><%=postedEvents[i].additonal_info%></p>
-                <div>
-                  <label for="">Organizer's Contact</label>
-                <p><strong>Profile Picture: </strong><img src="<%=postedEvents[i].creatorId.profileImage.url%>" alt="creator image" style="height:50px; width: 50px; border-radius: 50%;"></p>
-                <p><strong>Phone Number: </strong><%=postedEvents[i].creatorId.phoneNum%></p>
-                <p><strong>Email: </strong><%=postedEvents[i].creatorId.email%></p>
-                </div>
-
-                <div style="display: flex; gap: 20px;">
+              <a href="/events/thisEvent/share/<%=postedEvents[i].id%>" title="Click to read more and share the event" target="_blank">
+                  <p><img src="<%=postedEvents[i].event_image.url%>" alt="event image" style="width: 300px; height: 200px;"></p>     
+              </a>
+              
+              <div style="display: flex; gap: 20px;">
                 <form action="/events/chooseEvent/<%=postedEvents[i].id%>" method="PUT">
                     <button
+                      style="text-decoration: none;padding: 5px; background-color: green;color: white; border: none; cursor: pointer;"
                       id="state"
                       type="submit"
                       formmethod="post"
                       title="Click to add the event to your List"
+                
                     >
-                      Add event to your list
+                      Add to checklist
                     </button>
                 </form>
 
                 <form action="/events/removeEvent/<%=postedEvents[i].id%>" method="PUT">
                   <button
+                    style="text-decoration: none;padding: 5px; background-color: green;color: white; border: none;cursor: pointer;"
                     id="state"
                     type="submit"
                     formmethod="post"
                     title="Click to remove the event from your List"
                   >
-                    Remove event from your List
+                    Remove from checklist
                   </button>
-              </form>
-
-              <form action="/events/share/<%=postedEvents[i].id%>" method="GET">
-                <button
-                  id="state"
-                  type="submit"
-                  formmethod="get"
-                  title="Click to share on facebook"
-                >
-                  Share on facebook
-                </button>
-            </form>
-          </div>
+                </form>
+            </div>
             </li>
         <%}%>
         </ul>

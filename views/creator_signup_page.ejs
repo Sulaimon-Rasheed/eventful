@@ -5,14 +5,16 @@
 <body>
   <nav>
     <ul>
-      <li><a href="/about">About</a></li>
+      <li><a href="/">Home</a></li>
       <li><a href="/creators/login">Login</a></li>
+      <li><a href="/creators/creatorDashboard">Dashboard</a></li>
     </ul>
   </nav>
   
-
     <h1>Creator Signup page</h1>
-
+    <%if(creatorSignup){%>
+      <p style="color: green; text-align: center; font-size: 24px;"><%=creatorSignup%></p>
+    <%}%>
 <form action="/creators/signup" , method="post" enctype="multipart/form-data">
 
     <label for="creator_name" class="label">Full name:</label>
@@ -75,8 +77,9 @@
       placeholder="Choose a file"
       class="input"
     />
-  </div>
+  </div><br>
     <button type="submit" class="submit">submit</button>
   </form>
+
 </body>
 </html>

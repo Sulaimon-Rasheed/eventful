@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { transactionSchema } from './transactions.model';
 import { eventeeSchema } from 'src/eventees/eventees.model';
 import { eventeeVerificationSchema } from 'src/eventees/verifiedEventee.model';
+// import { QrcodescannerService } from 'src/qrcodescanner/qrcodescanner.service';
 
 @Module({
   imports:[MongooseModule.forFeature([{name:"Transaction", schema:transactionSchema}, {name:"Eventee", schema:eventeeSchema}, {name:"EventeeVerification", schema:eventeeVerificationSchema}])],

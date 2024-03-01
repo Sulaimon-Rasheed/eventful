@@ -15,8 +15,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Welcome to Event focal. The focal point for far reaching events placement.');
+    it('should return "Eventful"', () => {
+      expect(appController.getHello()).toBe('Eventful');
     });
   });
 });

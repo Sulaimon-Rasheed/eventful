@@ -1,8 +1,5 @@
 import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-  Res,
+  Injectable
 } from '@nestjs/common';
 import { CreateEventeeDto } from './dto/create-eventee.dto';
 import { UpdateEventeeDto } from './dto/update-eventee.dto';
@@ -30,6 +27,7 @@ import { CacheService } from 'src/cache/cache.service';
 import { emailVerificationDto } from './dto/emailVerification.dto';
 import { newEpasswordDto } from './dto/newEpassword.dto';
 import { DateTime } from 'luxon';
+import { Creator } from 'src/creators/creators.model';
 
 @Injectable()
 export class EventeesService {
@@ -38,6 +36,7 @@ export class EventeesService {
     @InjectModel('EventeeVerification')
     private readonly eventeeVerificationModel: Model<EventeeVerification>,
     @InjectModel('Event') private readonly eventModel: Model<Event>,
+    @InjectModel('Creator') private readonly creatorModel: Model<Creator>,
     @InjectModel('Transaction')
     private readonly transactionModel: Model<Transaction>,
     private readonly mailservice: MailerService,
@@ -56,6 +55,7 @@ export class EventeesService {
   async createEventee(
     createEventeeDto: CreateEventeeDto,
     filePath: string,
+    req:any,
     res: Response,
   ) {
     try {
@@ -130,18 +130,22 @@ export class EventeesService {
               </div>`,
       });
 
-      return res.render('successfulEventee_creation', {
-        message: 'You are created successfully',
-        createEventeeDto,
-      });
+      req.flash("EventeeCreated", "Successful signup. Check your email for verification link")
+      return res.redirect("/eventees/signup")
+
     } catch (err) {
       return res.render('error', { catchError: err.message });
     }
   }
 
   //---------------------------------- Getting the signup page--------------------------------------------------
-  getSignUpPage() {
-    return 'eventee_signup_page';
+  getSignUpPage(req:any, res:Response) {
+    try{
+    const eventeeSignup = req.flash("EventeeCreated")
+    return res.render('eventee_signup_page', {eventeeSignup})
+  } catch (err) {
+    return res.render('error', { catchError: err.message });
+  } 
   }
 
   //-------------------------------- Verifying the eventee email verification link----------------------------------------------------
@@ -717,12 +721,19 @@ export class EventeesService {
         const event = await this.eventModel.findOne({
           _id: transaction.eventId,
         });
+
         event.ticketedEventeesId.push(transaction.eventeeId);
+
         event.unticketedEventeesId.splice(
           event.unticketedEventeesId.indexOf(transaction.eventeeId),
           1,
         );
+
         event.save();
+
+        const creator = await this.creatorModel.findOne({creatorId:event.creatorId})
+        creator.allTicketedEventeesId.push(transaction.eventeeId)
+        creator.save()
 
         const eventee = await this.eventeeModel.findOne({
           _id: transaction.eventeeId,
@@ -733,17 +744,16 @@ export class EventeesService {
 
         const data = {
           name: `${eventee.first_name} ${eventee.last_name}`,
-          TransactionID: transaction._id,
-          Event: event.title,
-          Amount: `N${transaction.amount}`,
-          Ticketed_Date: transaction.created_date,
+          event_title: event.title,
+          amount: `N${transaction.amount}`,
+          ticketed_date: transaction.created_date,
+          transactionId: transaction._id,
+          eventId:event._id
         };
 
         const stData = JSON.stringify(data);
 
         const codeURL = await qrcode.toDataURL(stData);
-
-        console.log(codeURL);
 
         await this.mailservice.sendVerificationEmail({
           email: eventee.email,
@@ -779,12 +789,49 @@ export class EventeesService {
     }
   }
 
+
+
+// Bought events Page
+async  getBoughtEventsPage(req:Request, res:Response) {
+  try{
+    await this.Authservice.ensureLogin(req,res)
+    const eventee = await this.eventeeModel.findOne({_id:res.locals.user.id}).populate("bought_eventsId")
+    let boughtEvents = []
+    let count = 0
+    for (const event of eventee.bought_eventsId){
+      boughtEvents.push(event)
+      count++
+    }
+    return res.render('boughtEvents', {boughtEvents, count});
+  }catch(err){
+    return res.render("catchError", {catchError:err.message});
+  }
+}
+
+// Attended events Page
+async  getAttendedEventsPage(req:Request, res:Response) {
+  try{
+    await this.Authservice.ensureLogin(req,res)
+    const eventee = await this.eventeeModel.findOne({_id:res.locals.user.id}).populate("attended_eventsId")
+    let attendedEvents = []
+    let count = 0
+    for (const event of eventee.attended_eventsId){
+      attendedEvents.push(event)
+      count++
+    }
+    return res.render('attendedEvents', {attendedEvents, count});
+  }catch(err){
+    return res.render("catchError", {catchError:err.message});
+  }
+}
+
+
   //--------------------------------Setting days to get reminded of coming events-----------------------------------
   async resetReminderDays(
     eventId: String,
     eventeeId: string,
     UpdateEventeeDto: UpdateEventeeDto,
-    req: Request,
+    req: any,
     res: Response,
   ) {
     try {
@@ -802,6 +849,7 @@ export class EventeesService {
       eventee.eventeeReminder_days = UpdateEventeeDto.eventeeReminder_days;
       eventee.save();
 
+      req.flash("eventeeReminderUpdate", "Successful reminder day setting.")
       return res.redirect('/events/MyCheckList');
     } catch (err) {
       return res.render('catchError', { catchError: err.message });

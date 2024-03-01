@@ -10,15 +10,22 @@
         <p><a href="/eventees/eventeeDashboard">Dashboard</a></p>
         <li><a href="/eventees/logout">Logout</a></li>
     </nav>
+    
+    <%if(reminderDaySuccess){%>
+      <p style="color: green; text-align: center; font-size: 24px;"><%=reminderDaySuccess%></p>
+    <%}%>
+
     <%if(lists.length != 0){%>
         <h1>Buy your Ticket here.</h1>
+
+        
+        
         <ul>
             <%for(const list of lists){%>
                 <li>
                     <p><strong>Title: </strong><%=list.title%></p>
                     <p><img src="<%=list.event_image.url%>" alt="event image" style="width: 200px; height: 100px;"></p>
                     <p><strong>Ticket Price: </strong><%=list.ticket_price%></p>
-                    <span><strong>Pay:</strong></span>
                     <p><strong>Event Date: </strong><%=list.event_date%></p>
                     <p><strong>Registration Deadline: </strong><%=list.registration_deadline%></p>
                 </li>
@@ -48,7 +55,7 @@
                         <button formmethod="post" type="submit">Set</button><span> Note:Don't enter any text (A-Z)</span>
                       </form>
                 <%}else{%>
-                    <form action="/eventees/buyTicket/<%=list.id%>/<%=list.ticket_price%>" method="GET" style="margin-bottom: 50px;">
+                    <form action="/eventees/buyTicket/<%=list.id%>/<%=list.ticket_price%>" method="GET" style="margin-bottom: 50px;" target="_blank">
                         <input type="text" value="<%=list.ticket_price%>" readonly style="border-radius: 100%; padding: 5px; text-align: center; width:50px; height: 50px; background-color: brown; color: white; border: none;font-weight: bold;">
                         <button
                           id="state"

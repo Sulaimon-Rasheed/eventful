@@ -18,7 +18,8 @@ export const eventeeSchema = new Schema({
     passwordResetExpireDate:{type:Date},
     verified:{type:Boolean, default:false},
     creationDate:{type:Date, default:new Date()},
-    bought_eventsId:[{type:Schema.Types.ObjectId, ref:"Event"}]
+    bought_eventsId:[{type:Schema.Types.ObjectId, ref:"Event"}],
+    attended_eventsId:[{type:Schema.Types.ObjectId, ref:"Event"}]
 })
 
 
@@ -40,4 +41,5 @@ export interface Eventee extends mongoose.Document{
     verified:boolean
     creationDate:Date
     bought_eventsId:string[]
+    attended_eventsId:string[]
 }

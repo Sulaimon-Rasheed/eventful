@@ -5,13 +5,16 @@
 <body>
   <nav>
     <ul>
-      <li><a href="/about">About</a></li>
+      <li><a href="/">Home</a></li>
       <li><a href="/eventees/login">Login</a></li>
+      <li><a href="/eventees/eventeeDashboard">Dashboard</a></li>
     </ul>
   </nav>
   
-
 <h1>Eventee Signup Page</h1>
+<%if(eventeeSignup){%>
+  <p style="color: green; text-align: center; font-size: 24px;"><%=eventeeSignup%></p>
+<%}%>
 <form action="/eventees/signup" , method="post" enctype="multipart/form-data">
 
     <label for="first_name" class="label">First name:</label>

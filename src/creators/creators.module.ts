@@ -24,6 +24,9 @@ import { Auth0Service } from 'src/auth/auth0.service';
 import { ConfigService } from '@nestjs/config';
 import { CronService } from 'src/cron/cron.service';
 import { CacheService } from 'src/cache/cache.service';
+// import { QrcodescannerService } from 'src/qrcodescanner/qrcodescanner.service';
+// import { QrcodescannerController } from 'src/qrcodescanner/qrcodescanner.controller';
+
 
 @Module({
   imports:[EventsModule,EventeesModule,

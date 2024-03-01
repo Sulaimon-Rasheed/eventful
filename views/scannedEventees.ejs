@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticketed Eventees</title>
+</head>
+<body>
+    <nav>
+        <a href="/creators/creatorDashboard">Dashboard</a>
+        <li><a href="/creators/logout">Logout</a></li>
+       </nav>
+      
+       <%if(scannedEventees != 0){%>
+        <%if(count == 1){%>
+            <h1><%=count%> ticket of an Eventee has been scanned for this event</h1>
+            <h2>The person is:</h2>
+           <ol>
+              <% for(const eventee of scannedEventees){%>
+                   <li>
+                       <img src="<%=eventee.profileImage.url%>" alt="eventee image" style="height:50px; width: 50px; border-radius: 50%;">
+                       <p><%=eventee.first_name%></p>
+                       <p><%=eventee.email%></p>
+                       <p><%=eventee.phoneNum%></p>
+                   </li>
+               <%}%>
+           </ol> 
+        <%}else{%>
+            <h1><%=count%> tickets of Eventees have been scanned for this event</h1> 
+            <h2>They are:</h2>
+           <ol>
+              <% for(const eventee of scannedEventees){%>
+                   <li>
+                       <img src="<%=eventee.profileImage.url%>" alt="eventee image" style="height:50px; width: 50px; border-radius: 50%;">
+                       <p><%=eventee.first_name%></p>
+                       <p><%=eventee.email%></p>
+                       <p><%=eventee.phoneNum%></p>
+                   </li>
+               <%}%>
+           </ol>
+        <%}%>
+           
+       <%}else{%>
+       <h1>No scanned ticket for this event yet. Check the <b>ticketed eventees</b> list to see those that have bought the ticket.</h1>
+       
+       <%}%>
+      
+</body>
+</html>

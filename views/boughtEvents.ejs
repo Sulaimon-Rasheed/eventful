@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attended Eventees</title>
+</head>
+<body>
+    <nav>
+        <a href="/eventees/eventeeDashboard">Dashboard</a>
+        <li><a href="/eventees/logout">Logout</a></li>
+       </nav>
+      
+       <%if(boughtEvents != 0){%>
+        <%if(count == 1){%>
+            <h1> You have bought ticket for <%=count%> event</h1>
+            <h2>The event is:</h2>
+           <ol>
+              <% for(const event of boughtEvents){%>
+                   <li>
+                       <p><%=event.title%></p>
+                       <img src="<%=event.event_image.url%>" alt="event image" style="height:100px; width: 200px"> 
+                   </li>
+               <%}%>
+           </ol> 
+        <%}else{%>
+            <h1>You have bought ticket for a total of <%=count%> events</h1> 
+            <h2>They are:</h2>
+           <ol>
+              <% for(const event of boughtEvents){%>
+                   <li>
+                    <p><%=event.title%></p>
+                    <img src="<%=event.event_image.url%>" alt="event image" style="height:100px; width: 200px"> 
+                   </li>
+               <%}%>
+           </ol>
+        <%}%>
+           
+       <%}else{%>
+       <h1>You have not bought any event ticket. Try to get a ticket today.</h1>
+       <%}%>
+      
+</body>
+</html>

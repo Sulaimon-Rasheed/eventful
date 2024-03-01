@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/html5-qrcode@2.0.5/dist/html5-qrcode.min.js"></script>
+    <title>Scanner</title>
+    
+    <style>
+
+        main{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+        }
+
+        #reader{
+            width: 600px;
+        }
+
+        #result{
+            text-align: center;
+            padding: 16px;
+            font-size: 1.5rem;
+        }
+
+        button{
+            padding: 10px;
+            background-color: green;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/creators/creatorDashboard">Dashboard</a>
+        <li><a href="/creators/logout">Logout</a></li>
+       </nav>
+    <main>
+
+    <div id="successful"></div> 
+    <div id="reader"></div>
+    <div id="result"></div>
+    
+    
+
+    <script>
+
+const scanner = new Html5QrcodeScanner(
+            'reader',
+            { fps: 10, qrbox: 250 }
+        );
+
+        scanner.render(success, error)
+
+
+        function success(result){
+            const encodedResult = encodeURIComponent(result);
+            document.getElementById("result").innerHTML = `
+            <h2>Success !!</h2>
+            <p>${result}</p>
+            <form action="/creators/getScanningResult?result=${encodedResult}" method="post">
+            <button>Save</button>
+            </form>
+            `;
+
+            scanner.clear()
+            document.getElementById("reader").remove()
+        }
+
+
+        function error(err){
+            console.log(err)
+        }
+
+
+        if(successfulScan){
+            document.getElementById("successful").innerHTML =`
+            <p style="color: green;font-size: 24px; text-align: center;">succeeesfulScan</p>
+        `
+        }
+    </script>
+
+    </main>
+</body>
+</html>

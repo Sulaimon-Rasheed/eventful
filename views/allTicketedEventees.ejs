@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticketed Eventees</title>
+</head>
+<body>
+    <nav>
+        <a href="/creators/creatorDashboard">Dashboard</a>
+        <li><a href="/creators/logout">Logout</a></li>
+       </nav>
+      
+       <%if(allTicketedEventees != 0){%>
+        <%if(count == 1){%>
+            <h1>A cummulative of <%=count%> Eventee bought ticket for created events so far</h1>
+            <h2>The person is:</h2>
+           <ol>
+              <% for(const eventee of allTicketedEventees ){%>
+                   <li>
+                       <img src="<%=eventee.profileImage.url%>" alt="eventee image" style="height:50px; width: 50px; border-radius: 50%;">
+                       <p><%=eventee.first_name%></p>
+                       <p><%=eventee.email%></p>
+                       <p><%=eventee.phoneNum%></p>
+                   </li>
+               <%}%>
+           </ol> 
+        <%}else{%>
+            <h1>A cummulative of <%=count%> Eventees bought ticket for your created events so far</h1> 
+            <h2>They are:</h2>
+           <ol>
+              <% for(const eventee of allTicketedEventees ){%>
+                   <li>
+                       <img src="<%=eventee.profileImage.url%>" alt="eventee image" style="height:50px; width: 50px; border-radius: 50%;">
+                       <p><%=eventee.first_name%></p>
+                       <p><%=eventee.email%></p>
+                       <p><%=eventee.phoneNum%></p>
+                   </li>
+               <%}%>
+           </ol>
+        <%}%>
+           
+       <%}else{%>
+       <h1>No one has bought ticket for your created events so far.</h1>
+       <%}%>
+      
+</body>
+</html>

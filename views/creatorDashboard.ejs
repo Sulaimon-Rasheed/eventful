@@ -11,9 +11,13 @@
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/events/createEvent">Create Event</a></li>
+        <li><a href="/creators/scanner">QRcode scanner</a></li>
+        <li><a href="/creators/allTicketedEventees">All the time ticketed Eventees</a></li>
+        <li><a href="/creators/allScannedEventees">All the time scanned eventees (attendees)</a></li>
         <li><a href="/creators/logout">Logout</a></li>
       </ul>  
     </nav>
+
 
     <% if(events.length != 0){%>
     <h2>Welcome back</h2>
@@ -83,21 +87,17 @@
             </form>
           <hr>
     
-    <ul>
+    <ul style="padding: none;list-style-type: none;">
 
         <%for(let i = 0; i < events.length; i++){%>
+         
             <li>
-                <p><b>Title: </b><%=events[i].title%></p>
-                <p><img src="<%=events[i].event_image.url%>" alt="event image" style="width: 300px; height: 200px;"></p>
-                <p><b>About: </b><%=events[i].description%></p>
-                <p><b>Date: </b><%=events[i].event_date%></p>
-                <p><b>Time: </b><%=events[i].starting_time%> - <%=events[i].ending_time%></p>
-                <p><b>Venue: </b><%=events[i].venue%></p>
-                <p><b>Registaration deadline</b><%=events[i].registration_deadline%></p>
-                <p><b>Ticket Price</b><%=events[i].ticket_price%></p>
-                <p><b>More Info: </b><%=events[i].additonal_info%></p>
-
+              <h2 style="color: green; font-weight: bold;"><%=events[i].title%></h2>
               
+              <a href="/events/thisEvent/share/<%=events[i].id%>" title="Click to read more and share the event" target="_blank">
+                <img src="<%=events[i].event_image.url%>" alt="event image" style="width: 300px; height: 200px;">
+              </a>
+   
                 <%if(events[i].state==="Draft"){%>
                   <p
                       style="background-color: brown; color: white; width:20%; padding: 10px;"
@@ -117,39 +117,30 @@
                     Post the Event
                   </button>
                 </form>
+                <a href="/events/eventUpdatePage/<%=events[i].id%>">Update or Delete event from here</a>
+                
                 <%}else{%>
+                <div style="display: flex; gap: 20px;">
                   <p
                       style="background-color: green; color: white; width:20%; padding: 10px;"
                       class="articleState"
                     >
                       <%=events[i].state%>
                     </p>
+
+                    
+                  </div>
                 <div style="display: flex; gap: 20px;">
-                  <p><a href="/creators/getUnticketedEventees/<%=events[i].id%>">Unticketed Eventees</a></p>
-                  <p><a href="/creators/getTicketedEventees/<%=events[i].id%>">Ticketed Eventees</a></p>
+                  <p><a href="/creators/getUnticketedEventees/<%=events[i].id%>">List of unticketed Eventees</a></p>
+                  <p><a href="/creators/getTicketedEventees/<%=events[i].id%>">List of ticketed Eventees</a></p>
+                  <p><a href="/creators/getScannedEventees/<%=events[i].id%>">List of Scanned Eventees (Attendees)</a></p>
                 </div>
-                  <form action="/creators/setReminder/<%=events[i].id%>" method="post">
-                    <label for="reminder_days">Update number of days to the Event to send reminder to Eventees: </label>
-                    <!-- <input type="text" name="reminder_days" placeholder="Enter number ONLY"> -->
-                    <select name="reminder_days" id="">
-                      <option value="">--choose a number</option>
-                      <option name="reminder_days" value="1">1</option>
-                      <option name="reminder_days" value="2">2</option>
-                      <option name="reminder_days" value="3">3</option>
-                      <option name="reminder_days" value="4">4</option>
-                      <option name="reminder_days" value="5">5</option>
-                      <option name="reminder_days" value="6">6</option>
-                      <option name="reminder_days" value="7">7</option>
-                      <option name="reminder_days" value="8">8</option>
-                      <option name="reminder_days" value="9">9</option>
-                      <option name="reminder_days" value="10">10</option>
-                    </select>
-                    <button formmethod="post" type="submit">Update</button><span> Note:Don't enter any text (A-Z)</span>
-                  </form>
+                
+            
+                  <a href="/events/eventUpdatePage/<%=events[i].id%>">Update or Delete event from here</a>
                 <%}%>
-              
-                <a href="/events/eventUpdatePage/<%=events[i].id%>">Update or Delete event from here</a>
             </li>
+            
         <%}%>
     </ul>
 

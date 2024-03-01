@@ -1,10 +1,5 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable} from '@nestjs/common';
 import { CreateCreatorDto } from './dto/create-creator.dto';
-import { UpdateCreatorDto } from './dto/update-creator.dto';
 import { v2 } from 'cloudinary';
 import { InjectModel } from '@nestjs/mongoose';
 import { Creator } from './creators.model';
@@ -25,8 +20,8 @@ import { UpdateEventDto } from 'src/events/dto/update-event.dto';
 import { CacheService } from 'src/cache/cache.service';
 import { emailVerifyDto } from './dto/email-verify.dto';
 import { newPasswordDto } from './dto/newPassword.dto';
-// import RequestWithFlash from "../requestWithFlash"
 import { DateTime } from 'luxon';
+import { Transaction } from 'src/transactions/transactions.model';
 
 @Injectable()
 export class CreatorsService {
@@ -35,6 +30,7 @@ export class CreatorsService {
     @InjectModel('CreatorVerification')
     private readonly creatorVerificationModel: Model<CreatorVerification>,
     @InjectModel('Event') private readonly eventModel: Model<Event>,
+    @InjectModel('Transaction') private readonly transactionModel: Model<Transaction>,
     @InjectModel('Eventee') private readonly eventeeModel: Model<Eventee>,
     private readonly mailservice: MailerService,
     private readonly Authservice: AuthService,
@@ -49,6 +45,7 @@ export class CreatorsService {
   async createCreator(
     createCreatorDto: CreateCreatorDto,
     filePath: string,
+    req:any,
     res: Response,
   ) {
     try {
@@ -122,18 +119,21 @@ export class CreatorsService {
               </div>`,
       });
 
-      return res.render('successfulCreator_creation', {
-        message: 'You are created successfully',
-        createCreatorDto,
-      });
+      req.flash("creatorCreation", "Successful signup. Check your email for verification link.")
+     return res.redirect("/creators/signup")
     } catch (err) {
       return res.render('error', { catchError: err.message });
     }
   }
 
-  getSignupPage() {
-    return 'creator_signup_page';
-  }
+  getSignupPage(req:any, res:Response) {
+    try{
+      const creatorSignup = req.flash("creatorCreation")
+      return res.render('creator_signup_page', {creatorSignup})
+      } catch (err) {
+        return res.render('error', { catchError: err.message });
+      }
+    }
 
   async verifyCreator(userId: string, uniqueString: string, res: Response) {
     try {
@@ -174,7 +174,7 @@ export class CreatorsService {
     return `creatorLogin_page`;
   }
 
-  getPasswordResetPagePage(res: Response) {
+  getPasswordResetPage(res: Response) {
     return res.render('passwordReset', { user: 'creator' });
   }
 
@@ -254,6 +254,7 @@ export class CreatorsService {
   async setNewPassword(
     newPasswordDto: newPasswordDto,
     userId: string,
+    req:any,
     res: Response,
   ) {
     const user = await this.creatorModel.findOne({ _id: userId });
@@ -310,7 +311,7 @@ export class CreatorsService {
     }
   }
 
-  async getDashboard(req: Request, res: Response, page: any) {
+  async getDashboard(req: any, res: Response, page: any) {
     try {
       await this.Authservice.ensureLogin(req, res);
       const allPages = [
@@ -368,6 +369,8 @@ export class CreatorsService {
           `creatorDashBoard_${res.locals.user.id}_${page}`,
           events,
         );
+
+        const reminderUpdateSuccess = req.flash("reminderUpdate")
         return res.render('creatorDashboard', {
           user: res.locals.user,
           events,
@@ -377,6 +380,7 @@ export class CreatorsService {
           skip,
           passdays: passdays,
           date: DateTime.now().toFormat('LLL d, yyyy'),
+          reminderUpdateSuccess
         });
       }
 
@@ -395,7 +399,7 @@ export class CreatorsService {
 
         passdays.push(currentDate.diff(parsedDate, 'days').toObject().days);
       });
-
+      const reminderUpdateSuccess = req.flash("reminderUpdate")
       return res.render('creatorDashboard', {
         user: res.locals.user,
         events,
@@ -405,6 +409,7 @@ export class CreatorsService {
         skip,
         passdays: passdays,
         date: DateTime.now().toFormat('LLL d, yyyy'),
+        reminderUpdateSuccess
       });
     } catch (err) {
       return res.render('catchError', { catchError: err.message });
@@ -586,11 +591,7 @@ export class CreatorsService {
   async getUnticketedEventees(eventId: string, req: Request, res: Response) {
     try {
       await this.Authservice.ensureLogin(req, res);
-      // const unticketedEventees = await this.cacheService.get(`unticketedEventees_${res.locals.user.id}`)
-      // const count = await this.cacheService.get(`unticketedCount_${res.locals.user.id}`)
-      // await this.cacheService.remove(`unticketedEventees_${res.locals.user.id}`)
-      // await this.cacheService.remove(`unticketedCount_${res.locals.user.id}`)
-      // if(!unticketedEventees && !count){
+     
       const event = await this.eventModel
         .findOne({ _id: eventId })
         .populate('unticketedEventeesId');
@@ -603,12 +604,8 @@ export class CreatorsService {
         unticketedEventees.push(eventee);
         count++;
       }
-      //   await this.cacheService.set(`unticketedEventees_${res.locals.user.id}`, unticketedEventees)
-      //   await this.cacheService.set(`unticketedCount_${res.locals.user.id}`, count)
-      //   return [unticketedEventees,count]
-      // }
-
-      return [unticketedEventees, count];
+      
+      return res.render("unticketedEventees", {unticketedEventees,count})
     } catch (err) {
       return res.render('error', { catchError: err.message });
     }
@@ -617,11 +614,7 @@ export class CreatorsService {
   async getTicketedEventees(eventId: string, req: Request, res: Response) {
     try {
       await this.Authservice.ensureLogin(req, res);
-      // const ticketedEventees = await this.cacheService.get(`ticketedEventees_${res.locals.user.id}`)
-      // const count = await this.cacheService.get(`ticketedCount_${res.locals.user.id}`)
-      // await this.cacheService.remove(`ticketedEventees_${res.locals.user.id}`)
-      // await this.cacheService.remove(`ticketedCount_${res.locals.user.id}`)
-      // if(!ticketedEventees && !count){
+      
       const event = await this.eventModel
         .findOne({ _id: eventId })
         .populate('ticketedEventeesId');
@@ -634,22 +627,94 @@ export class CreatorsService {
         ticketedEventees.push(eventee);
         count++;
       }
-      // await this.cacheService.set(`ticketedEventees_${res.locals.user.id}`, ticketedEventees)
-      // await this.cacheService.set(`ticketedCount_${res.locals.user.id}`, count)
+     
 
-      // return [ticketedEventees,count]
-      // }
+      return res.render("ticketedEventees", {ticketedEventees,count})
 
-      return [ticketedEventees, count];
     } catch (err) {
-      res.send(err.message);
+      return res.render('error', { catchError: err.message });
     }
   }
+
+
+  async getScannedEventees(eventId: string, req: Request, res: Response) {
+    try {
+      await this.Authservice.ensureLogin(req, res);
+      
+      const event = await this.eventModel
+        .findOne({ _id: eventId })
+        .populate('scannedEventeesId');
+      if (!event) {
+        return res.render('error', { message: 'eventNotfound' });
+      }
+      let scannedEventees = [];
+      let count = 0;
+      for (const eventee of event.scannedEventeesId) {
+        scannedEventees.push(eventee);
+        count++;
+      }
+
+      return res.render("scannedEventees", {scannedEventees,count})
+    } catch (err) {
+      return res.render('error', { catchError: err.message });
+    }
+  }
+
+
+  //------------------Getting ALL THE TIME eventees that bougth the ticket of a creator events but was not in attendance-------------------------------------------
+
+  async getAllTicketedEventees(req: Request, res: Response) {
+    try {
+      await this.Authservice.ensureLogin(req, res);
+      
+      const creator = await this.creatorModel.findOne({ _id:res.locals.user.id})
+    
+      if (!creator) {
+        return res.render('error', { message: 'creatorNotfound' });
+      }
+      let allTicketedEventees = [];
+      let count = 0;
+      for (const eventee of creator.allTicketedEventeesId) {
+        allTicketedEventees.push(eventee);
+        count++;
+      }
+
+      return res.render("allTicketedEventees", {allTicketedEventees,count})
+    } catch (err) {
+      return res.render('error', { catchError: err.message });
+    }
+  }
+
+  //----------------Getting All THE TIME Eventees that attended a creator events with their QR code scanned-----------------------------------------
+  async getAllScannedEventees(req: Request, res: Response) {
+    try {
+      await this.Authservice.ensureLogin(req, res);
+       
+      const creator = await this.creatorModel.findOne({ _id:res.locals.user.id})
+    
+      if (!creator) {
+        return res.render('error', { message: 'creatorNotfound' });
+      }
+      let allScannedEventees = [];
+      let count = 0;
+      for (const eventee of creator.allScannedEventeesId) {
+        allScannedEventees.push(eventee);
+        count++;
+      }
+
+      return res.render("allScannedEventees", {allScannedEventees,count})
+     
+    } catch (err) {
+      return res.render('error', { catchError: err.message });
+    }
+  }
+
+
 
   async resetReminderDays(
     eventId: String,
     UpdateEventDto: UpdateEventDto,
-    req: Request,
+    req: any,
     res: Response,
   ) {
     try {
@@ -662,9 +727,65 @@ export class CreatorsService {
       event.reminder_days = UpdateEventDto.reminder_days;
       event.save();
 
-      return res.redirect('/creators/creatorDashboard');
+      req.flash("reminderUpdate", "Successful reminder day update.")
+      return res.redirect(`/events/eventUpdatePage/${event._id}`);
     } catch (err) {
-      console.log(err);
+      return res.render('error', { catchError: err.message });
     }
   }
+
+  
+  // Opening the Qr code scanner.
+  async getScanner(req: any, res: Response) {
+    try {
+        await this.Authservice.ensureLogin(req, res);
+        const succeeesfulScan = req.flash("successfulScan")
+        return res.render('scanner', {succeeesfulScan});
+    } catch (err) {
+        return res.render('error', { catchError: err.message });
+    }
+  }
+
+
+  async getScanningResult(encodedResult:string, req: any, res: Response){
+    try {
+      await this.Authservice.ensureLogin(req, res);
+      const result = decodeURIComponent(encodedResult)
+      const parsedObject = JSON.parse(result);
+      const transaction = await this.transactionModel.findOne({_id:parsedObject.transactionId}).populate("eventeeId").populate("eventId")
+      
+      if(!transaction){
+        res.render("error", {message:"transactionNotFound"})
+      }
+
+      const eventId = transaction.eventId
+      const event = await this.eventModel.findOne({_id:eventId})
+
+      if(!event){
+        return res.render("error", {message:"eventNotFound"})
+      }
+
+      if(event.scannedEventeesId.includes(transaction.eventeeId)){
+        return res.render("error", {message:"alreadyScanned"})
+      }
+
+      event.scannedEventeesId.push(transaction.eventeeId)
+      event.save()
+
+      const creator = await this.creatorModel.findOne({creatorId:event.creatorId})
+      creator.allScannedEventeesId.push(transaction.eventeeId)
+      creator.save()
+
+      const eventee = await this.eventeeModel.findOne({_id:transaction.eventeeId})
+      eventee.attended_eventsId.push(transaction.eventId)
+      eventee.save()
+
+      req.flash("successfulScan", "Successfully recorded")
+      res.redirect('/creators/scanner')
+
+  } catch (err) {
+      return res.render('error', { catchError: err.message });
+  }
+  }
+
 }

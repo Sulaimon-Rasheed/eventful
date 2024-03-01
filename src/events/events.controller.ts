@@ -14,19 +14,16 @@ export class EventsController {
 
   @Get('/createEvent')
   async getEventCreationPage(@Req() req:Request, @Res() res:Response){
-    return res.render(await this.eventsService.getEventCreationPage(req, res))
+    await this.eventsService.getEventCreationPage(req, res)
   }
 
   @Post('/createEvent')
   @UseInterceptors(FileInterceptor("event_image"))
   async createEvent(@UploadedFile() file:Express.Multer.File, @Body(new ValidationPipe) CreateEventDto:CreateEventDto, @Req() req:Request, @Res() res:Response){
-    try{
-    return res.render(await this.eventsService.createEvent(CreateEventDto, file.path, req, res))
-  }catch(err){
-    console.log(err)
-    res.send(err.message)
+    await this.eventsService.createEvent(CreateEventDto, file.path, req, res)
   }
-  }
+
+  
   @Post("/postEvent/:id")
   async postEvent(@Param("id") id:string,@Req() req:Request, @Res() res:Response) {
    await this.eventsService.postEvent(id, req, res);
@@ -59,9 +56,10 @@ export class EventsController {
   }
 
   @Get('/myCheckList')
-  async getMyCheckList(@Req() req:Request, @Res() res:Response) {
+  async getMyCheckList(@Req() req:any, @Res() res:Response) {
     const result = await this.eventsService.getMyCheckList(req, res)
-    return res.render("myCheckList", {lists:result[0], eventeeId:result[1]})
+    const reminderDaySuccess = req.flash("eventeeReminderUpdate")
+    return res.render("myCheckList", {lists:result[0], eventeeId:result[1], reminderDaySuccess})
   }
 
   @Get('share/:eventId')
@@ -69,6 +67,9 @@ export class EventsController {
     await this.eventsService.shareEvent(eventId, res);
   }
 
-  
+  @Get('thisEvent/share/:eventId')
+  async getThisEvent(@Param('eventId') eventId: string,@Res() res:Response ) {
+    await this.eventsService.getThisEvent(eventId, res);
+  }
 
 }

@@ -28,7 +28,8 @@
         <%}else{%>
             <h1><%=count%> Eventees have listed this event</h1> 
             <h2>They are:</h2>
-           <ol>
+
+            <ol>
               <% for(const eventee of unticketedEventees){%>
                    <li>
                        <img src="<%=eventee.profileImage.url%>" alt="eventee image" style="height:50px; width: 50px; border-radius: 50%;">
@@ -39,9 +40,9 @@
                <%}%>
            </ol>
         <%}%>
-           
-       <%}else{%>
-       <h1>Opps!!No one has listed this event yet OR those that listed it had bought the event ticketed.</h1>
+
+        <%}else{%>
+       <h1>Opps!!No one has listed this event yet OR those that listed it had bought the event ticket.</h1>
        <h2>So, check the <b>ticketed eventees</b> list</h2>
        <%}%>
    

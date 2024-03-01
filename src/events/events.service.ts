@@ -15,6 +15,7 @@ dotenv.config();
 import {DateTime} from "luxon"
 import { Auth0Service } from 'src/auth/auth0.service';
 import { CacheService } from 'src/cache/cache.service';
+import  * as sanitizeHtml from "sanitize-html"
 
 @Injectable()
 export class EventsService {
@@ -37,7 +38,7 @@ export class EventsService {
   async createEvent(
     createEventDto: CreateEventDto,
     filePath: string,
-    req: Request,
+    req: any,
     res: Response,
   ) {
     try {
@@ -55,41 +56,61 @@ export class EventsService {
 
       const upperCaseTittle = createEventDto.title.toUpperCase()
 
-      const newEvent: object = await this.eventModel.create({
+      const sanitizedContent = sanitizeHtml(createEventDto.description);
+      const sanitizedAddContent = sanitizeHtml(createEventDto.additional_info);
+      const newEvent = await this.eventModel.create({
         title: upperCaseTittle,
-        description: createEventDto.description,
+        description: sanitizedContent,
         location: createEventDto.venue,
         event_date:formattedEventDate ,
         starting_time:createEventDto.starting_time,
         ending_time:createEventDto.ending_time,
+        venue:createEventDto.venue,
         reminder_days:createEventDto.reminder_days,
         category:createEventDto.category,
         registration_deadline:formattedDeadlineDate,
         ticket_price: createEventDto.ticket_price,
         discount: createEventDto.discount,
         event_image: result,
-        additional_info: createEventDto.additional_info,
+        additional_info:sanitizedAddContent,
         creatorId: res.locals.user.id,
       });
 
-      return 'successfulEvent_creation';
+      const creator = await this.creatorModel.findOne({_id:res.locals.user.id})
+      if(!creator){
+        return res.render("error", {message:"creatorNotFound"})
+      }
+
+
+      creator.eventsId.push(newEvent._id)
+      
+      req.flash("eventCreationSuccessful", "Successful event creation")
+      
+      return res.redirect("/events/createEvent");
+    
     } catch (err) {
-      console.log(err);
-      res.send(err.message);
+      return res.render("catchError", {catchError:err.message});
     }
   }
 
-  async getEventCreationPage(req: Request, res: Response) {
-    await this.Authservice.ensureLogin(req, res);
-    const user = await this.creatorModel.findOne({ _id: res.locals.user.id });
-    if (user.freePlan == false) {
-      res.render("error", {message:"planError"})
+  async getEventCreationPage(req:any, res: Response) {
+    try{
+      await this.Authservice.ensureLogin(req, res);
+      const user = await this.creatorModel.findOne({ _id: res.locals.user.id });
+     
+      if (user.freePlan == false) {
+        res.render("error", {message:"planError"})
+      }
+
+        const successfulCreation = req.flash("eventCreationSuccessful")
+        return res.render(`eventCreationPage`,{successfulCreation} );
+    } catch (err) {
+      return res.render("catchError", {catchError:err.message});
     }
-    return `eventCreationPage`;
   }
 
 
-  async getEventUpdatePage(req:Request, res:Response, eventId:string){
+  async getEventUpdatePage(req:any, res:Response, eventId:string){
     try{
       await this.Authservice.ensureLogin(req,res)
 
@@ -104,24 +125,35 @@ export class EventsService {
 
         await this.cacheService.set(`eventUpdate_${res.locals.user.id}_${eventId}`, event)
         
-        return res.render("eventUpdatePage", {event, user:res.locals.user.id})
+        const updateSuccessMessage = req.flash('updateSuccess')
+        const reminderSuccessMessage = req.flash('reminderUpdate')
+        return res.render("eventUpdatePage", {event, user:res.locals.user.id, updateSuccessMessage, reminderSuccessMessage})
       }
 
-      return res.render("eventUpdatePage", {event, user:res.locals.user.id})
+      const updateSuccessMessage = req.flash('updateSuccess')
+      const reminderSuccessMessage = req.flash('reminderUpdate')
+      return res.render("eventUpdatePage", {event, user:res.locals.user.id, updateSuccessMessage, reminderSuccessMessage})
     }catch(err){
       return res.render("catchError", {catchError:err.message});
     }
   }
 
-  async updateEvent(req:Request, res:Response, eventId:string, UpdateEventDto:UpdateEventDto){
+  async updateEvent(req:any, res:Response, eventId:string, UpdateEventDto:UpdateEventDto){
     try{
       await this.Authservice.ensureLogin(req,res)
-  
-        const event = await this.eventModel.findByIdAndUpdate(eventId, {description:UpdateEventDto.description})
+      const sanitizedContent = sanitizeHtml(UpdateEventDto.description);
+        const event = await this.eventModel.findByIdAndUpdate(eventId, {description:sanitizedContent})
         if(!event){
           return res.render("error", {message:"eventNotFound"})
         }
-       
+
+        await this.cacheService.remove(`eventUpdate_${res.locals.user.id}_${eventId}`)
+  
+      for(let page = 0; page<100; page++){
+        await this.cacheService.remove(`creatorDashBoard_${res.locals.user.id}_${page}`)
+      }
+
+        req.flash('updateSuccess', 'Successful event update')
         return res.redirect(`/events/eventUpdatePage/${event._id}`)
       
     }catch(err){
@@ -129,7 +161,7 @@ export class EventsService {
     }
   }
 
-  async deleteEvent(req:Request, res:Response, eventId:string){
+  async deleteEvent(req:any, res:Response, eventId:string){
     try{
       await this.Authservice.ensureLogin(req,res)
       const event = await this.eventModel.findByIdAndDelete(eventId)
@@ -137,6 +169,7 @@ export class EventsService {
         return res.render("error", {message:"eventNotFound"})
       }
 
+      await this.cacheService.remove(`eventUpdate_${res.locals.user.id}_${eventId}`)
       return res.send("Event successfully deleted")
     }catch(err){
       return res.render("catchError", {catchError:err.message});
@@ -145,12 +178,7 @@ export class EventsService {
 
 
 
-
-
-
-
-
-  async postEvent(id: string, req: Request, res: Response) {
+  async postEvent(id: string, req: any, res: Response) {
     try {
       await this.Authservice.ensureLogin(req, res);
       const event = await this.eventModel.findOne({ _id: id });
@@ -161,6 +189,12 @@ export class EventsService {
         state: 'Posted',
         posted_date:DateTime.now().toFormat('LLL d, yyyy'),
       });
+
+      for(let page = 0; page<100; page++){
+        await this.cacheService.remove(`creatorDashBoard_${res.locals.user.id}_${page}`)
+      }
+      
+      req.flash("successfulPosting", "Event posted successfully")
       return res.redirect('/creators/creatorDashboard');
     } catch (err) {
       return res.render("catchError", {catchError:err.message});
@@ -219,8 +253,7 @@ export class EventsService {
   async getMyCheckList(req: Request, res: Response) {
     try{
     await this.Authservice.ensureLogin(req, res);
-    // const myCheckLists = await this.cacheService.get(`event_${res.locals.user.id}`)
-    // if(!myCheckLists){
+   
       const events = await this.eventModel.find().sort({created_time:"desc"});
       let myCheckLists: object[] = [];
       
@@ -232,10 +265,7 @@ export class EventsService {
       await this.cacheService.set(`event_${res.locals.user.id}`, myCheckLists)
       let eventeeId = res.locals.user.id
       return [myCheckLists, eventeeId];
-    // }
-    
-    // let eventeeId = res.locals.user.id
-    // return [myCheckLists, eventeeId];
+   
     }catch(err){
       return res.render("catchError", {catchError:err.message});
     }
@@ -262,6 +292,26 @@ export class EventsService {
     }catch(err){
       return res.render("catchError", {catchError:err.message});
     }
+  }
+
+  async getThisEvent(eventId:string, res:Response){
+    try{
+      let event = await this.cacheService.get(`thisEvent_${eventId}`)
+      if(!event){
+        const event = await this.eventModel.findOne({_id:eventId}).populate("creatorId")
+        if(!event){
+          return res.render("error", {message:"eventNotFound"})
+        }
+
+        await this.cacheService.set(`thisEvent_${eventId}`, event)
+  
+        return res.render("thisEvent", {event})
+      }
+
+      return res.render("thisEvent", {event})
+    }catch(err){
+        return res.render("catchError", {catchError:err.message});
+      }
   }
 
 }

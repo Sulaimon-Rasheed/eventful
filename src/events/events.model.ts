@@ -20,7 +20,8 @@ export const eventSchema = new Schema({
     posted_date:{type:String, default:null},
     creatorId:{type:Schema.Types.ObjectId, ref:"Creator"},
     unticketedEventeesId:[{type:Schema.Types.ObjectId, ref:"Eventee"}],
-    ticketedEventeesId:[{type:Schema.Types.ObjectId, ref:"Eventee"}]
+    ticketedEventeesId:[{type:Schema.Types.ObjectId, ref:"Eventee"}],
+    scannedEventeesId:[{type:Schema.Types.ObjectId, ref:"Eventee"}]
 })
 
 
@@ -45,6 +46,7 @@ export interface Event extends mongoose.Document{
     creatorId:string
     unticketedEventeesId:string[]
     ticketedEventeesId:string[]
+    scannedEventeesId:string[]
     
 }
 

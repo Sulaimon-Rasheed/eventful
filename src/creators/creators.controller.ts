@@ -4,7 +4,6 @@ import { CreateCreatorDto } from './dto/create-creator.dto';
 import { UpdateCreatorDto } from './dto/update-creator.dto';
 import {Response, Request} from "express"
 import { FileInterceptor } from '@nestjs/platform-express';
-import RequestWithFlash from "../requestWithFlash"
 import { LoginCreatorDto } from './dto/login-creator.dto';
 import { CreateEventDto } from 'src/events/dto/create-event.dto';
 import { EventsService } from 'src/events/events.service';
@@ -13,9 +12,7 @@ import { UpdateEventDto } from 'src/events/dto/update-event.dto';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { emailVerifyDto } from './dto/email-verify.dto';
 import { newPasswordDto } from './dto/newPassword.dto';
-// import { MailerService } from 'src/mailer/mailer.service';
-// import { FlashMiddleware } from 'src/middlewares/flash.middleware';
-// import { MiddlewareBuilder } from '@nestjs/core';
+
 
 @Controller('creators')
 @UseGuards(ThrottlerGuard)
@@ -28,26 +25,13 @@ export class CreatorsController {
 
   @Post("signup")
   @UseInterceptors(FileInterceptor("profileImage"))
-  async createCreator(@UploadedFile() file:Express.Multer.File, @Body(new ValidationPipe) createCreatorDto: CreateCreatorDto, @Req() req:RequestWithFlash , @Res() res:Response) {
-      // const result:object = await this.creatorsService.createCreator(createCreatorDto, file.path)
-      // if(!result){
-      //   req.flash('error', 'Signup failed! Please try again.')
-      //   res.redirect('/creators/signup')
-      // }else if(result){
-      //   req.flash('info', 'Successful signup')
-      //   res.redirect('/creators/signup')
-      // }
-      
-      await this.creatorsService.createCreator(createCreatorDto, file.path, res)
-   
+  async createCreator(@UploadedFile() file:Express.Multer.File, @Body(new ValidationPipe) createCreatorDto: CreateCreatorDto, @Req() req:Request, @Res() res:Response) {
+      await this.creatorsService.createCreator(createCreatorDto, file.path,req, res)
   }
 
   @Get("signup")
-  getSignupPage(@Res() res:Response, @Req() req:RequestWithFlash){
-    // const message = req.flash("info", "Successful signup")
-    // const error = req.flash("error", "Signup failed! Please try again.")
-    // const error:string = req.flash("error")
-    return res.render(this.creatorsService.getSignupPage())
+  getSignupPage(@Req() req:Request, @Res() res:Response, ){
+    this.creatorsService.getSignupPage(req,res)
   }
 
   // Verify email verification link
@@ -69,8 +53,8 @@ export class CreatorsController {
   }
 
   @Get('passwordResetPage')
-  getPasswordResetPagePage(@Res() res:Response) {
-    this.creatorsService.getPasswordResetPagePage(res);
+  getPasswordResetPage(@Res() res:Response) {
+    this.creatorsService.getPasswordResetPage(res);
   }
 
   @Post('verifyEmailForPasswordReset')
@@ -85,7 +69,7 @@ export class CreatorsController {
 
   @Post('/newPassword/:userId')
   async setNewPassword(@Body() newPasswordDto:newPasswordDto,@Param("userId") userId:string, @Req() req:Request, @Res() res:Response) {
-    await this.creatorsService.setNewPassword(newPasswordDto, userId, res)
+    await this.creatorsService.setNewPassword(newPasswordDto, userId, req, res)
   }
 
   @Get('/creatorDashboard')
@@ -100,28 +84,43 @@ export class CreatorsController {
 
   @Get('/getUnticketedEventees/:eventId')
   async getUnticketedEventees(@Param("eventId") eventId:string,  @Res() res:Response, @Req() req:Request) {
-    try{
-    let result = await this.creatorsService.getUnticketedEventees(eventId, req, res);
-    return res.render("unticketedEventees", {unticketedEventees:result[0],count:result[1]})
-  }catch(err){
-    res.send(err.message)
-  }
+    await this.creatorsService.getUnticketedEventees(eventId, req, res); 
   }
 
   @Get('/getTicketedEventees/:eventId')
   async getTicketedEventees(@Param("eventId") eventId:string,  @Res() res:Response, @Req() req:Request) {
-    try{
-    let result = await this.creatorsService.getTicketedEventees(eventId, req, res);
-    return res.render("ticketedEventees", {ticketedEventees:result[0],count:result[1]})
-  }catch(err){
-    res.send(err.message)
+    await this.creatorsService.getTicketedEventees(eventId, req, res);
   }
+
+  @Get('/getScannedEventees/:eventId')
+  async getScannedEventees(@Param("eventId") eventId:string,  @Res() res:Response, @Req() req:Request) {
+    await this.creatorsService.getScannedEventees(eventId, req, res);
+  }
+
+  @Get('/allTicketedEventees')
+  async getAllTicketedEventees(@Res() res:Response, @Req() req:Request) {
+    await this.creatorsService.getAllTicketedEventees(req, res);
+  }
+
+  @Get('/allScannedEventees')
+  async getAllScannedEventees(@Res() res:Response, @Req() req:Request) {
+    await this.creatorsService.getAllScannedEventees(req, res);
   }
 
   @Post("/setReminder/:eventId")
   async resetReminderDays(@Param("eventId") eventId:string, @Body(new ValidationPipe) UpdateEventDto:UpdateEventDto, @Req() req:Request, @Res() res:Response){
     await this.creatorsService.resetReminderDays(eventId, UpdateEventDto, req, res)
   }
+
+  @Get("scanner")
+    async getScanner(@Req() req:Request, @Res() res:Response){
+    await this.creatorsService.getScanner(req, res)
+  }
+
+  @Post("getScanningResult")
+  async getScanningResult(@Query("result") encodedResult: string, @Req() req:Request, @Res() res:Response){
+  await this.creatorsService.getScanningResult(encodedResult, req, res)
+}
 
   @Get("/logout")
   logOut(@Res() res:Response){

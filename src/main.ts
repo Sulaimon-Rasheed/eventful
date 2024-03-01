@@ -5,24 +5,29 @@ import * as dotenv from "dotenv"
 dotenv.config()
 import { join } from 'path'
 import * as cookieParser from "cookie-parser"
+import * as session from 'express-session';
+// import flash = require('connect-flash');
+import * as flash from 'connect-flash'
+
+
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
   );
 
-  app.useStaticAssets(join(".", 'public'));
-  app.setBaseViewsDir(join(".", 'views'));
+  app.useStaticAssets(join(__dirname,'public'));
+  app.setBaseViewsDir(join('.', 'views'));
   app.setViewEngine('ejs');
   app.use(cookieParser())
-  // app.use(session({
-  //   secret:"",
-  //   cookie:{maxAge:60000},
-  //   resave:true,
-  //   saveUninitialized:true
+  app.use(session({
+    secret:process.env.SESSION_SECRET,
+    cookie:{maxAge:60000},
+    resave:false,
+    saveUninitialized:false
     
-  // }))
-  // app.use(FlashMiddleware)
+  }))
+  app.use(flash());
 
   await app.listen(process.env.PORT);
 }
