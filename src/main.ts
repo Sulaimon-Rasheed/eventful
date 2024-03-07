@@ -16,8 +16,9 @@ async function bootstrap() {
     AppModule,
   );
 
-  app.useStaticAssets(join(__dirname,'public'));
-  app.setBaseViewsDir(join('.', 'views'));
+  console.log(__dirname)
+  app.useStaticAssets(join(".",'src','public'));
+  app.setBaseViewsDir(join(".", 'views'));
   app.setViewEngine('ejs');
   app.use(cookieParser())
   app.use(session({

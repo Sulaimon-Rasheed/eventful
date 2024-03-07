@@ -3,30 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
     <title>Dashboard</title>
 </head>
 <body>
+  <div>
     <nav>
-        <img src="<%=user.image.url%>" alt="user Image" style="height:50px; width: 50px; border-radius: 50%;">
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/events/createEvent">Create Event</a></li>
-        <li><a href="/creators/scanner">QRcode scanner</a></li>
-        <li><a href="/creators/allTicketedEventees">All the time ticketed Eventees</a></li>
-        <li><a href="/creators/allScannedEventees">All the time scanned eventees (attendees)</a></li>
-        <li><a href="/creators/logout">Logout</a></li>
-      </ul>  
+      <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+      <div>
+        <span style="color:rgb(0, 72, 255); font-weight: bold;">Scanner &rArr;</span>
+        <a href="/creators/scanner"><img style="height:40px; width: 40px; vertical-align: middle;margin-right: 50px;" src="/qrcode2.png" alt="scannerImage"></a>
+        <span><a id="navLink" href="/creators/allTicketedEventees">All the time ticketed Eventees</a></span>
+        <span><a id="navLink" href="/creators/allScannedEventees">All the time scanned Eventees</a></span>
+        <span><a id="logoutLink"  href="/creators/logout">Logout</a></span>
+        <img src="<%=user.image.url%>" alt="user Image" style="height:40px; width: 40px; border-radius: 50%; vertical-align: middle;margin-left: 50px;">
+      </div>
     </nav>
+    
+    <div id="welcomeContainer">
+      <div id="welcomeMessage">
+        <h1 style="font-size: 70px;">Dashboard</h1>
+        <a id="btn" href="/events/createEvent">Create event</a>
+      </div>
 
+      <div id="imageContainer">
+        <img id="indexImage" src="/creators.jpg" alt="image">
+      </div>
+    
+    </div>
+
+    <hr>
+            <form action="/creators/event/filter" method="get">
+              <label for="state" style="margin-left: 16px;"
+                >Filter events (Draft or Posted):</label>
+                <select name="state" style="padding: 5px; width: 400px; text-align: center; font-size: 18px;">
+                  <option value="">
+                    --Select a state--
+                  </option> 
+                  <option name="state" value="All">All</option>    
+                  <option name="state" value="Draft">Draft</option>
+                  <option name="state" value="Posted">Posted</option>
+              
+                </select>
+              
+              <button class="creatorLink1"  type="submit">filter</button>
+            </form>
+          <hr>
 
     <% if(events.length != 0){%>
-    <h2>Welcome back</h2>
 
     <%if(skip == 0){%> 
-      <p style="text-align: center; margin:10px auto; background-color: black; color: white; width: 20%; padding: 5px;margin-top: 20px;">Page 1</p>
+      <p style="text-align: center; margin:10px auto; background-color: black; color: white; width: 5%; padding: 5px;margin-top: 20px;">Page 1</p>
       <ul class="page" style="display: flex; gap:5px;list-style-type:none;margin: 10px auto;justify-content: center;">
        
-          <span style="font-weight: bold;">Next page/s &rArr;</span>
+          <span style="font-weight: bold; vertical-align: middle;">Next page/s &rArr;</span>
           <%for(let i = 1; i<= maxPage - 1; i++){%>
         <li>
           <a style="text-decoration: none;"
@@ -41,7 +77,7 @@
         <%}%>
       
         <%if(skip != 0){%>
-          <p style="text-align: center; margin:10px auto; background-color: black; color: white;width: 20%; padding: 5px; margin-top: 20px;">Page <%=page + 1%></p>
+          <p style="text-align: center; margin:10px auto; background-color: black; color: white;width: 5%; padding: 5px; margin-top: 20px;">Page <%=page + 1%></p>
       <ul class="page" style="display: flex; gap:5px;list-style-type:none;margin: 10px auto;justify-content: center;">
         
         <li>
@@ -69,28 +105,12 @@
 
 
 
-      <hr>
-            <form action="/creators/event/filter" method="get">
-              <label for="state"
-                >Filter the events by state (Draft or Posted):</label>
-                <select name="state">
-                  <option value="">
-                    --Select a state--
-                  </option> 
-                  <option name="state" value="All">All</option>    
-                  <option name="state" value="Draft">Draft</option>
-                  <option name="state" value="Posted">Posted</option>
-              
-                </select>
-              
-              <button type="submit">filter</button>
-            </form>
-          <hr>
+      
     
-    <ul style="padding: none;list-style-type: none;">
+    <ul id="allEventsContainer" style="padding: none;list-style-type: none;margin-bottom: 80px;">
 
         <%for(let i = 0; i < events.length; i++){%>
-         
+          <div class="eventContainer">
             <li>
               <h2 style="color: green; font-weight: bold;"><%=events[i].title%></h2>
               
@@ -99,17 +119,15 @@
               </a>
    
                 <%if(events[i].state==="Draft"){%>
-                  <p
-                      style="background-color: brown; color: white; width:20%; padding: 10px;"
-                      class="eventState"
-                    >
-                      <%=events[i].state%>
-                    </p>
+                  <div style="display: flex;justify-content: center;">
+                  <img src="/draft.png" alt="image" width="80px" height="80px">
+                  </div>
                 <form
+                style="margin-top: 30px; margin-bottom: 50px;"
                   action="/events/postEvent/<%=events[i].id%>"
                   method="PUT">
                   <button
-                    id="state"
+                    class="postLink"
                     type="submit"
                     formmethod="post"
                     title="click to post the Event"
@@ -117,35 +135,35 @@
                     Post the Event
                   </button>
                 </form>
-                <a href="/events/eventUpdatePage/<%=events[i].id%>">Update or Delete event from here</a>
+                <p ><a class="creatorLink4" href="/events/eventUpdatePage/<%=events[i].id%>">Update or Delete event from here</a></p>
                 
                 <%}else{%>
-                <div style="display: flex; gap: 20px;">
+                <div style="display: flex;justify-content: center;">
                   <p
-                      style="background-color: green; color: white; width:20%; padding: 10px;"
+                      style="color:green;font-weight: bold;"
                       class="articleState"
                     >
                       <%=events[i].state%>
-                    </p>
-
-                    
+                    </p> 
+                    <img src="/mark.png" alt="image" style="width: 50px; height: 50px;"> 
                   </div>
-                <div style="display: flex; gap: 20px;">
-                  <p><a href="/creators/getUnticketedEventees/<%=events[i].id%>">List of unticketed Eventees</a></p>
-                  <p><a href="/creators/getTicketedEventees/<%=events[i].id%>">List of ticketed Eventees</a></p>
-                  <p><a href="/creators/getScannedEventees/<%=events[i].id%>">List of Scanned Eventees (Attendees)</a></p>
+                
+                  <div style="display: inline-block">
+                  <p id="linkPara"><a class="creatorLink1" href="/creators/getUnticketedEventees/<%=events[i].id%>">Unticketed Eventees</a></p>
+                  <p id="linkPara"><a  class="creatorLink2" href="/creators/getTicketedEventees/<%=events[i].id%>">Ticketed Eventees</a></p>
+                  <p id="linkPara"><a   class="creatorLink3" href="/creators/getScannedEventees/<%=events[i].id%>">Scanned Eventees</a></p>
                 </div>
                 
             
-                  <a href="/events/eventUpdatePage/<%=events[i].id%>">Update or Delete event from here</a>
+                  <p><a  class="creatorLink4" href="/events/eventUpdatePage/<%=events[i].id%>">Update or Delete event from here</a></p>
                 <%}%>
             </li>
-            
+          </div>
         <%}%>
     </ul>
 
     <%if(skip == 0){%> 
-      <p style="text-align: center; margin:10px auto; background-color: black; color: white; width: 20%; padding: 5px;margin-top: 20px;">Page 1</p>
+      <p style="text-align: center; margin:10px auto; background-color: black; color: white; width: 5%; padding: 5px;margin-top: 20px;">Page 1</p>
     <ul class="page" style="display: flex; gap:5px;list-style-type:none; margin: 10px auto;justify-content: center;">
      
         <span style="font-weight: bold;">Next page/s &rArr;</span>
@@ -163,7 +181,7 @@
       <%}%>
     
       <%if(skip != 0){%>
-        <p style="text-align: center; margin:10px auto; background-color: black; color: white;width: 20%; padding: 5px; margin-top: 20px;">Page <%=page + 1%></p>
+        <p style="text-align: center; margin:10px auto; background-color: black; color: white;width: 5%; padding: 5px; margin-top: 20px;">Page <%=page + 1%></p>
     <ul class="page" style="display: flex; gap:5px;list-style-type:none;margin: 10px auto;justify-content: center;">
       
       <li>
@@ -189,9 +207,17 @@
     <%}%>
 
 <%}else{%>
-    <h1>Welcome <%=user.name%> to your dashboard</h1>
-    <h2>There is no drafted or posted event yet.</h2>
-    <a href="/events/createEvent">Create Event</a>
+  <div style="text-align: center;">
+    <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+      <h4>Event not found.</h4> 
+      <p>Check back later.</p> 
+  </div>
+    
 <%}%>
+
+<footer>
+  <%-include("partials/footer.ejs")-%>
+</footer>
+</div>
 </body>
 </html>

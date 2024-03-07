@@ -40,6 +40,12 @@ export class CreatorsController {
     await this.creatorsService.verifyCreator(userId, uniqueString, res)
   }
 
+  // Get creators home page
+  @Get("/creatorHomePage")
+  async getCreatorHomePage(@Req() req:Request, @Res() res:Response){
+  await this.creatorsService.getCreatorHomePage(req, res)
+}
+
   // Get login Page
   @Get('login')
   getLoginPage(@Res() res:Response) {
@@ -53,8 +59,8 @@ export class CreatorsController {
   }
 
   @Get('passwordResetPage')
-  getPasswordResetPage(@Res() res:Response) {
-    this.creatorsService.getPasswordResetPage(res);
+  getPasswordResetPage(@Req() req:Request, @Res() res:Response) {
+    this.creatorsService.getPasswordResetPage(req, res);
   }
 
   @Post('verifyEmailForPasswordReset')
@@ -64,7 +70,7 @@ export class CreatorsController {
 
   @Get("/resetPassword/newPassword/:resetToken/:email")
   verifyUserPasswordResetLink(@Param("resetToken") resetToken:string, @Param("email") email:string, @Res() res:Response){
-    this.creatorsService.verifyUserPasswordResetLink(resetToken,email, res)
+    this.creatorsService.verifyUserPasswordResetLink(resetToken, email,res)
   }
 
   @Post('/newPassword/:userId')
@@ -112,12 +118,12 @@ export class CreatorsController {
     await this.creatorsService.resetReminderDays(eventId, UpdateEventDto, req, res)
   }
 
-  @Get("scanner")
+  @Get("/scanner")
     async getScanner(@Req() req:Request, @Res() res:Response){
     await this.creatorsService.getScanner(req, res)
   }
 
-  @Post("getScanningResult")
+  @Post("/getScanningResult")
   async getScanningResult(@Query("result") encodedResult: string, @Req() req:Request, @Res() res:Response){
   await this.creatorsService.getScanningResult(encodedResult, req, res)
 }

@@ -1,4 +1,298 @@
 body{
-    background-color: black;
-    color:white
+    color:black;
+    font-size: 20px;
+    font-family:'Times New Roman', Times, serif;
+    padding: 0;
+    margin: 0;
+
+}
+
+nav{
+    display:flex; 
+    justify-content:space-between;
+    padding: 20px;
+    font-size: 18px;
+}
+
+
+
+#navLink, #eventeeForget, #logoutLink{
+    flex:3;
+    text-decoration: none;
+    margin-right: 20px;
+    background-color:plum;
+    padding: 10px;
+    border-radius: 20px;
+    color:black;
+    font-weight: bold;
+
+}
+
+#navLink:hover{
+    background-color:aqua ;
+}
+
+#logoutLink{
+    background-color:white;
+    color:purple;
+    text-decoration: underline;
+}
+
+#eventeeForget{
+    background-color:darkturquoise ;
+}
+
+#eventeeForget:hover{
+    background-color: darkcyan;
+}
+
+.submit, .creatorLink1, .creatorLink2, .creatorLink3, .creatorLink4, .postLink,.updateBtn, .updateBtn2, .updateBtn3, .addBtn,.removeBtn{
+    text-decoration: none;
+    background-color:green;
+    padding: 10px;
+    border-radius: 20px;
+    color:white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.addBtn, .removeBtn{
+    font-size: 16px;
+}
+
+.removeBtn{
+    background-color: lightgreen;
+    color: black;
+}
+
+.creatorLink1{
+    background-color: purple;
+}
+
+.creatorLink2, .updateBtn3{
+    background-color:brown
+}
+
+.creatorLink3{
+    background-color:lightcoral
+}
+
+.creatorLink4{
+    background-color:green
+}
+
+.postLink{
+    background-color:lightblue;
+    color:green
+}
+
+.updateBtn{
+    margin-top: 50px;   
+}
+
+.submit:hover, .creatorLink1:hover, .creatorLink2:hover, .creatorLink3:hover, .creatorLink4:hover, .postLink:hover,.updateBtn:hover, .updateBtn2:hover,.updateBtn3:hover,.addBtn:hover,.removeBtn:hover{
+    background-color:blue;
+}
+
+#linkPara{
+    margin-bottom: 50px;
+}
+
+.label{
+    font-weight: bold;
+}
+
+.input{
+    padding: 10px;
+    border:2px solid grey;
+    border-radius: 20px;
+    width: 30rem;
+    background-color:white;
+    color:black;
+    font-weight: bold;
+    text-align: center;
+    font-size: 18px;
+}
+
+textarea{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+    padding: 16px;
+    font-weight: bold;
+}
+
+
+#welcomeContainer{
+    display:flex;
+    justify-content:space-between;
+}
+
+#welcomeMessage{
+    flex:2;
+    background-color:palevioletred;
+    color: white;
+    text-align: center;
+    line-height: 1;
+    height: 400px;
+    position: relative;
+}
+
+#eventTitle, #creatorLogSign{
+    flex:2;
+    background-color:lightseagreen;
+    color: white;
+    text-align: center;
+    line-height: 1;
+    height: 400px;
+    position: relative;
+    text-align: center;
+    margin: 0;
+}
+
+#creatorLogSign{
+    background-color: purple;
+}
+
+#imageContainer{
+    padding: 0;
+    margin: 0;
+}
+
+#indexImage{
+    height: 400px;
+}
+
+#btn{
+    text-decoration: none;
+    padding: 15px;
+    background-color:lightpink;
+    color:black;
+    border-radius: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+    position: absolute;
+    left:30%;
+    bottom:20%;
+}
+
+#btn:hover{
+    background-color: darkorchid;
+}
+
+#creatorBtn{
+    text-decoration: none;
+    padding: 20px;
+    background-color:green;
+    color:white;
+    border-radius: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;  
+}
+
+#creatorBtn:hover{
+    background-color: lightseagreen;
+}
+
+.title{
+color:green;
+font-weight: bold;
+}
+
+.eventContainer{
+padding:16px 0;
+width: 30%;
+text-align: center;
+background-color: whitesmoke;
+border-radius: 20px;
+
+}
+
+#allEventsContainer{
+display: flex;
+gap: 20px;
+justify-content:center;
+flex-wrap: wrap;
+}
+
+#logo, #gmail{
+    width:50px;
+    height:50px;
+    vertical-align: middle;
+}
+
+#homeContent{
+    padding:0 16px;
+}
+
+#form{
+    text-align: center;
+    background-color:whitesmoke;
+    margin-bottom:20px;
+    padding: 30px;
+}
+
+#formBox{
+    display: flex;
+    justify-content: center;
+}
+
+#forgetLink{
+    text-decoration: none;
+}
+
+#howContainer{
+    text-align: center;
+    margin: 50px auto;
+    margin-top: 0;
+    background-color:palevioletred;
+    padding: 16px;
+    width: 80%;
+    border: 2px solid black;
+    border-radius: 40px;
+    font-weight: bold;
+}
+
+#howList{
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+}
+
+#howTitle{
+    text-align: center;
+    margin-bottom: 0;
+}
+
+#updateHeading{
+    margin-top:50px;
+    text-decoration: underline;
+    text-align: center; 
+}
+
+footer{
+    background-color:purple;
+    color:white;
+    padding: 16px;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 100px;
+    font-size: 16px;
+}
+
+#footLink{
+    color: white;
+    text-decoration: none;
+    line-height: 1.5;
+}
+
+#footLink:hover{
+    color:aqua
+}
+
+#copyright{
+    line-height: 0.5;
 }

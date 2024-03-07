@@ -3,16 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
     <title>Event update</title>
 </head>
 <body>
-
+  <div>
     <nav>
-        <a href="/creators/creatorDashboard">Dashboard</a>
+        <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+        <div>
+          <span><a id="navLink" href="/creators/creatorDashboard">Dashboard</a></span>
+          <span><a id="logoutLink"  href="/creators/logout">Logout</a></span>
+          
+        </div>
     </nav>
+
+    <div id="welcomeContainer">
+      <div id="welcomeMessage">
+        <h1 style="font-size: 70px;">Update room for:</h1>
+        <p style="font-size: 70px;"><%=event.title%></p>
+      </div>
+
+      <div id="imageContainer">
+        <img id="indexImage" src="<%=event.event_image.url%>" alt="image">
+      </div>
     
-    <h1 style="margin-bottom: 50px;">You can make update to the event or delete the event from here.</h1>
+    </div>
     
+    <div style="padding: 16px;">
     <%if(updateSuccessMessage){%>
         <p style="color: green; text-align: center; font-size: 24px;"><%=updateSuccessMessage%></p>
       <%}%>
@@ -20,28 +43,23 @@
         <p style="color: green; text-align: center; font-size: 24px;"><%=reminderSuccessMessage%></p>
       <%}%>
     
-      <hr>
-    <div>
-        <h2 style="text-align: center;font-weight: bold;font-size: 24px;"><%=event.title%></h2>
-        <p><img src="<%=event.event_image.url%>" alt="event image" style="width: 200px; height: 100px;"></p>
-        <p><strong>Description:</strong> <%=event.description%></p>
-    </div>
-    <hr>
-    <h2 style="margin-top:50px ;">UPDATE EVENT DESCRIPTION</h2>
-
+    <h2 style="text-decoration: underline;">Description:</h2>
+    <p><%=event.description%></p>
     
-    <form action="/events/updateEvent/<%=event._id%>" method="PUT">
+  
+    <h2 id="updateHeading">UPDATE DESCRIPTION</h2>
+    <form action="/events/updateEvent/<%=event._id%>" id="form" method="PUT" >
         
         <textarea name="description" cols="100" rows="10" style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 18px; margin:0 auto;"></textarea>
         <figcaption style="text-align: center;">Description</figcaption>
-        <button type="submit" formmethod="post" style="cursor: pointer; padding: 10px; background-color:green;color: white;border: none;">Update</button>
+        <button type="submit" formmethod="post" class="updateBtn">Update</button>
     </form>
 
-    <form action="/creators/setReminder/<%=event._id%>" method="post">
-      <label for="reminder_days">Update number of days to the Event to send reminder to Eventees: </label>
-      <!-- <input type="text" name="reminder_days" placeholder="Enter number ONLY"> -->
-      <select name="reminder_days" id="">
-        <option value="">--choose a number</option>
+    <h2 id="updateHeading">UPDATE NOTIFICATION DAY</h2>
+    <form action="/creators/setReminder/<%=event._id%>" id="form" method="post">
+      <label for="reminder_days" style="text-decoration: underline;font-weight: bold;">Update the day for Eventful to send notification to eventees: </label>
+      <select name="reminder_days" class="input">
+        <option value="">---------How many days to the event ?----------</option>
         <option name="reminder_days" value="1">1</option>
         <option name="reminder_days" value="2">2</option>
         <option name="reminder_days" value="3">3</option>
@@ -53,15 +71,22 @@
         <option name="reminder_days" value="9">9</option>
         <option name="reminder_days" value="10">10</option>
       </select>
-      <button formmethod="post" type="submit">Update</button><span> Note:Don't enter any text (A-Z)</span>
+      <button class="updateBtn2"  formmethod="post" type="submit">Update</button>
     </form>
 
-    <h2 style="margin-top:50px">DELETE EVENT</h2>
+    <h2  id="updateHeading">DELETE EVENT</h2>
+    <div id="form">
     <P><b>Note:</b> It will not be visible again to the general users/eventees after deleting</P>
-    <p>Do you still want to delete the event ?</p>
-    <form action="/events/deleteEvent/<%=event._id%>" method="DELETE">
-        <button type="submit" formmethod="post" style="cursor: pointer; padding: 10px; background-color: brown;color: white;border: none;">Delete</button>
+    <p>Are you sure you want to delete the event ?</p>
+    <form action="/events/deleteEvent/<%=event._id%>"  method="DELETE">
+        <button type="submit" formmethod="post" class="updateBtn3">Delete</button>
     </form>
+  </div>
 
+  </div>
+  <footer>
+    <%-include("partials/footer.ejs")-%>
+  </footer>
+</div>
 </body>
 </html>

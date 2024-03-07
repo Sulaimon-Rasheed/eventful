@@ -1,36 +1,56 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
+ 
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<link rel="stylesheet" href="/style.css">
+<title>Sign Up</title>
 </head>
 <body>
+  <div>
   <nav>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/eventees/login">Login</a></li>
-      <li><a href="/eventees/eventeeDashboard">Dashboard</a></li>
-    </ul>
+    <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+    <div>
+      <span><a id="navLink" href="/">Home</a></li>
+      <span><a id="navLink" href="/eventees/login">Login</a></span>
+      <span><a id="navLink" href="/eventees/eventeeDashboard">Dashboard</a></span>
+      <span><a id="navLink" href="/eventees/logout">Logout</a></span>
+    </div>
   </nav>
   
-<h1>Eventee Signup Page</h1>
+  <div id="welcomeContainer">
+    <div id="eventTitle">
+      <h1 style="font-size: 70px;">Eventee Sign Up</h1>
+    </div>
+  
+    <div id="imageContainer">
+      <img id="indexImage" src="/hand-signing-form.jpg"  alt="image">
+    </div>
+  </div>
+  
+  <div id="formBox">
 <%if(eventeeSignup){%>
   <p style="color: green; text-align: center; font-size: 24px;"><%=eventeeSignup%></p>
 <%}%>
-<form action="/eventees/signup" , method="post" enctype="multipart/form-data">
-
-    <label for="first_name" class="label">First name:</label>
+<form action="/eventees/signup" , method="post" id="form" enctype="multipart/form-data">
+  <h2 style="margin-bottom: 50px;">Sign Up</h2>
+    <label for="first_name" class="label">First Name:</label>
     <input
       type="text"
       name="first_name"
       class="input"
     /><br /><br /><br />
-    <label for="last_name" class="label">Last name:</label>
+    <label for="last_name" class="label">Last Name:</label>
     <input
       type="text"
       ,
       name="last_name"
       class="input"
     /><br /><br /><br />
-    <label for="email" class="label">email:</label>
+    <label for="email" class="label">Email:</label>
     <input
       type="text"
       name="email"
@@ -67,29 +87,35 @@
       hidden
     />
 
-    <label for="phoneNum" class="label">Phone number:</label>
+    <label for="phoneNum" class="label">Phone Number:</label>
     <input
       type="text"
       name="phoneNum"
       class="input"
     /><br /><br /><br />
     
-    <label for="password" class="label">password:</label>
+    <label for="password" class="label">Password:</label>
     <input
       type="password"
       name="password"
       class="input"
     /><br /><br /><br />
-    <label for="profileImage" class="label">Upload your upload:</label>
+    <label for="profileImage" class="label">Upload Your Picture:</label>
     <input
       type="file"
       name="profileImage"
       accept="image/*"
       placeholder="Choose a file"
       class="input"
-    />
-  </div>
-    <button type="submit" class="submit">submit</button>
+    /><br /><br /><br />
+    <button type="submit" class="submit">Submit</button>
   </form>
+  </div>
+  
+  <footer>
+    <%-include("partials/footer.ejs")-%>
+  </footer>
+
+</div>
 </body>
 </html>

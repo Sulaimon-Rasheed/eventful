@@ -21,8 +21,6 @@ import { Event } from '../events/events.model';
 import { Transaction } from '../transactions/transactions.model';
 import axios from 'axios';
 import * as qrcode from 'qrcode';
-import { Auth0Service } from 'src/auth/auth0.service';
-import { UpdateEventDto } from 'src/events/dto/update-event.dto';
 import { CacheService } from 'src/cache/cache.service';
 import { emailVerificationDto } from './dto/emailVerification.dto';
 import { newEpasswordDto } from './dto/newEpassword.dto';
@@ -93,7 +91,7 @@ export class EventeesService {
         }
       });
 
-      const currUrl = 'https://9cbd-102-88-68-64.ngrok-free.app';
+      const currUrl = 'https://d016-102-88-71-81.ngrok-free.app';
       let uniqueString = newEventee._id + uuidv4();
       const hashedUniqueString = await encoding.encodePassword(uniqueString);
 
@@ -134,7 +132,7 @@ export class EventeesService {
       return res.redirect("/eventees/signup")
 
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
     }
   }
 
@@ -144,7 +142,7 @@ export class EventeesService {
     const eventeeSignup = req.flash("EventeeCreated")
     return res.render('eventee_signup_page', {eventeeSignup})
   } catch (err) {
-    return res.render('error', { catchError: err.message });
+    return res.render('catchError', { catchError: err.message });
   } 
   }
 
@@ -180,7 +178,7 @@ export class EventeesService {
 
       return res.render(`successful_verification`, { user: 'eventee' });
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
     }
   }
 
@@ -229,14 +227,15 @@ export class EventeesService {
   }
 
   //--------------------------------Getting password reset page-------------------------------------------
-  getPasswordResetPage(res: Response) {
-    return res.render('passwordReset', { user: 'eventee' });
+  getPasswordResetPage(req:any, res: Response) {
+    const validEmail = req.flash('validEmail')
+    return res.render('passwordReset', { user: 'eventee', validEmail });
   }
 
   //---------------------------------Verifying the email for password reset.-----------------------------------------
   async verifyEmailForPasswordReset(
     emailVerifyDto: emailVerificationDto,
-    req: Request,
+    req: any,
     res: Response,
   ) {
     try {
@@ -266,13 +265,15 @@ export class EventeesService {
       <p>This link <b>will expire in the next 10min</b></P>
       </div>`,
       });
-      return res.render('successfulResetRequest');
+
+      req.flash("validEmail", "successfull request. Check your email for password reset link")
+      return res.redirect('/eventees/passwordResetPage');
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
     }
   }
 
-  //----------------------------------Verifying Password reset Link---------------------------------------------------
+  //------------------Verifying Password reset Link---------------------------------------------------
   async verifyUserPasswordResetLink(
     resetToken: string,
     email: string,
@@ -284,8 +285,9 @@ export class EventeesService {
         return res.render('error', { message: 'eventeeNotFound' });
       }
 
-      if (user.passwordResetExpireDate > Date.now()) {
-        return res.render('error', { message: 'expiredPasswordResetLink' });
+      const expireTimestamp = new Date(user.passwordResetExpireDate).getTime()
+      if (expireTimestamp < Date.now()) {
+        return res.render('error', { message: 'expiredPasswordResetLinkForEventee' });
       }
 
       const valid = await encoding.validateEncodedString(
@@ -305,7 +307,7 @@ export class EventeesService {
         user: 'eventee',
       });
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
     }
   }
 
@@ -315,19 +317,21 @@ export class EventeesService {
     userId: string,
     res: Response,
   ) {
+    try{
     const user = await this.eventeeModel.findOne({ _id: userId });
     if (!user) {
       return res.render('error', { message: 'creatorNotFound' });
     }
 
     const newPassword = newPasswordDto.newPassword;
-    console.log(newPassword);
     const hashedPassword = await encoding.encodePassword(newPassword);
-    console.log(hashedPassword);
     user.password = hashedPassword;
     user.save();
 
     return res.render('successfulNewPassword', { user: 'eventee' });
+  }catch(err){
+    return res.render('catchError', { catchError: err.message });
+  }
   }
 
   //----------------------------------------Getting Eventee dashboard---------------------------------------------------------
@@ -350,7 +354,7 @@ export class EventeesService {
           );
 
           if (!postedEvents) {
-            const eventPerPage: number = 1;
+            const eventPerPage: number = 10;
 
             const allEvents = await this.eventModel
               .find({ state: 'Posted' })
@@ -409,7 +413,7 @@ export class EventeesService {
             });
           }
           
-          const eventPerPage: number = 1;
+          const eventPerPage: number = 10;
           const maxPage = Math.round(allEvents.length / eventPerPage);
           const skip = page * eventPerPage;
 
@@ -454,8 +458,6 @@ export class EventeesService {
       ];
 
       const category:any = req.query.category || "All"
-      console.log(category)
-      // const upperCategory = category.toUpperCase()
 
       let stringifyPage:any = req.query.page || 0 
       let page = parseInt(stringifyPage)
@@ -469,7 +471,7 @@ export class EventeesService {
 
      if(!postedEvents){
       // const postedEvents = await this.eventModel.find({category:category})
-      const eventPerPage: number = 1;
+      const eventPerPage: number = 10;
 
       let allEvents:object[] = [];
       if(category == "All"){
@@ -546,7 +548,7 @@ export class EventeesService {
       });
      }
 
-     const eventPerPage: number = 1;
+     const eventPerPage: number = 10;
      const maxPage = Math.round(allEvents.length / eventPerPage);
      const skip = page * eventPerPage;
 
@@ -640,17 +642,14 @@ export class EventeesService {
         passday:passday
 
       })
-
-      
+ 
     }catch(err){
       return res.render('catchError', { catchError: err.message });
-    }
-   
-    
+    }    
   }
 
 
-  //------------------------------------Initializing transaction to buy ticket-----------------------------------------
+  //---------------------Initializing transaction to buy ticket-----------------------------------------
   
   async buyTicket(eventId: string, price: number, req: Request, res: Response) {
     try {
@@ -711,7 +710,7 @@ export class EventeesService {
         .populate('eventId');
 
       if (!transaction) {
-        res.send('Transaction is not found');
+        res.render("error", {message:'Transaction is not found'});
       }
 
       if (body.event === 'charge.success') {
@@ -720,7 +719,7 @@ export class EventeesService {
 
         const event = await this.eventModel.findOne({
           _id: transaction.eventId,
-        });
+        }).populate("creatorId")
 
         event.ticketedEventeesId.push(transaction.eventeeId);
 
@@ -728,16 +727,16 @@ export class EventeesService {
           event.unticketedEventeesId.indexOf(transaction.eventeeId),
           1,
         );
-
         event.save();
 
-        const creator = await this.creatorModel.findOne({creatorId:event.creatorId})
+        const creator = await this.creatorModel.findOne({_id:event.creatorId}).populate("allTicketedEventeesId")
         creator.allTicketedEventeesId.push(transaction.eventeeId)
         creator.save()
-
+        
         const eventee = await this.eventeeModel.findOne({
           _id: transaction.eventeeId,
         });
+
         eventee.event_count = eventee.event_count + 1;
         eventee.bought_eventsId.push(event._id);
         eventee.save();

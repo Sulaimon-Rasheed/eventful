@@ -3,18 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
     <title>Payment Successful</title>
 </head>
 <body>
-    <nav style="display: flex;gap:20px">
-        <a href="/">Home</a>
-        <a href="/eventees/eventeeDashboard">Dashboard</a>
-        <a href="/events/myCheckList">CheckList</a>
-        <a href="/logout">Logout</a>
+    <div>
+    <nav>
+        <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+        <div>
+          <span><a id="navLink" href="/">Home</a></span>
+          <span><a id="logoutLink"  href="/eventees/logout">Logout</a></span>
+        </div>
     </nav>
-    <h1>Your Payment is Successful</h1>
-    <h2>Check your email for your QRcode</h2>
-    <p>The QRcode is your ticket for the Event.You will be asked to present it at the venue for access to the event</p>
-    <p>We will appreciate your cooperation. Thanks.</p>
+
+    <div style="text-align: center;">
+        <h1>Successful payment</h1>
+        <img src="/successLogo.png" alt="image" style="width:300px; height: 300px;">
+        <h4>Check your email for your QRcode</h4>
+        <p>The QRcode is your ticket for the Event.</p>
+         <p>You will be asked to present it at the venue for access to the event</p>
+         <p>We will appreciate your cooperation.</p>
+         <p>Thanks.</p>
+    </div>  
+<footer>
+    <%-include("partials/footer.ejs")-%>
+</footer>   
+</div>
 </body>
 </html>

@@ -8,6 +8,13 @@
     <meta property="og:title"         content="<%=event.title%>" />
     <meta property="og:description"   content="<%=event.description%>" />
     <meta property="og:image"         content="<%=event.event_image.url%>" />
+     
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
     <title><%=event.title%></title>
     <style>
       body{
@@ -21,19 +28,26 @@
 </head>
 <body>
 
-    <nav>
-      
-        <a href="/">Home</a>
-        <p>Do you need a ticket ?</p>
-        <a href="/eventees/signup" style="background-color: green; padding: 10px;color:white; text-decoration: none; font-weight: bold;">Signup</a>
-        <p>Have you signed up before?</p>
-        <a href="/eventees/login" style="background-color: green; padding: 10px;color:white; text-decoration: none; font-weight: bold;">Login</a>
-    
-    </nav>
+  <nav>
+    <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+    <div>
+      <span><a id="navLink" href="/creators/creatorHomePage">Create event</a></span>
+      <span><a id="navLink" href="/eventees/signup">Sign Up</a></span>
+      <span><a id="navLink" href="/eventees/login">Log In</a></span>
+    </div>
+  </nav>
 
-    <h1 style="color: green; font-weight: bold; text-align: center;font-size: 50px;"><%=event.title%></h1>
-    <p style="display: flex; justify-content: center;"><img src="<%=event.event_image.url%>" alt="event image" style="width: 60rem; height: 30rem;"></p>
+  <div id="welcomeContainer">
+    <div id="eventTitle">
+      <h1 style="font-size: 70px;"><%=event.title%></h1>
+    </div>
+
+    <div id="imageContainer">
+    <img id="indexImage" src="<%=event.event_image.url%>"  alt="image">
+    </div>
+  </div>
     
+  <div>
     <h2 style="margin-bottom: 0;">About:</h2>
     <p><%=event.description%></p>
 
@@ -44,16 +58,20 @@
       <p><%=event.starting_time%> - <%=event.ending_time%> WAT</p>
     </div>
 
+    <h2 style="margin-bottom: 0;">Venue:</h2>
+    <p><%=event.venue%></p>
+
     <h2 style="margin-bottom: 0;">Registration Deadline:</h2>
     <p><%=event.registration_deadline%></p>
-
-    <h2 style="margin-bottom: 0;">Ticket price:</h2>
-    <p style="background-color: brown; border-radius: 60%; padding: 15px;color: white;width: 3rem;text-align: center;">N<%=event.ticket_price%></p>
     
     <h2 style="margin-bottom: 0;">More Info:</h2>
     <p><%=event.additional_info%></p>
 
-<h2>Please share the event here:</h2>
+    <h2 style="margin-bottom: 0;">Ticket:</h2>
+    <input type="text" value="N<%=event.ticket_price%>" readonly style="border-radius: 100%; padding: 5px; text-align: center; width:50px; height: 50px; background-color: brown; color: white; border: none;font-weight: bold;">
+  
+</div>
+<h2>Please share with others:</h2>
 <div style="display: flex; gap:20px">
   <!--------------------- Loading Facebook SDK for JavaScript---------------------------- -->
   <script>(function(d, s, id) {
@@ -90,7 +108,9 @@
     <p id="enq"><strong>Phone Number: </strong><%=event.creatorId.phoneNum%></p>
     <p id="enq"><strong>Email: </strong><%=event.creatorId.email%></p>
     </div>
-
+    <footer>
+      <%-include("partials/footer.ejs")-%>
+    </footer>
 </body>
 
 

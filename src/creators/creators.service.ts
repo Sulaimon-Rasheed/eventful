@@ -131,7 +131,7 @@ export class CreatorsService {
       const creatorSignup = req.flash("creatorCreation")
       return res.render('creator_signup_page', {creatorSignup})
       } catch (err) {
-        return res.render('error', { catchError: err.message });
+        return res.render('catchError', { catchError: err.message });
       }
     }
 
@@ -166,7 +166,7 @@ export class CreatorsService {
 
       return res.render(`successful_verification`, { user: 'creator' });
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
     }
   }
 
@@ -174,14 +174,19 @@ export class CreatorsService {
     return `creatorLogin_page`;
   }
 
-  getPasswordResetPage(res: Response) {
-    return res.render('passwordReset', { user: 'creator' });
+  getPasswordResetPage(req:any, res: Response) {
+    try{
+    const validEmail = req.flash("validEmail")
+    return res.render('passwordReset', { user: 'creator', validEmail });
+  }catch(err){
+    return res.render('catchError', { catchError: err.message });
+  }
   }
 
   // Verifying the email for password reset.
   async verifyEmailForPasswordReset(
     emailVerifyDto: emailVerifyDto,
-    req: Request,
+    req: any,
     res: Response,
   ) {
     try {
@@ -214,9 +219,10 @@ export class CreatorsService {
         <p>This link <b>will expire in the next 10min</b></P>
         </div>`,
       });
-      return res.render('successfulResetRequest');
+      req.flash("validEmail", "successfull request. Check your email for password reset link")
+      return res.redirect('/creators/passwordResetPage');
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catch', { catchError: err.message });
     }
   }
 
@@ -231,6 +237,13 @@ export class CreatorsService {
       if (!user) {
         return res.render('error', { message: 'creatorNotFound' });
       }
+
+      const expireTimestamp = new Date(user.passwordResetExpireDate).getTime()
+
+      if (expireTimestamp < Date.now()) {
+        return res.render('error', { message: 'expiredPasswordResetLinkForCreator' });
+      }
+
       const valid = await encoding.validateEncodedString(
         resetToken,
         user.passwordResetToken,
@@ -240,6 +253,7 @@ export class CreatorsService {
       }
 
       user.passwordResetToken = undefined;
+      user.passwordResetExpireDate = undefined
       user.save();
 
       return res.render('newPasswordPage', {
@@ -247,7 +261,7 @@ export class CreatorsService {
         user: 'creator',
       });
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
     }
   }
 
@@ -257,19 +271,32 @@ export class CreatorsService {
     req:any,
     res: Response,
   ) {
+
+    try{
     const user = await this.creatorModel.findOne({ _id: userId });
     if (!user) {
       return res.render('error', { message: 'creatorNotFound' });
     }
 
     const newPassword = newPasswordDto.newPassword;
-    console.log(newPassword);
     const hashedPassword = await encoding.encodePassword(newPassword);
-    console.log(hashedPassword);
     user.password = hashedPassword;
     user.save();
 
     return res.render('successfulNewPassword', { user: 'creator' });
+  }catch(err){
+    return res.render('catchError', { catchError: err.message });
+  }
+  }
+
+
+  // Get creators Home Page
+  async getCreatorHomePage(req:Request, res:Response){
+    try{
+      await res.render("creatorHomePage")
+    }catch(err){
+      return res.render('catchError', { catchError: err.message });
+    }
   }
 
   // Creators login
@@ -307,7 +334,7 @@ export class CreatorsService {
 
       return res.redirect(`/creators/creatorDashboard`);
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
     }
   }
 
@@ -329,7 +356,7 @@ export class CreatorsService {
       );
 
       if (!events) {
-        const eventPerPage: number = 1;
+        const eventPerPage: number = 10;
 
         const allEvents = await this.eventModel
           .find({ creatorId: res.locals.user.id })
@@ -384,7 +411,7 @@ export class CreatorsService {
         });
       }
 
-      const eventPerPage: number = 1;
+      const eventPerPage: number = 10;
       const maxPage = Math.round(allEvents.length / eventPerPage);
       const skip = page * eventPerPage;
 
@@ -439,7 +466,7 @@ export class CreatorsService {
         );
 
         if (!events) {
-          const eventPerPage: number = 1;
+          const eventPerPage: number = 10;
 
           let allEvents: any;
           let events: any;
@@ -500,7 +527,7 @@ export class CreatorsService {
         );
 
         if (!events) {
-          const eventPerPage: number = 1;
+          const eventPerPage: number = 10;
 
           let allEvents: any;
           let events: any;
@@ -557,7 +584,7 @@ export class CreatorsService {
         }
       }
 
-      const eventPerPage: number = 1;
+      const eventPerPage: number = 10;
       const maxPage = Math.round(allEvents.length / eventPerPage);
       const skip = page * eventPerPage;
 
@@ -607,7 +634,7 @@ export class CreatorsService {
       
       return res.render("unticketedEventees", {unticketedEventees,count})
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
     }
   }
 
@@ -632,7 +659,7 @@ export class CreatorsService {
       return res.render("ticketedEventees", {ticketedEventees,count})
 
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
     }
   }
 
@@ -656,7 +683,7 @@ export class CreatorsService {
 
       return res.render("scannedEventees", {scannedEventees,count})
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
     }
   }
 
@@ -667,7 +694,7 @@ export class CreatorsService {
     try {
       await this.Authservice.ensureLogin(req, res);
       
-      const creator = await this.creatorModel.findOne({ _id:res.locals.user.id})
+      const creator = await this.creatorModel.findOne({ _id:res.locals.user.id}).populate("allTicketedEventeesId")
     
       if (!creator) {
         return res.render('error', { message: 'creatorNotfound' });
@@ -681,7 +708,7 @@ export class CreatorsService {
 
       return res.render("allTicketedEventees", {allTicketedEventees,count})
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
     }
   }
 
@@ -690,7 +717,7 @@ export class CreatorsService {
     try {
       await this.Authservice.ensureLogin(req, res);
        
-      const creator = await this.creatorModel.findOne({ _id:res.locals.user.id})
+      const creator = await this.creatorModel.findOne({ _id:res.locals.user.id}).populate("allScannedEventeesId")
     
       if (!creator) {
         return res.render('error', { message: 'creatorNotfound' });
@@ -705,7 +732,7 @@ export class CreatorsService {
       return res.render("allScannedEventees", {allScannedEventees,count})
      
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
     }
   }
 
@@ -730,7 +757,7 @@ export class CreatorsService {
       req.flash("reminderUpdate", "Successful reminder day update.")
       return res.redirect(`/events/eventUpdatePage/${event._id}`);
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
     }
   }
 
@@ -739,10 +766,10 @@ export class CreatorsService {
   async getScanner(req: any, res: Response) {
     try {
         await this.Authservice.ensureLogin(req, res);
-        const succeeesfulScan = req.flash("successfulScan")
-        return res.render('scanner', {succeeesfulScan});
+        const successfulScan = req.flash("successfulScan")
+        return res.render('scanner', {successfulScan});
     } catch (err) {
-        return res.render('error', { catchError: err.message });
+        return res.render('catchError', { catchError: err.message });
     }
   }
 
@@ -772,7 +799,7 @@ export class CreatorsService {
       event.scannedEventeesId.push(transaction.eventeeId)
       event.save()
 
-      const creator = await this.creatorModel.findOne({creatorId:event.creatorId})
+      const creator = await this.creatorModel.findOne({_id:event.creatorId})
       creator.allScannedEventeesId.push(transaction.eventeeId)
       creator.save()
 
@@ -784,7 +811,7 @@ export class CreatorsService {
       res.redirect('/creators/scanner')
 
   } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
   }
   }
 

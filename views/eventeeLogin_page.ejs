@@ -4,37 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../src/public/style.css">
-    <title>Eventee Login</title>
+     
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
+    <title>Login</title>
 </head>
 <body>
+  <div>
   <nav>
-    <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/eventees/eventeeDashboard">Dashboard</a></li>
-    <li><a href="/eventees/signup">Signup</a></li>
-  </ul>
+    <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+    <div>
+      <span><a id="navLink" href="/">Home</a></li>
+      <span><a id="navLink" href="/eventees/eventeeDashboard">Dashboard</a></span>
+      <span><a id="navLink" href="/eventees/signup">Sign Up</a></span>
+    </div>
   </nav>
-    <h1>Eventee Login</h1>
+  
+  <div id="welcomeContainer">
+    <div id="eventTitle">
+      <h1 style="font-size: 70px;">Eventee Login</h1>
+      <a id="eventeeForget" href="/eventees/passwordResetPage">Forget password ?</a><br><br>
+    </div>
+  
+    <div id="imageContainer">
+      <img id="indexImage" src="/loginImage2.avif"  alt="image">
+    </div>
+  </div>
 
-    <form action="/eventees/login" method="post">
-    <label for="email" class="label">email:</label>
-    <input
-      type="text"
-      ,
-      name="email"
-      class="input"
-    /><br /><br /><br />
 
-    <label for="password" class="label">password:</label>
-    <input
-      type="password"
-      ,
-      name="password"
-      class="input"
-    /><br /><br /><br />
-
-    <button type="submit" class="submit">submit</button>
-  </form>
-  <a href="/eventees/passwordResetPage">Forget password ?</a>
+  <!-- ------------------ -->
+  <div id="formBox">
+    <form action="/eventees/login" method="post" id="form">
+       <h2 style="margin-bottom: 50px;">Login</h2>
+        <label for="email" class="label">Email:</label>
+        <input
+          type="text"
+          ,
+          name="email"
+          class="input"
+        /><br><br><br>
+    
+        <label for="password" class="label">Password:</label>
+        <input
+          type="password"
+          name="password"
+          class="input"
+        /> <br><br><br>
+        <button type="submit" class="submit">submit</button><br><br><br>
+        <a id="forgetLink" href="/eventees/passwordResetPage">Forget password ?</a><br><br>
+      
+      </form>
+    </div>
+  <!-- ---------------- -->
+  <footer>
+    <%-include("partials/footer.ejs")-%>
+  </footer>
+</div>
 </body>
 </html>

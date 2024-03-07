@@ -19,8 +19,6 @@ import { EventeesService } from 'src/eventees/eventees.service';
 import { eventeeSchema } from 'src/eventees/eventees.model';
 import { eventeeVerificationSchema } from 'src/eventees/verifiedEventee.model';
 import { transactionSchema } from 'src/transactions/transactions.model';
-import { SocialmediaService } from 'src/socialmedia/socialmedia.service';
-import { Auth0Service } from 'src/auth/auth0.service';
 import { ConfigService } from '@nestjs/config';
 import { CronService } from 'src/cron/cron.service';
 import { CacheService } from 'src/cache/cache.service';
@@ -34,6 +32,6 @@ import { CacheService } from 'src/cache/cache.service';
   MulterModule.register({dest:"uploads/"})
   ],
   controllers: [CreatorsController, EventsController, EventeesController],
-  providers: [CreatorsService, MailerService, AuthService, EventsService, EventeesService, SocialmediaService, Auth0Service, ConfigService, CronService, CacheService],
+  providers: [CreatorsService, MailerService, AuthService, EventsService, EventeesService, ConfigService, CronService, CacheService],
 })
 export class CreatorsModule {}

@@ -14,8 +14,6 @@ import { EventsController } from 'src/events/events.controller';
 import { EventsService } from 'src/events/events.service';
 import mongoose from 'mongoose';
 import { transactionSchema } from 'src/transactions/transactions.model';
-import { SocialmediaService } from 'src/socialmedia/socialmedia.service';
-import { Auth0Service } from 'src/auth/auth0.service';
 import { ConfigService } from '@nestjs/config';
 import { CronService } from 'src/cron/cron.service';
 import { CacheService } from 'src/cache/cache.service';
@@ -26,6 +24,6 @@ import { CacheService } from 'src/cache/cache.service';
   MulterModule.register({dest:"uploads/"})
 ],
   controllers: [EventeesController, EventsController],
-  providers: [EventeesService, MailerService, AuthService, EventsService, SocialmediaService, Auth0Service, ConfigService, CronService, CacheService],
+  providers: [EventeesService, MailerService, AuthService, EventsService, ConfigService, CronService, CacheService],
 })
 export class EventeesModule {}

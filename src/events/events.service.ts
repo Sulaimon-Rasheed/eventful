@@ -10,10 +10,8 @@ import { MailerService } from 'src/mailer/mailer.service';
 import { AuthService } from 'src/auth/auth.service';
 import { v2 } from 'cloudinary';
 import * as dotenv from 'dotenv';
-import { SocialmediaService } from 'src/socialmedia/socialmedia.service';
 dotenv.config();
 import {DateTime} from "luxon"
-import { Auth0Service } from 'src/auth/auth0.service';
 import { CacheService } from 'src/cache/cache.service';
 import  * as sanitizeHtml from "sanitize-html"
 
@@ -24,8 +22,6 @@ export class EventsService {
     @InjectModel('Creator') private readonly creatorModel: Model<Creator>,
     private readonly mailservice: MailerService,
     private readonly Authservice: AuthService,
-    private readonly socialmediaService:SocialmediaService,
-    private readonly Auth0servce:Auth0Service,
     private readonly cacheService:CacheService
   ) {
     v2.config({
@@ -250,7 +246,7 @@ export class EventsService {
     }
   }
 
-  async getMyCheckList(req: Request, res: Response) {
+  async getMyCheckList(req:any, res: Response) {
     try{
     await this.Authservice.ensureLogin(req, res);
    
@@ -263,32 +259,10 @@ export class EventsService {
         }
       }
       await this.cacheService.set(`event_${res.locals.user.id}`, myCheckLists)
-      let eventeeId = res.locals.user.id
-      return [myCheckLists, eventeeId];
-   
-    }catch(err){
-      return res.render("catchError", {catchError:err.message});
-    }
-  }
-
-  async shareEvent(eventId:string, res:Response){
-    try{
-      const event = await this.eventModel.findOne({_id:eventId})
-      if(!event){
-        return res.render("error", {message:"eventNotFound"})
-      }
-
-      const shareContent = {
-        title: event.title,
-        description: event.description,
-        url: `https://628e-102-89-23-107.ngrok-free.app/events/${eventId}`,
-      };
-
-      await this.Auth0servce.login()
-
-      await this.socialmediaService.shareOnFacebook(shareContent)
       
-      return res.send ('Event shared successfully')
+      const reminderDaySuccess = req.flash("eventeeReminderUpdate")
+      return res.render("myCheckList", {lists:myCheckLists, user:res.locals.user, reminderDaySuccess})
+   
     }catch(err){
       return res.render("catchError", {catchError:err.message});
     }

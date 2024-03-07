@@ -38,7 +38,7 @@ export interface Creator extends mongoose.Document{
     paymentStatus:string
     verified:boolean
     passwordResetToken:string
-    passwordResetExpireDate:Date
+    passwordResetExpireDate:any
     freePlan:boolean
     paidPlan:boolean
     creationDate:Date

@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
     <script src="https://unpkg.com/html5-qrcode@2.0.5/dist/html5-qrcode.min.js"></script>
     <title>Scanner</title>
     
@@ -34,20 +41,32 @@
 </head>
 <body>
     <nav>
-        <a href="/creators/creatorDashboard">Dashboard</a>
-        <li><a href="/creators/logout">Logout</a></li>
-       </nav>
-    <main>
-
-    <div id="successful"></div> 
-    <div id="reader"></div>
-    <div id="result"></div>
+        <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+        <div>
+          <span><a id="navLink" href="/creators/creatorDashboard">Dashboard</a></span>
+          <span><a id="logoutLink"  href="/creators/logout">Logout</a></span>
+          <img src="<%=user.image.url%>" alt="user Image" style="height:40px; width: 40px; border-radius: 50%; vertical-align: middle;margin-left: 50px;">
+        </div>
+    </nav>
+    <div id="welcomeContainer">
+        <div id="welcomeMessage">
+          <h1 style="font-size: 70px;"> Code scanner</h1>
+        </div>
+  
+        <div id="imageContainer">
+          <img id="indexImage" src="/qrcode2.png" alt="image">
+        </div>
+      
+      </div>
     
+    <main style="margin-top: 50px;">
+        <div id="successful"></div> 
+        <div id="reader"></div>
+        <div id="result"></div>
     
-
     <script>
 
-const scanner = new Html5QrcodeScanner(
+        const scanner = new Html5QrcodeScanner(
             'reader',
             { fps: 10, qrbox: 250 }
         );
@@ -77,11 +96,14 @@ const scanner = new Html5QrcodeScanner(
 
         if(successfulScan){
             document.getElementById("successful").innerHTML =`
-            <p style="color: green;font-size: 24px; text-align: center;">succeeesfulScan</p>
+            <p style="color: green;font-size: 24px; text-align: center;">successfulScan</p>
         `
         }
     </script>
 
     </main>
+    <footer>
+        <%-include("partials/footer.ejs")-%>
+    </footer>
 </body>
 </html>

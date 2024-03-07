@@ -56,16 +56,14 @@ export class EventsController {
   }
 
   @Get('/myCheckList')
-  async getMyCheckList(@Req() req:any, @Res() res:Response) {
-    const result = await this.eventsService.getMyCheckList(req, res)
-    const reminderDaySuccess = req.flash("eventeeReminderUpdate")
-    return res.render("myCheckList", {lists:result[0], eventeeId:result[1], reminderDaySuccess})
+  async getMyCheckList(@Req() req:Request, @Res() res:Response) {
+    await this.eventsService.getMyCheckList(req, res)
   }
 
-  @Get('share/:eventId')
-  async shareEvent(@Param('eventId') eventId: string,@Res() res:Response ) {
-    await this.eventsService.shareEvent(eventId, res);
-  }
+  // @Get('share/:eventId')
+  // async shareEvent(@Param('eventId') eventId: string,@Res() res:Response ) {
+  //   await this.eventsService.shareEvent(eventId, res);
+  // }
 
   @Get('thisEvent/share/:eventId')
   async getThisEvent(@Param('eventId') eventId: string,@Res() res:Response ) {

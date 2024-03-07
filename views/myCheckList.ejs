@@ -3,44 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>myCheckList</title>
+     
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
+    <title>Check List</title>
 </head>
 <body>
+  <div>
     <nav>
-        <p><a href="/eventees/eventeeDashboard">Dashboard</a></p>
-        <li><a href="/eventees/logout">Logout</a></li>
+      <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>  
+      <div>
+        <span><a id="navLink" href="/eventees/eventeeDashboard">Dashboard</a></li>
+        <span><a id="logoutLink" href="/eventees/logout">Logout</a></span>
+        <img src="<%=user.image.url%>" alt="user Image" style="height:40px; width: 40px; border-radius: 50%; vertical-align: middle;margin-left: 50px;">
+      </div>    
     </nav>
+
+    <div id="welcomeContainer">
+      <div id="welcomeMessage">
+        <h1 style="font-size: 70px;">Ticketing Room</h1>
+        <p style="font-size: 30px;">Almost there, <b><%=user.name%>.</b></p >
+        <p>Now, you can buy ticket for your chosen events.</p>
+      </div>
+
+      <div id="imageContainer">
+      <img id="indexImage" src="/ticket.avif" alt="image">
+      </div>
+    
+    </div>
     
     <%if(reminderDaySuccess){%>
       <p style="color: green; text-align: center; font-size: 24px;"><%=reminderDaySuccess%></p>
     <%}%>
 
     <%if(lists.length != 0){%>
-        <h1>Buy your Ticket here.</h1>
-
-        
-        
-        <ul>
+        <ul id="allEventsContainer"  style="list-style-type: none;padding:0;margin-bottom: 80px;">
             <%for(const list of lists){%>
+              <div class="eventContainer">
                 <li>
-                    <p><strong>Title: </strong><%=list.title%></p>
+                    <p><%=list.title%></p>
                     <p><img src="<%=list.event_image.url%>" alt="event image" style="width: 200px; height: 100px;"></p>
-                    <p><strong>Ticket Price: </strong><%=list.ticket_price%></p>
+                    <p><strong>Ticket Price: </strong>&#8358;<%=list.ticket_price%></p>
                     <p><strong>Event Date: </strong><%=list.event_date%></p>
                     <p><strong>Registration Deadline: </strong><%=list.registration_deadline%></p>
                 </li>
-                <%if(list.ticketedEventeesId.includes(eventeeId)){%>
-                    <p
-                      style="background-color: green; color: white; width:20%; padding: 10px;font-weight: bold;"
-                      class="articleState"
-                    >
-                      Purchased &map;
-                    </p>
-                    <form action="/eventees/setReminder/<%=list.id%>/<%=eventeeId%>" method="post">
-                        <h3>Do you need a reminder ? If YES,</h3>
-                        <label for="eventeeReminder_days">then, set number of days to the event you want to be reminded: </label>
-                        <select name="eventeeReminder_days" id="">
-                            <option value="">--choose a number</option>
+                <%if(list.ticketedEventeesId.includes(user.id)){%>
+                  <div style="display: flex;justify-content: center;">
+                    <p style="color:green; font-weight: bold;"> Purchased</p>
+                    <img src="/mark.png" alt="image" style="width: 50px; height: 50px;"> 
+                  </div>
+                    
+                  <form action="/eventees/setReminder/<%=list.id%>/<%=user.id%>" method="post" style="text-align: center; padding: 10px;">
+                        <label for="eventeeReminder_days" style="font-weight: bold;">Select a notification day.</label>
+                        <select name="eventeeReminder_days" style="padding: 5px; width:80%; text-align: center; font-size: 18px;">
+                            <option value="">--How many days to the event ?-----</option>
                             <option name="eventeeReminder_days" value="1">1</option>
                             <option name="eventeeReminder_days" value="2">2</option>
                             <option name="eventeeReminder_days" value="3">3</option>
@@ -52,11 +72,11 @@
                             <option name="eventeeReminder_days" value="9">9</option>
                             <option name="eventeeReminder_days" value="10">10</option>
                           </select>
-                        <button formmethod="post" type="submit">Set</button><span> Note:Don't enter any text (A-Z)</span>
+                        <button formmethod="post" type="submit" class="creatorLink1">Set</button>
                       </form>
                 <%}else{%>
-                    <form action="/eventees/buyTicket/<%=list.id%>/<%=list.ticket_price%>" method="GET" style="margin-bottom: 50px;" target="_blank">
-                        <input type="text" value="<%=list.ticket_price%>" readonly style="border-radius: 100%; padding: 5px; text-align: center; width:50px; height: 50px; background-color: brown; color: white; border: none;font-weight: bold;">
+                    <form action="/eventees/buyTicket/<%=list.id%>/<%=list.ticket_price%>" method="GET" style="margin-bottom: 20px;margin-top: 50px; text-align: center;" target="_blank">
+                        <input type="text" value="&#8358;<%=list.ticket_price%>" readonly style="border-radius: 100%; padding: 5px; text-align: center; width:50px; height: 50px; background-color: brown; color: white; border: none;font-weight: bold;">
                         <button
                           id="state"
                           type="submit"
@@ -69,14 +89,20 @@
                     </form>
                 <%}%>
                 
-
-                <hr style="margin-bottom: 50px;">
+              </div>
+            
             <%}%>
         </ul>
     <%}else{%>
-        <h1>You have not chosen any event yet.</h1>
-        <h2>Go back to your dashboard to choose an event</h2>
+      <div style="text-align: center;">
+        <h4>You have not chosen any event yet.</h4> 
+        <img src="/empty.jpg" alt="image" style="width:300px; height: 300px;">
+          <p>Go back to the dashboard to choose an event.</p> 
+      </div>
    <%}%>
-    
+   <footer>
+    <%-include("partials/footer.ejs")-%>
+  </footer>
+  </div> 
 </body>
 </html>

@@ -3,26 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Posted events</title>
+     
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
+    <title>Dashboard</title>
+    <style>
+
+      #title{
+        color:green;
+        font-weight: bold;
+      }
+      #eventContainer{
+        padding:16px 0;
+        width: 30%;
+        text-align: center;
+        background-color: whitesmoke;
+        border-radius: 20px;
+        
+      }
+
+      #allEventsContainer{
+        display: flex;
+        gap: 20px;
+        justify-content:center;
+        flex-wrap: wrap;
+      }
+    </style>
 </head>
 <body>
-    <nav>
-      <img src="<%=user.image.url%>" alt="user Image" style="height:50px; width: 50px; border-radius: 50%;">
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/events/myCheckList">Check your event List to buy ticket</a></li>
-        <li><a href="/eventees/logout">Logout</a></li>
-      </ul>  
-    </nav> 
+  <nav>
+    <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>  
+    <div>
+      <span><a id="navLink" href="/eventees/boughtEvents">Ticketed Events</a></li>
+      <span><a id="navLink" href="/eventees/attendedEvents">Attended Events</a></span>
+      <span><a id="logoutLink" href="/eventees/logout">Logout</a></span>
+      <img src="<%=user.image.url%>" alt="user Image" style="height:40px; width: 40px; border-radius: 50%; vertical-align: middle;margin-left: 50px;">
+    </div>    
+  </nav>
+  
+  <div id="welcomeContainer">
+    <div id="welcomeMessage">
+      <p style="font-size: 30px;">Welcome <b><%=user.name%>.</b></p >
+      <h1 style="font-size: 70px;">The Dashboard</h1>
+     
+      <a id="btn" href="/events/myCheckList">Checklist</a>
+    </div>
 
-    <%if(event){%>
+    <div id="imageContainer">
+    <img id="indexImage" src="/eventees2.jpg" alt="image">
+    </div>
+  
+  </div>
 
-    <h1>Welcome back <%=user.name%></h1><span id="date"><strong>Today is: </strong><%=date%></span>
-    <h2>Do you want to add this event to your list ?.</h2>
-    <p>Ensure you buy your ticket before the deadline Date.</p>
+    <!--------------------------------------------------------------------------------------->
 
-<!--------------------------------------------------------------------------------------->
 
+        
+        <h2 id="howTitle">GET A TICKET TODAY</h2>
+        
+        <div id="howContainer">
+          <ol id="howList">
+            <li>Add event to Checklist</li>
+            <li>Open the Checklist</li>
+            <li>Buy ticket</li>
+          </ol>
+        </div>
 <hr>
 <form action="/eventees/event/filter" method="get">
   <label for="category"
@@ -64,27 +113,28 @@
 <hr>
 
 <!--------------------------------------------------------------------------------------------->
-    <p style="text-align: center;font-size: 24px;font-weight: bold;"><%=event.title%></p>
+
+    <%if(event){%>
+
+<div id="allEventsContainer">
+<div id="eventContainer" > 
+<p id="title" style="text-align: center;font-size: 24px;font-weight: bold;"><%=event.title%></p>
         
     <p id="time"><b>Posted:</b><%=event.posted_date%> <span>(<%= Math.round(passday)%> days ago)</span></p> 
    
-    <p><img src="<%=event.event_image.url%>" alt="event image" style="width: 300px; height: 200px;"></p>
-    <p><strong>About: </strong><%=event.description%></p>
-    <p><b>Date: </b><%=event.event_date%></p>
-    <p><b>Time: </b><%=event.starting_time%> - <%=event.ending_time%></p>
-    <p><strong>Registration Deadline: </strong><%=event.registration_deadline%></p>
-    <p><strong>Ticket Price: </strong><%=event.ticket_price%></p>
-    <p><strong>More Info: </strong><%=event.additonal_info%></p>
-    <div>
-    <label for="">Organizer's Contact</label>
-    <p><strong>Profile Picture: </strong><img src="<%=event.creatorId.profileImage.url%>" alt="creator image" style="height:50px; width: 50px; border-radius: 50%;"></p>
-    <p><strong>Phone Number: </strong><%=event.creatorId.phoneNum%></p>
-    <p><strong>Email: </strong><%=event.creatorId.email%></p>
-    </div>
+    
+    <a id="link" href="/events/thisEvent/share/<%=event.id%>" title="Click to read more and share the event" target="_blank" >
+      <p><img src="<%=event.event_image.url%>" alt="event image" style="width: 300px; height: 200px;"></p>
+    </a>
+    <p><%=event.event_date%></p>
+    <p><%=event.starting_time%> - <%=event.ending_time%> WAT</p>
+    <p><%=event.venue%></p>
+    <p><%=event.creatorId.company_name%></p>
 
-    <div style="display: flex; gap: 20px;">
+    <div style="display: flex; gap: 20px; justify-content: center;">
         <form action="/events/chooseEvent/<%=event.id%>" method="PUT">
             <button
+            style="text-decoration: none;padding: 5px; background-color: green;color: white; border: none; cursor: pointer;"
               id="state"
               type="submit"
               formmethod="post"
@@ -96,6 +146,7 @@
 
         <form action="/events/removeEvent/<%=event.id%>" method="PUT">
           <button
+          style="text-decoration: none;padding: 5px; background-color: green;color: white; border: none; cursor: pointer;"
             id="state"
             type="submit"
             formmethod="post"
@@ -104,65 +155,42 @@
             Remove event from your List
           </button>
       </form>
-
-      <form action="/events/share/<%=event.id%>" method="GET">
-        <button
-          id="state"
-          type="submit"
-          formmethod="get"
-          title="Click to share on facebook"
-        >
-          Share on facebook
-        </button>
-    </form>
   </div>
-    <%}else{%>
+</div>
+</div>
+ <%}else{%>
 
-    <!--------------------------------------------------------------------------------------->
-
-<hr>
-<form action="/eventees/event/filter" method="get">
-  <label for="category"
-    >Filter the events by categories:</label>
-    <select name="category">
-      <option value="">
-        --Select a category--
-      </option> 
-      <option name="category" value="All">All</option>    
-      <option name="category" value="Charity">Charity</option>
-      <option name="category" value="Concert">Concert</option>
-      <option name="category" value="Conference">Conference</option>
-      <option name="category" value="Exhibition">Exhibition</option>
-      <option name="category" value="Film Show">Film Show</option>
-      <option name="category" value="Product Launch">Product Launch</option>
-      <option name="category" value="Vetworking">Networking</option> 
-      <option name="category" value="Seminar">Seminar</option>
-      <option name="category" value="Sport">Sport</option>
-      <option name="category" value="Symposium">Symposium</option>
-      <option name="category" value="Theater">Theater</option>
-      <option name="category" value="Trade Show">Trade Show</option> 
-      <option name="category" value="Workshop">Workshop</option>    
-    </select>
-  
-  <button type="submit" class="searchAndSort">filter</button>
-</form>
-<hr>
-
-
-<!------------------------------------------------------------------------------------------>
-
-
-<hr>
-<form action="/eventees/event/titleSearch" method="get">
-<label for="title">Search for event by "Title": </label>
-<input type="text" name="title" placeholder="Enter the title here">
-<button type="submit">Search</button>
-</form>
-<hr>
-
-<!--------------------------------------------------------------------------------------------->
-<h1>Opps!! There is no event with this title</h1>
+<div style="text-align: center;">
+  <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+    <h4>Event not found</h4> 
+    <p>Check back later.</p> 
+</div>
     
 <%}%>
+
+<script>
+  const container = document.getElementById("eventContainer")
+  const link = document.getElementById("link")
+  const title = document.getElementById("title")
+  const time = document.getElementById("time")
+
+link.addEventListener("mouseover", ()=>{
+  container.style.backgroundColor = "lightgrey"
+  title.style.color = "brown"
+  time.style.color = "black"
+  time.style.fontWeight = "bold"
+})
+
+link.addEventListener("mouseleave", ()=>{
+  container.style.backgroundColor = "whitesmoke"
+  title.style.color = "green"
+  time.style.color = "initial"
+  time.style.fontWeight = "initial"
+})
+  
+</script>
+<footer>
+  <%-include("partials/footer.ejs")-%>
+</footer>
 </body>
 </html>

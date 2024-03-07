@@ -3,26 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
     <title>Create Event</title>
     <!-- <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script> -->
 </head>
 <body>
-    <nav>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/creators/logout">Logout</a></li>
-          <li><a href="/creators/creatorDashboard">Dashboard</a></li>
-        </ul>
-      </nav>
+  <div>
+  <nav>
+    <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+    <div>
+      <span><a id="navLink" href="/">Home</a></li>
+      <span><a id="navLink" href="/creators/creatorDashboard">Dashboard</a></span>
+      <span><a id="navLink" href="/creators/logout">Logout</a></span>
       
-    <h1>Create Event</h1>
+    </div>
+  </nav>
+    
+  <div id="welcomeContainer">
+    <div id="creatorLogSign">
+      <h1 style="font-size: 70px;">Event creation</h1>
+    </div>
+  
+    <div id="imageContainer">
+      <img id="indexImage" src="/hand-signing-form.jpg"  alt="image">
+    </div>
+  </div>
     
     <%if(successfulCreation){%>
       <p style="color: green; text-align: center; font-size: 24px;"><%=successfulCreation%></p>
     <%}%>
 
-    <form action="/events/createEvent" , method="post" enctype="multipart/form-data">
-    
+    <form action="/events/createEvent" , method="post" id="form" enctype="multipart/form-data">
+      <h2 style="margin-bottom: 50px;">Create Event</h2>
         <label for="title" class="label">Title:</label>
         <input
           style="width: 40%; padding: 10px;"
@@ -31,7 +49,7 @@
           class="input"
         /><br /><br /><br />
         <label for="description" class="label">Description:</label>
-        <textarea name="description" cols="100" rows="10" style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 18px; margin:0 auto;"></textarea>
+        <textarea name="description" cols="100" rows="10"></textarea>
         <!-- <textarea name="description" id="editor"></textarea> -->
         <!-- <script>
           ClassicEditor
@@ -82,13 +100,20 @@
           class="input"
         /><br /><br /><br />
 
-        <label for="reminder_days" class="label">How many days to the event do you want Eventful to send reminder to Eventees: e.g</label>
-        <input
-          type="text"
-          name="reminder_days"
-          class="input"
-          placeholder="2"
-        /><span>Note: Enter NUMBER ONLY. Don't enter text.<span></span><br /><br /><br />
+        <label for="reminder_days" class="label">Choose a day for Eventful to send notification to Eventees.</label>
+        <select name="reminder_days" class="input">
+          <option value="">---How many days to the event ?----</option>
+          <option name="reminder_days" value="">1</option>
+          <option name="reminder_days" value="">2</option>
+          <option name="reminder_days" value="">3</option>
+          <option name="reminder_days" value="">4</option>
+          <option name="reminder_days" value="">5</option>
+          <option name="reminder_days" value="">6</option>
+          <option name="reminder_days" value="">7</option>
+          <option name="reminder_days" value="">8</option>
+          <option name="reminder_days" value="">9</option>
+          <option name="reminder_days" value="">10</option>
+        </select><br /><br /><br />
 
         <label for="registration_deadline" class="label">Ticket Purchase deadline: </label>
         <input
@@ -120,7 +145,7 @@
         /><br /><br /><br />
 
         <label for="additional_info" class="label">Additional Info:</label>
-        <textarea name="additional_info" cols="100" rows="10" style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 18px; margin:0 auto;"></textarea>
+        <textarea name="additional_info" cols="100" rows="10"></textarea>
         <!-- <textarea name="additional_info" id="info"></textarea> -->
         <!-- <script>
           ClassicEditor
@@ -131,17 +156,17 @@
         </script> -->
         <br /><br /><br />
 
-        <label for="event_image" class="label">Upload your Event poster:</label>
+        <label for="event_image" class="label">Upload your Event banner:</label>
         <input
-        style="height:150px; width:150px"
           type="file"
           name="event_image"
           accept="image/*"
           placeholder="Choose a file"
           class="input"
-        />
-      </div>
+        /> <br><br><br>
+      
         <button type="submit" class="submit">submit</button>
       </form> 
-</body>
+    </div>
+    </body>
 </html>

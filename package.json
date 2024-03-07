@@ -26,6 +26,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/mongoose": "^10.0.2",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/serve-static": "^4.0.1",
     "@nestjs/throttler": "^5.1.2",
     "@types/axios": "^0.14.0",
     "@types/bcrypt": "^5.0.2",

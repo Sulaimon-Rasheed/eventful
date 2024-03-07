@@ -3,28 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Posted Events</title>
+     
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
+    <title>Dashboard</title>
 </head>
 <body>
+  <div>
     <nav>
-        <img src="<%=user.image.url%>" alt="user Image" style="height:50px; width: 50px; border-radius: 50%;">
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/events/myCheckList">Open your checklist to buy ticket</a></li>
-        <li><a href="/eventees/boughtEvents">Bought Events</a></li>
-        <li><a href="/eventees/attendedEvents">Attended Events</a></li>
-        <li><a href="/eventees/logout">Logout</a></li>
-      </ul>  
+      <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>  
+      <div>
+        <span><a id="navLink" href="/eventees/boughtEvents">Ticketed Events</a></li>
+        <span><a id="navLink" href="/eventees/attendedEvents">Attended Events</a></span>
+        <span><a id="logoutLink" href="/eventees/logout">Logout</a></span>
+        <img src="<%=user.image.url%>" alt="user Image" style="height:40px; width: 40px; border-radius: 50%; vertical-align: middle;margin-left: 50px;">
+      </div>    
     </nav>
 
-    <%if(postedEvents.length != 0){%>
-        <h1>Welcome back <%=user.name%></h1><span id="date"><strong>Today is: </strong><%=date%></span>
-        <h2>Explore our posted events and add to your list.</h2>
-        <p>Ensure you buy your ticket before the deadline Date.</p>
+    <div id="welcomeContainer">
+      <div id="welcomeMessage">
+        <p style="font-size: 30px;">Welcome <b><%=user.name%>.</b></p >
+        <h1 style="font-size: 70px;">The Dashboard</h1>
+       
+        <a id="btn" href="/events/myCheckList">Checklist</a>
+      </div>
 
+      <div id="imageContainer">
+      <img id="indexImage" src="/eventees2.jpg" alt="image">
+      </div>
+    
+    </div>
+     
+    <div style="margin:0 16px;">
+        <span id="date"><strong>Today is: </strong><%=date%></span>
         
-        <%if(skip == 0){%> 
-          <p style="text-align: center; margin:10px auto; background-color: black; color: white; width: 20%; padding: 5px;margin-top: 20px;">Page 1</p>
+        <h2 id="howTitle">GET A TICKET TODAY</h2>
+        
+        <div id="howContainer">
+          <ol id="howList">
+            <li>Add event to Checklist</li>
+            <li>Open the Checklist</li>
+            <li>Buy ticket</li>
+          </ol>
+        </div>
+
+        <!--------------------------------------------------------------------------------------->
+
+        <hr>
+            <form action="/eventees/event/filter" method="get">
+              <label for="category"
+                >Filter the events by "Category":</label>
+                <select name="category" style="padding: 5px; width: 400px; text-align: center; font-size: 18px;">
+                  <option value="">
+                    --Select a category--
+                  </option> 
+                  <option name="category" value="All">All</option>    
+                  <option name="category" value="Charity">Charity</option>
+                  <option name="category" value="Concert">Concert</option>
+                  <option name="category" value="Conference">Conference</option>
+                  <option name="category" value="Exhibition">Exhibition</option>
+                  <option name="category" value="Film Show">Film Show</option>
+                  <option name="category" value="Product Launch">Product Launch</option>
+                  <option name="category" value="Vetworking">Networking</option> 
+                  <option name="category" value="Seminar">Seminar</option>
+                  <option name="category" value="Sport">Sport</option>
+                  <option name="category" value="Symposium">Symposium</option>
+                  <option name="category" value="Theater">Theater</option>
+                  <option name="category" value="Trade Show">Trade Show</option> 
+                  <option name="category" value="Workshop">Workshop</option>    
+                </select>
+              
+              <button type="submit" class="creatorLink1">filter</button>
+            </form>
+          <hr>
+
+
+<!------------------------------------------------------------------------------------------>
+       
+
+<hr>
+<form action="/eventees/event/titleSearch" method="get">
+  <label for="title">Search for event by "Title": </label>
+  <input type="text" name="title" placeholder="Enter the title here" style="padding: 5px; width: 400px; text-align: center; font-size: 18px;">
+  <button type="submit" class="creatorLink1">Search</button>
+</form>
+<hr>
+
+<!--------------------------------------------------------------------------------------------->
+      
+        <%if(postedEvents.length != 0){%>
+        
+          <%if(skip == 0){%> 
+          <p style="text-align: center; margin:10px auto; background-color: black; color: white; width: 5%; padding: 5px;margin-top: 20px;">Page 1</p>
           <ul class="page" style="display: flex; gap:5px;list-style-type:none;margin: 10px auto;justify-content: center;">
            
               <span style="font-weight: bold;">Next page/s &rArr;</span>
@@ -42,7 +116,7 @@
             <%}%>
           
             <%if(skip != 0){%>
-              <p style="text-align: center; margin:10px auto; background-color: black; color: white;width: 20%; padding: 5px; margin-top: 20px;">Page <%=page + 1%></p>
+              <p style="text-align: center; margin:10px auto; background-color: black; color: white;width: 5%; padding: 5px; margin-top: 20px;">Page <%=page + 1%></p>
           <ul class="page" style="display: flex; gap:5px;list-style-type:none;margin: 10px auto;justify-content: center;">
             
             <li>
@@ -69,77 +143,36 @@
           <%}%>
   
 
-<!--------------------------------------------------------------------------------------->
-
-        <hr>
-            <form action="/eventees/event/filter" method="get">
-              <label for="category"
-                >Filter the events by categories:</label>
-                <select name="category">
-                  <option value="">
-                    --Select a category--
-                  </option> 
-                  <option name="category" value="All">All</option>    
-                  <option name="category" value="Charity">Charity</option>
-                  <option name="category" value="Concert">Concert</option>
-                  <option name="category" value="Conference">Conference</option>
-                  <option name="category" value="Exhibition">Exhibition</option>
-                  <option name="category" value="Film Show">Film Show</option>
-                  <option name="category" value="Product Launch">Product Launch</option>
-                  <option name="category" value="Vetworking">Networking</option> 
-                  <option name="category" value="Seminar">Seminar</option>
-                  <option name="category" value="Sport">Sport</option>
-                  <option name="category" value="Symposium">Symposium</option>
-                  <option name="category" value="Theater">Theater</option>
-                  <option name="category" value="Trade Show">Trade Show</option> 
-                  <option name="category" value="Workshop">Workshop</option>    
-                </select>
-              
-              <button type="submit" class="searchAndSort">filter</button>
-            </form>
-          <hr>
-
-
-<!------------------------------------------------------------------------------------------>
-       
-
-<hr>
-<form action="/eventees/event/titleSearch" method="get">
-  <label for="title">Search for event by "Title": </label>
-  <input type="text" name="title" placeholder="Enter the title here">
-  <button type="submit">Search</button>
-</form>
-<hr>
-
-<!--------------------------------------------------------------------------------------------->
-
-
-
-<ul style="list-style-type: none;padding:0;">
+<ul id="allEventsContainer"  style="list-style-type: none;padding:0;margin-bottom: 80px;">
             <%for(let i = 0; i < postedEvents.length; i++){%>
-            <h2 style="color: green; font-weight: bold;"><%=postedEvents[i].title%></h2>
+          <div class="eventContainer">
+            <h2 class="title"><%=postedEvents[i].title%></h2>
             <li>
               <%if(passdays[i] >=0 && passdays[i]< 0.5){%>
-                <p id="time"><b>Posted: </b><%=postedEvents[i].posted_date%> <span>(today)</span></p> 
+                <p class="time"><b>Posted: </b><%=postedEvents[i].posted_date%> <span>(today)</span></p> 
               <%}else if(passdays[i] >=0.5 && passdays[i] < 1.5) {%>
-                <p id="time"><b>Posted: </b><%=postedEvents[i].posted_date%> <span>(yesterday)</span></p> 
+                <p class="time"><b>Posted: </b><%=postedEvents[i].posted_date%> <span>(yesterday)</span></p> 
              <% }else if(passdays[i] > 30) {%>
-              <p id="time"><b>Posted: </b><%=postedEvents[i].posted_date%><span>(<%= Math.floor((passdays[i])/30)%> month(s) ago)</span></p>
+              <p class="time"><b>Posted: </b><%=postedEvents[i].posted_date%><span>(<%= Math.floor((passdays[i])/30)%> month(s) ago)</span></p>
              <%}else if(passdays[i] > 365) {%>
-              <p id="time"><b>Posted: </b><%=postedEvents[i].posted_date%> <span>(<%= Math.floor((passdays[i])/365)%> year(s) ago)</span></p>
+              <p class="time"><b>Posted: </b><%=postedEvents[i].posted_date%> <span>(<%= Math.floor((passdays[i])/365)%> year(s) ago)</span></p>
              <%}else{%>
-              <p id="time"><b>Posted: </b><%=postedEvents[i].posted_date%> <span>(<%= Math.round(passdays[i])%> days ago)</span></p> 
+              <p class="time"><b>Posted: </b><%=postedEvents[i].posted_date%> <span>(<%= Math.round(passdays[i])%> days ago)</span></p> 
              <% }%>
-
-              <a href="/events/thisEvent/share/<%=postedEvents[i].id%>" title="Click to read more and share the event" target="_blank">
-                  <p><img src="<%=postedEvents[i].event_image.url%>" alt="event image" style="width: 300px; height: 200px;"></p>     
+            
+             
+                <a class="link" href="/events/thisEvent/share/<%=postedEvents[i].id%>" title="Click to read more and share the event" target="_blank" >
+                  <img src="<%=postedEvents[i].event_image.url%>" alt="event image" style="width: 300px; height: 200px;">    
               </a>
-              
-              <div style="display: flex; gap: 20px;">
+
+              <p><%=postedEvents[i].event_date%></p>
+              <p><%=postedEvents[i].starting_time%> - <%=postedEvents[i].ending_time%> WAT</p>
+              <p><%=postedEvents[i].venue%></p>
+              <p><%=postedEvents[i].creatorId.company_name%></p>
+              <div style="display: flex; gap: 20px; justify-content: center;">
                 <form action="/events/chooseEvent/<%=postedEvents[i].id%>" method="PUT">
                     <button
-                      style="text-decoration: none;padding: 5px; background-color: green;color: white; border: none; cursor: pointer;"
-                      id="state"
+                      class="addBtn"
                       type="submit"
                       formmethod="post"
                       title="Click to add the event to your List"
@@ -151,8 +184,7 @@
 
                 <form action="/events/removeEvent/<%=postedEvents[i].id%>" method="PUT">
                   <button
-                    style="text-decoration: none;padding: 5px; background-color: green;color: white; border: none;cursor: pointer;"
-                    id="state"
+                    class="removeBtn"
                     type="submit"
                     formmethod="post"
                     title="Click to remove the event from your List"
@@ -161,12 +193,14 @@
                   </button>
                 </form>
             </div>
+          
             </li>
+          </div>
         <%}%>
         </ul>
 
         <%if(skip == 0){%> 
-          <p style="text-align: center; margin:10px auto; background-color: black; color: white; width: 20%; padding: 5px;margin-top: 20px;">Page 1</p>
+          <p style="text-align: center; margin:10px auto; background-color: black; color: white; width: 5%; padding: 5px;margin-top: 20px;">Page 1</p>
         <ul class="page" style="display: flex; gap:5px;list-style-type:none; margin: 10px auto;justify-content: center;">
          
             <span style="font-weight: bold;">Next page/s &rArr;</span>
@@ -184,7 +218,7 @@
           <%}%>
         
           <%if(skip != 0){%>
-            <p style="text-align: center; margin:10px auto; background-color: black; color: white;width: 20%; padding: 5px; margin-top: 20px;">Page <%=page + 1%></p>
+            <p style="text-align: center; margin:10px auto; background-color: black; color:white;width: 5%; padding: 5px; margin-top: 20px;">Page <%=page + 1%></p>
         <ul class="page" style="display: flex; gap:5px;list-style-type:none;margin: 10px auto;justify-content: center;">
           
           <li>
@@ -211,8 +245,55 @@
 
 
     <%}else{%>
-        <h1>Welcome <%=user.name%> to your dashboard</h1>
-        <h2>There is no event post for now or selected event category is not found.Check back later.</h2>
-    <%}%>
+      <div style="text-align: center;">
+      <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+        <h4>There is no event post for now or selected event category is not found</h4> 
+        <p>Check back later.</p> 
+      </div>
+        <%}%>
+
+  </div>
+    <script>
+      const containers = document.querySelectorAll(".eventContainer")
+      const links = document.querySelectorAll(".link")
+      const titles = document.querySelectorAll(".title")
+      const times = document.querySelectorAll(".time")
+
+      links.forEach(link => {
+        link.addEventListener("mouseover", ()=>{
+        containers.forEach(container=>{
+        container.style.backgroundColor = "lightgrey"
+        titles.forEach(title=>{
+          title.style.color = "brown"
+        })
+        times.forEach(time=>{
+          time.style.color = "black"
+          time.style.fontWeight = "bold"
+        })
+        
+      })
+       
+        
+      })
+
+      link.addEventListener("mouseleave", ()=>{
+        containers.forEach(container=>{
+        container.style.backgroundColor = "whitesmoke"
+        titles.forEach(title=>{
+          title.style.color = "green"
+        })
+        times.forEach(time=>{
+          time.style.color = "initial"
+          time.style.fontWeight = "initial"
+        })
+     
+      })
+      })
+      });
+    </script>
+  <footer>
+    <%-include("partials/footer.ejs")-%>
+  </footer>
+</div>
 </body>
 </html>

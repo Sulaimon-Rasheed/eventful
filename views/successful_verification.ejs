@@ -3,15 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
     <title>successful verification</title>
 </head>
 <body>
+    <div>
     <%if(user=="eventee"){%>
-    <h1>You are successfully verified</h1>
-    <a href="/eventees/login">Login</a>
+    <nav>
+        <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+        <div>
+            <span><a id="navLink" href="/">Home</a></span>
+            <span><a id="logoutLink"  href="/eventees/login">Login</a></span>
+        </div>
+    </nav>
+    <div style="text-align: center;">
+        <h1>You are successfully verified</h1>
+        <img src="/successLogo.png" alt="image" style="width:300px; height: 300px;">
+        <p>You can now login.</p> 
+        <a id="navLink" href="/eventees/login">Login</a> 
+    </div>  
+   
     <%}else{%>
-    <h1>You are successfully verified</h1>
-    <a href="/creators/login">Login</a>
+    <nav>
+        <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+        <div>
+            <span><a id="navLink" href="/">Home</a></span>
+            <span><a id="logoutLink"  href="/creators/login">Login</a></span>
+        </div>
+    </nav>
+
+    <div style="text-align: center;">
+        <h1>You are successfully verified</h1>
+        <img src="/successLogo.png" alt="image" style="width:300px; height: 300px;">
+        <p>You can now login.</p> 
+        <a id="navLink" href="/creators/login">Login</a> 
+    </div>  
     <%}%>
+    <footer>
+        <%-include("partials/footer.ejs")-%>
+    </footer>
+    </div> 
 </body>
 </html>

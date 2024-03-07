@@ -3,60 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
     <title>Error</title>
 </head>
 <body>
-    <%if(message == "existingEventeeError"){%>
-        <h1>Opps!! User already exist</h1>
-        <a href="/eventees/signup">Signup</a>
+    <nav>
+        <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>  
+          
+      </nav>
+
+      
+    <%if(message == 'existingEventeeError'){%>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+              <h4>User already exist</h4> 
+              <a id="navLink" href="/eventees/signup">Signup</a>
+        </div>
+        
     <%}else if(message == "fileUploadError"){%>
-        <h1>Opps!! file upload fails. Try again</h1>
-        <a href="/eventees/signup">Signup</a>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+              <h4>file upload fails. Try again</h4> 
+              <a id="navLink" href="/eventees/signup">Sign Up</a>
+        </div>
+        
     <%}else if(message == "eventeeNotFound"){%>
-        <h1>Opps!! User not found.</h1>
-        <a href="/eventees/signup">Signup</a>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+              <h4>User not found.</h4> 
+              <a id="navLink" href="/eventees/signup">Sign Up</a>
+        </div>
+        
     <%}else if(message == "verificationError"){%>
-    <h1>Opps!! You are not yet verfied.Please, check your email for verification link.</h1>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+              <h4>You are not yet verfied.</h4> 
+              <p>.Please, check your email for verification link.</p>
+        </div>
     <%}else if(message == "eventeePasswordError"){%>
-    <h1>Opps!! Username or Password is incorrect</h1>
-    <a href="/eventees/login">Login</a>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+              <h4>Username or Password is incorrect</h4> 
+              <a id="navLink" href="/eventees/login">Login</a>
+        </div>
+    
     <%}else if(message == "existingCreatorError"){%>
-        <h1>Opps!! User already exist</h1>
-        <a href="/creators/signup">Signup</a>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+              <h4>User already exist</h4> 
+              <a id="navLink" href="/creators/signup">Signup</a>
+        </div>
+       
     <%}else if(message == "creatorNotFound"){%>
-        <h1>Opps!! User not found.</h1>
-        <a href="/creators/signup">Signup</a>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+              <h4>User not found.</h4> 
+              <a id="navLink" href="/creators/signup">Signup</a>
+        </div>
+        
     <%}else if(message == "creatorPasswordError"){%>
-        <h1>Opps!! Username or Password is incorrect</h1>
-        <a href="/creators/login">Login</a>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+              <h4>Username or Password is incorrect</h4> 
+              <a id="navLink" href="/creators/login">Login</a>
+        </div>
+    
     <%}else if(message == "creatorFileUploadError"){%>
-        <h1>Opps!! file upload fails. Try again</h1>
-        <a href="/creators/signup">Signup</a>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+              <h4>File upload fails. Try again</h4> 
+              <a href="/creators/signup">Signup</a>
+        </div>
+    
     <%}else if(message=="eventNotfound"){%>
-        <h1>Opps!! Event not found</h1>
-        <a href="/creators/creatorDashboard">Dashboard</a>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+              <h4>Event not found.</h4> 
+              <a href="/creators/creatorDashboard">Dashboard</a>
+        </div>
+    
     <%}else if(message=="linkAlteration"){%>
-        <h1>Opps!!. It seems you have altered your verification link. check and try again</h1>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+              <h4>It seems you have altered your verification link. check and try again</h4> 
+        </div>
+    
     <%}else if(message=="eventeeNotfound"){%>
-        <h1>Opps!! Eventee not found</h1>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+              <h4>Eventee not found</h4> 
+        </div>
+        
     <%}else if(message=="eventListedBefore"){%>
-        <h1>Opps!! You have listed this event already but have not bought ticket for the event.Check your list to get the ticket.</h1>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+              <h4>This event is already in your checklist but you have not bought ticket for the event.</h4> 
+              <p>Check your list to get the ticket.</p>
+        </div>
+        
     <%}else if(message== "ticketBoughtBefore"){%>
-        <h1>Opps!! You have bought ticket for this event already</h1>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>You have bought ticket for this event already</h4> 
+        </div>
+    
     <%}else if(message=="eventNotOnListBefore"){%>
-        <h1>Opps!! This event is not on your list before now</h1>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>This event is not on your list before now.</h4> 
+        </div>
     <%}else if(message=="eventNotRemovable"){%>
-        <h1>Opps!! You can't remove this event because you have bought ticket for it.</h1>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>You can't remove this event because you have bought ticket for it.</h4> 
+        </div>
     <%}else if(message == "invalidResetLink"){%>
-        <h1>Opps!! Invalid password reset link.It seems you have altered the link. Check and try again.</h1>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>Invalid password reset link.It seems you have altered the link.</h4> 
+            <p>Check and try again.</p>
+        </div>
+        
     <%}else if(message == "expired registration" ){%>
-        <h1>Opps!! Ticket purchase for this event has expired</h1>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>Ticket purchase for this event has expired</h4> 
+        </div>
+        
     <%}else if(message == "transactionNotFound"){%>
-        <h1>Opps!! Transaction not found</h1> 
-        <a href="/creators/creatorDashboard">Dashboard</a>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>Transaction not found</h4> 
+            <a href="/creators/creatorDashboard">Dashboard</a>
+        </div>
+        
     <%}else if(message == "alreadyScanned"){%>
-    <h1>Opps!! This code has been scanned before</h1>
-    <a href="/creators/scanner">Open scanner</a>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>This code has been scanned before</h4> 
+            <a href="/creators/scanner">Open scanner</a>
+        </div>
+    <%}else if(message == "expiredPasswordResetLinkForEventee"){%>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>It seems your password reset link has expired</h4>
+            <a id="navLink" href="/eventees/passwordResetPage">Send another request.</a>
+        </div>
+    <%}else if(message == "expiredPasswordResetLinkForCreator"){%>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>It seems your password reset link has expired</h4>
+            <a id="navLink" href="/creators/passwordResetPage">Send another request.</a>
+        </div>
+    <%}else if(message == "Transaction is not found"){%>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>Tranaction not found</h4>
+        </div>
     <%}%>
+        <footer>
+        <%-include("partials/footer.ejs")-%>
+      </footer>
     </body>
 </html>

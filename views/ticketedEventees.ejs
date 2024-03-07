@@ -3,22 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
     <title>Ticketed Eventees</title>
 </head>
 <body>
-    <nav>
-        <a href="/creators/creatorDashboard">Dashboard</a>
-        <li><a href="/creators/logout">Logout</a></li>
-       </nav>
+    <div>
+        <nav>
+            <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+            <div>
+              <span><a id="navLink" href="/creators/creatorDashboard">Dashboard</a></span>
+              <span><a id="logoutLink"  href="/creators/logout">Logout</a></span>
+              <img src="<%=user.image.url%>" alt="user Image" style="height:40px; width: 40px; border-radius: 50%; vertical-align: middle;margin-left: 50px;">
+            </div>
+        </nav>
+        <div id="welcomeContainer">
+            <div id="welcomeMessage">
+              <h1 style="font-size: 70px;">Ticketed eventees</h1>
+              <p style="font-size: 70px;"><strong>Result: </strong><%=count%></p>
+            </div>
+      
+            <div id="imageContainer">
+              <img id="indexImage" src="/creators.jpg" alt="image">
+            </div>
+          
+          </div>
       
        <%if(ticketedEventees != 0){%>
         <%if(count == 1){%>
-            <h1><%=count%> Eventee has bought the ticket for this event</h1>
-            <h2>The person is:</h2>
-           <ol>
+            <h1 style="text-align: center;">The person is:</h1>
+           <ol id="allEventsContainer">
               <% for(const eventee of ticketedEventees){%>
                    <li>
-                       <img src="<%=eventee.profileImage.url%>" alt="eventee image" style="height:50px; width: 50px; border-radius: 50%;">
+                       <img src="<%=eventee.profileImage.url%>" alt="eventee image" style="height:50px; width: 50px; border-radius: 50%;vertical-align: middle;">
                        <p><%=eventee.first_name%></p>
                        <p><%=eventee.email%></p>
                        <p><%=eventee.phoneNum%></p>
@@ -26,12 +48,11 @@
                <%}%>
            </ol> 
         <%}else{%>
-            <h1><%=count%> Eventees have bought the ticket for this event</h1> 
-            <h2>They are:</h2>
-           <ol>
+            <h1 style="text-align: center;">They are:</h1>
+           <ol id="allEventsContainer">
               <% for(const eventee of ticketedEventees){%>
                    <li>
-                       <img src="<%=eventee.profileImage.url%>" alt="eventee image" style="height:50px; width: 50px; border-radius: 50%;">
+                       <img src="<%=eventee.profileImage.url%>" alt="eventee image" style="height:50px; width: 50px; border-radius: 50%;vertical-align: middle;">
                        <p><%=eventee.first_name%></p>
                        <p><%=eventee.email%></p>
                        <p><%=eventee.phoneNum%></p>
@@ -41,8 +62,15 @@
         <%}%>
            
        <%}else{%>
-       <h1>No one has bought ticket for this event. Check the <b>unticketed eventees</b> list to see those that might have listed the event.</h1>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+              <h4>No one has bought ticket for this event.</h4> 
+              <p>Check back later</p> 
+        </div>
        <%}%>
-      
+    <footer>
+        <%-include("partials/footer.ejs")-%>
+    </footer>
+  </div>    
 </body>
 </html>

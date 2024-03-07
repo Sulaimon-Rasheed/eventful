@@ -44,8 +44,8 @@ export class EventeesController {
    }
 
    @Get('passwordResetPage')
-  getPasswordResetPage(@Res() res:Response) {
-    this.eventeesService.getPasswordResetPage(res);
+  getPasswordResetPage(@Req() req:Request, @Res() res:Response) {
+    this.eventeesService.getPasswordResetPage(req,res);
   }
 
   @Post('verifyEmailForPasswordReset')
