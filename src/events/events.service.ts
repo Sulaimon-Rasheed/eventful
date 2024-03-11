@@ -66,7 +66,6 @@ export class EventsService {
         category:createEventDto.category,
         registration_deadline:formattedDeadlineDate,
         ticket_price: createEventDto.ticket_price,
-        discount: createEventDto.discount,
         event_image: result,
         additional_info:sanitizedAddContent,
         creatorId: res.locals.user.id,
@@ -97,9 +96,9 @@ export class EventsService {
       if (user.freePlan == false) {
         res.render("error", {message:"planError"})
       }
-
+        const eventDelMessage = req.flash("eventDel")
         const successfulCreation = req.flash("eventCreationSuccessful")
-        return res.render(`eventCreationPage`,{successfulCreation} );
+        return res.render(`eventCreationPage`,{successfulCreation, eventDelMessage} );
     } catch (err) {
       return res.render("catchError", {catchError:err.message});
     }
@@ -123,6 +122,7 @@ export class EventsService {
         
         const updateSuccessMessage = req.flash('updateSuccess')
         const reminderSuccessMessage = req.flash('reminderUpdate')
+        
         return res.render("eventUpdatePage", {event, user:res.locals.user.id, updateSuccessMessage, reminderSuccessMessage})
       }
 
@@ -166,7 +166,9 @@ export class EventsService {
       }
 
       await this.cacheService.remove(`eventUpdate_${res.locals.user.id}_${eventId}`)
-      return res.send("Event successfully deleted")
+      
+      req.flash("eventDel", "Event deleted successfully. Create another event from here.")
+      return res.redirect(`/events/createEvent`)
     }catch(err){
       return res.render("catchError", {catchError:err.message});
     }

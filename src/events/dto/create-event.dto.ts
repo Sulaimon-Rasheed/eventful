@@ -43,9 +43,6 @@ export class CreateEventDto {
     ticket_price:string
 
     @IsString()
-    discount:string
-
-    @IsString()
     additional_info:string
 
 }

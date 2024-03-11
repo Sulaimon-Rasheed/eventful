@@ -166,6 +166,24 @@
             <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
             <h4>Tranaction not found</h4>
         </div>
+    <%}else if(message == "inactiveWallet"){%>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>You can't make payment for this event at the moment due to management reasons.</h4>
+            <p>Please try again later</p>
+        </div>
+    <%}else if(message == "walletNotFound"){%>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>You can't do transaction on this account at the moment.</h4>
+            <p>Please try again later or contact the management.</p>
+        </div>
+    <%}else if(message == "insufficientBalance"){%>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>Insufficient fund.</h4>
+            <p>You can't withdraw amount above your wallet balance.</p>
+        </div>
     <%}%>
         <footer>
         <%-include("partials/footer.ejs")-%>

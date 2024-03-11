@@ -4,6 +4,7 @@ import { EventeesController } from './eventees.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MulterModule } from '@nestjs/platform-express';
 import { eventeeSchema } from './eventees.model';
+import { walletSchema } from 'src/wallets/wallets.model';
 import { eventeeVerificationSchema } from './verifiedEventee.model';
 import { MailerService } from 'src/mailer/mailer.service';
 import { AuthService } from 'src/auth/auth.service';
@@ -20,7 +21,7 @@ import { CacheService } from 'src/cache/cache.service';
 // import { QrcodescannerService } from 'src/qrcodescanner/qrcodescanner.service';
 
 @Module({
-  imports:[EventsModule, MongooseModule.forFeature([{name:"Eventee", schema:eventeeSchema},{name:"EventeeVerification", schema:eventeeVerificationSchema}, {name:"Event", schema:eventSchema},{name:"Creator", schema:creatorSchema}, {name:"Transaction", schema:transactionSchema}]),
+  imports:[EventsModule, MongooseModule.forFeature([{name:"Eventee", schema:eventeeSchema},{name:"EventeeVerification", schema:eventeeVerificationSchema}, {name:"Event", schema:eventSchema},{name:"Creator", schema:creatorSchema}, {name:"Transaction", schema:transactionSchema}, {name:"Wallet", schema:walletSchema}]),
   MulterModule.register({dest:"uploads/"})
 ],
   controllers: [EventeesController, EventsController],

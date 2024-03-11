@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
+    <title>Help Center</title>
+</head>
+<body>
+<div >
+    <nav>
+        <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+        <div>
+          <span><a id="navLink" href="/faq">FAQ</a></span>
+          <span><a id="navLink" href="/creators/creatorHomePage">Create Event</a></span>
+          <span><a id="navLink" href="/eventees/signup">Sign Up</a></span>
+          <span><a id="navLink" href="/eventees/login">Log In</a></span>
+        </div>
+      </nav>
+
+      <div id="welcomeContainer">
+        <div id="welcomeMessage">
+          <h1 style="font-size: 70px;">How can we help you ?</h1>
+          
+        </div>
+  
+        <div id="imageContainer">
+        <img id="indexImage" src="/customer.jpg" alt="image">
+        </div>
+      </div>
+<div id="content">
+      <div id="helpOptions">
+        <p id="eventeeHelp">Attending an event</p>
+        <p id="creatorHelp">Creating an event</p>
+      </div>
+
+      <h3 id="readArticle">Featuring Documentations:</h3>
+    <div id="helpContainer" >
+        <div id="eventeesGuide">
+            <p><a class="helpLink" href="/help/checklisiting">Event Checklisting</a></p> 
+            <p><a class="helpLink" href="/help/ticketPurchase">Ticket purchase</a></p> 
+            <p><a class="helpLink" href="/help/share">How to share event</a></p>
+            <p><a class="helpLink" href="/help/eventeeAnalytics">Analytics</a></p>
+        </div> 
+    </div>
+
+    <div id="creatorsGuide">
+        <p><a class="helpLink" href="/help/ticketScanning">Ticket scanning</a></p> 
+        <p><a class="helpLink" href="/help/update">making update to created events</a></p> 
+        <p><a class="helpLink" href="/help/payout">Payment payout</a></p>
+        <p><a class="helpLink" href="/help/creatorAnalytics">Analytics</a></p>
+    </div> 
+</div>
+    
+
+    <script>
+        const eventeeHelp = document.getElementById("eventeeHelp")
+        const creatorHelp = document.getElementById("creatorHelp")
+        const helpContainer = document.getElementById("helpContainer")
+        const eventeesGuide = document.getElementById("eventeesGuide")
+        const creatorsGuide = document.getElementById("creatorsGuide")
+
+
+        eventeeHelp.addEventListener("click", ()=>{
+            eventeeHelp.style.color = "blue"
+            eventeeHelp.style.textDecoration = "underline"
+            creatorHelp.style.color = "black"
+            creatorHelp.style.textDecoration = "initial"
+            creatorsGuide.style.height = 0
+            eventeesGuide.style.height = "initial"
+            creatorsGuide.style.visibility = "hidden"
+            helpContainer.replaceChild(eventeesGuide,creatorsGuide)
+        })
+
+        creatorHelp.addEventListener("click", ()=>{
+            creatorHelp.style.color = "blue"
+            creatorHelp.style.textDecoration ="underline"
+            creatorHelp.style.textUnderlineOffset = "10px"
+            eventeeHelp.style.color = "initial"
+            eventeeHelp.style.textDecoration = "initial"
+            eventeesGuide.style.height = 0
+            creatorsGuide.style.height = "initial"
+            creatorsGuide.style.visibility = "visible"
+            helpContainer.replaceChild(creatorsGuide,eventeesGuide )
+        })
+    </script>
+   <footer>
+    <%-include("partials/footer.ejs")-%>
+  </footer>
+</div> 
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
+    <title>Help</title>
+</head>
+<body>
+  <div>
+    <%if(help == "checklisiting"){%>
+        <nav>
+            <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+            <div>
+              <span><a id="navLink" href="/helpCenter">Help Center</a></span>
+              <span><a id="navLink" href="/faq">FAQ</a></span>
+              <span><a id="navLink" href="/eventees/signup">Sign Up</a></span>
+              <span><a id="navLink" href="/eventees/login">Log In</a></span>
+            </div>
+          </nav>
+          
+          <div id="welcomeContainer">
+            <div id="welcomeMessage">
+              <h1 style="font-size: 50px;">HELP ROOM</h1>
+              <h1 style="font-size: 70px;color: purple;">Checklisting</h1>
+              
+            </div>
+      
+            <div id="imageContainer">
+            <img id="indexImage" src="/customer.jpg" alt="image">
+            </div>
+          </div>
+          
+          <div style="margin: 24px;text-align: center;">
+            <h2 id="eachHelp">Checklisting Guidelines</h2>
+          </div>
+        
+    <%}else if(help == "ticketPurchase"){%>
+        <nav>
+            <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+            <div>
+              <span><a id="navLink" href="/helpCenter">Help Center</a></span>
+              <span><a id="navLink" href="/faq">FAQ</a></span>
+              <span><a id="navLink" href="/eventees/signup">Sign Up</a></span>
+              <span><a id="navLink" href="/eventees/login">Log In</a></span>
+            </div>
+          </nav>
+
+          <div id="welcomeContainer">
+            <div id="welcomeMessage">
+              <h1 style="font-size: 50px;">HELP ROOM</h1>
+              <h1 style="font-size: 70px;color: purple;">Ticket purchase</h1>
+              
+            </div>
+      
+            <div id="imageContainer">
+            <img id="indexImage" src="/customer.jpg" alt="image">
+            </div>
+          </div>
+          
+          <div style="margin: 24px;text-align: center;">
+            <h2 id="eachHelp">Ticket Purchase Guidelines</h2>
+          </div>
+
+        
+    <%}else if(help == "share"){%>
+        <nav>
+            <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+            <div>
+              <span><a id="navLink" href="/helpCenter">Help Center</a></span>
+              <span><a id="navLink" href="/faq">FAQ</a></span>
+              <span><a id="navLink" href="/eventees/signup">Sign Up</a></span>
+              <span><a id="navLink" href="/eventees/login">Log In</a></span>
+            </div>
+          </nav>
+
+          <div id="welcomeContainer">
+            <div id="welcomeMessage">
+              <h1 style="font-size: 50px;">HELP ROOM</h1>
+              <h1 style="font-size: 70px;color: purple;">Sharing to social medias</h1>
+              
+            </div>
+      
+            <div id="imageContainer">
+            <img id="indexImage" src="/customer.jpg" alt="image">
+            </div>
+          </div>
+          
+          <div style="margin: 24px;text-align: center;">
+            <h2 id="eachHelp">Share Guidelines</h2>
+          </div>
+        
+        <%}else if(help == "eventeeAnalytics"){%>
+            <nav>
+                <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+                <div>
+                  <span><a id="navLink" href="/helpCenter">Help Center</a></span>
+                  <span><a id="navLink" href="/faq">FAQ</a></span>
+                  <span><a id="navLink" href="/eventees/signup">Sign Up</a></span>
+                  <span><a id="navLink" href="/eventees/login">Log In</a></span>
+                </div>
+              </nav>
+              
+              <div id="welcomeContainer">
+                <div id="welcomeMessage">
+                  <h1 style="font-size: 50px;">HELP ROOM</h1>
+                  <h1 style="font-size: 70px;color: purple;">Analytics</h1>
+                  
+                </div>
+          
+                <div id="imageContainer">
+                <img id="indexImage" src="/customer.jpg" alt="image">
+                </div>
+              </div>
+             
+              <div style="margin: 24px;text-align: center;">
+                <h2 id="eachHelp">Eventee Analytics</h2>
+              </div>
+            
+            <%}else if(help == "ticketScanning"){%>
+                <nav>
+                    <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+                    <div>
+                      <span><a id="navLink" href="/helpCenter">Help Center</a></span>
+                      <span><a id="navLink" href="/faq">FAQ</a></span>
+                      <span><a id="navLink" href="/creators/signup">Sign Up</a></span>
+                      <span><a id="navLink" href="/creators/login">Log In</a></span>
+                    </div>
+                  </nav>
+                  <div id="welcomeContainer">
+                    <div id="welcomeMessage">
+                      <h1 style="font-size: 50px;">HELP ROOM</h1>
+                      <h1 style="font-size: 70px;color: purple;">Ticket Scanning</h1>
+                      
+                    </div>
+              
+                    <div id="imageContainer">
+                    <img id="indexImage" src="/customer.jpg" alt="image">
+                    </div>
+                  </div>
+                  
+                  <div style="margin: 24px;text-align: center;">
+                    <h2 id="eachHelp">Ticket Scanning Guidelines</h2>
+                  </div>
+                
+    
+                <%}else if(help == "update"){%>
+                    <nav>
+                        <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+                        <div>
+                          <span><a id="navLink" href="/helpCenter">Help Center</a></span>
+                          <span><a id="navLink" href="/faq">FAQ</a></span>
+                          <span><a id="navLink" href="/creators/signup">Sign Up</a></span>
+                          <span><a id="navLink" href="/creators/login">Log In</a></span>
+                        </div>
+                      </nav>
+
+                      <div id="welcomeContainer">
+                        <div id="welcomeMessage">
+                          <h1 style="font-size: 50px;">HELP ROOM</h1>
+                          <h1 style="font-size: 70px;color: purple;">Making an update</h1>
+                          
+                        </div>
+                  
+                        <div id="imageContainer">
+                        <img id="indexImage" src="/customer.jpg" alt="image">
+                        </div>
+                      </div>
+                      
+                      <div style="margin: 24px;text-align: center;">
+                        <h2 id="eachHelp">Event Update Guidelines</h2>
+                      </div>
+                    
+                    <%}else if(help == "payout"){%>
+                        <nav>
+                            <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+                            <div>
+                              <span><a id="navLink" href="/helpCenter">Help Center</a></span>
+                              <span><a id="navLink" href="/faq">FAQ</a></span>
+                              <span><a id="navLink" href="/creators/signup">Sign Up</a></span>
+                              <span><a id="navLink" href="/creators/login">Log In</a></span>
+                            </div>
+                          </nav>
+
+                          <div id="welcomeContainer">
+                            <div id="welcomeMessage">
+                              <h1 style="font-size: 50px;">HELP ROOM</h1>
+                              <h1 style="font-size: 70px;color: purple;">Payment</h1>
+                              
+                            </div>
+                      
+                            <div id="imageContainer">
+                            <img id="indexImage" src="/customer.jpg" alt="image">
+                            </div>
+                          </div>
+
+                          <div style="margin: 24px;text-align: center;">
+                            <h2 id="eachHelp">Payout Guidelines</h2>
+                          </div>
+                        
+                        <%}else if(help == "creatorAnalytics"){%>
+                
+                          <nav>
+                            <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+                            <div>
+                              <span><a id="navLink" href="/helpCenter">Help Center</a></span>
+                              <span><a id="navLink" href="/faq">FAQ</a></span>
+                              <span><a id="navLink" href="/creators/signup">Sign Up</a></span>
+                              <span><a id="navLink" href="/creators/login">Log In</a></span>
+                            </div>
+                          </nav>
+
+                          <div id="welcomeContainer">
+                            <div id="welcomeMessage">
+                              <h1 style="font-size: 50px;">HELP ROOM</h1>
+                              <h1 style="font-size: 70px;color: purple;">Analytics</h1>
+                              
+                            </div>
+                      
+                            <div id="imageContainer">
+                            <img id="indexImage" src="/customer.jpg" alt="image">
+                            </div>
+                          </div>
+
+                          <div style="margin: 24px;text-align: center;">
+                            <h2 id="eachHelp">Creator Analytics</h2>
+                          </div>
+                            
+                            <%}%>
+
+                            <div style="margin: 24px;text-align: center;">
+                              <h4 style="margin-top: 100px;">You still have some questions ?</h4>
+                              <p>
+                                Send us a mail &rBarr;
+                                <a href="mailto:eventful4you@gmail.com"
+                                  ><img id="gmail" src="/gmailLogo.svg" alt="image"
+                                /></a>
+                              </p>
+                            </div>
+
+                            <footer>
+                              <%-include("partials/footer.ejs")-%>
+                            </footer>
+                          </div>
+                          </body>
+
+                          </html>

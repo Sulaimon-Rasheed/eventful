@@ -26,4 +26,46 @@ export class AppService {
     }
     return res.render("index", {message:'Eventful', events})
   }
+
+
+  getHelpCenter(req:Request, res:Response){
+    return res.render("helpCenter")
+  }
+
+  getChecklisiting(req:Request, res:Response){
+    return res.render("eachHelp", {help:"checklisiting"})
+  }
+
+  getTicketPurchase(req:Request, res:Response){
+    return res.render("eachHelp", {help:"ticketPurchase"})
+  }
+
+  getShare(req:Request, res:Response){
+    return res.render("eachHelp", {help:"share"})
+  }
+
+  getEventeeAnalytics(req:Request, res:Response){
+    return res.render("eachHelp", {help:"eventeeAnalytics"})
+  }
+
+  getTicketScanning(req:Request, res:Response){
+    return res.render("eachHelp", {help:"ticketScanning"})
+  }
+
+  getUpdate(req:Request, res:Response){
+    return res.render("eachHelp", {help:"update"})
+  }
+
+  getPayout(req:Request, res:Response){
+    return res.render("eachHelp", {help:"payout"})
+  }
+
+  getCreatorAnalytics(req:Request, res:Response){
+    return res.render("eachHelp", {help:"creatorAnalytics"})
+  }
+
+  getFaq(req:Request, res:Response){
+    return res.render("faq")
+  }
+  
 }

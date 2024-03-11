@@ -28,4 +28,16 @@ export class CreateCreatorDto {
     @IsString()
     @IsNotEmpty()
     phoneNum:number
+
+    @IsString()
+    @IsNotEmpty()
+    account_name:string
+
+    @IsString()
+    @IsNotEmpty()
+    account_number:string
+
+    @IsString()
+    @IsNotEmpty()
+    bank_name:string
 }

@@ -16,12 +16,14 @@ import { LoginCreatorDto } from './dto/login-creator.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { Request, Response } from 'express';
 import { Eventee } from 'src/eventees/eventees.model';
+import { Wallet } from 'src/wallets/wallets.model';
 import { UpdateEventDto } from 'src/events/dto/update-event.dto';
 import { CacheService } from 'src/cache/cache.service';
 import { emailVerifyDto } from './dto/email-verify.dto';
 import { newPasswordDto } from './dto/newPassword.dto';
 import { DateTime } from 'luxon';
 import { Transaction } from 'src/transactions/transactions.model';
+import { debitDto } from './dto/debit.dto';
 
 @Injectable()
 export class CreatorsService {
@@ -32,6 +34,7 @@ export class CreatorsService {
     @InjectModel('Event') private readonly eventModel: Model<Event>,
     @InjectModel('Transaction') private readonly transactionModel: Model<Transaction>,
     @InjectModel('Eventee') private readonly eventeeModel: Model<Eventee>,
+    @InjectModel('Wallet') private readonly walletModel: Model<Wallet>,
     private readonly mailservice: MailerService,
     private readonly Authservice: AuthService,
     private readonly cacheService: CacheService,
@@ -71,6 +74,9 @@ export class CreatorsService {
         phoneNum: createCreatorDto.phoneNum,
         country: createCreatorDto.country,
         state: createCreatorDto.state,
+        account_name:createCreatorDto.account_name,
+        account_number:createCreatorDto. account_number,
+        bank_name:createCreatorDto. bank_name,
         profileImage: result,
         password: password,
       });
@@ -81,7 +87,7 @@ export class CreatorsService {
         }
       });
 
-      const currUrl = 'http://localhost:8000';
+      const currUrl = 'https://82f2-102-88-82-69.ngrok-free.app';
       let uniqueString = newCreator._id + uuidv4();
 
       const hashedUniqueString = await encoding.encodePassword(uniqueString);
@@ -92,6 +98,15 @@ export class CreatorsService {
         creation_date: Date.now(),
         expiring_date: Date.now() + 21600000,
       });
+
+      // create a wallet for the creator
+      const newWallet = await this.walletModel.create({
+        creatorId:newCreator._id,
+        currency:"Naira",
+      })
+
+      newCreator.walletId = newWallet._id
+      newCreator.save()
 
       await this.mailservice.sendVerificationEmail({
         email: createCreatorDto.email,
@@ -122,7 +137,7 @@ export class CreatorsService {
       req.flash("creatorCreation", "Successful signup. Check your email for verification link.")
      return res.redirect("/creators/signup")
     } catch (err) {
-      return res.render('error', { catchError: err.message });
+      return res.render('catchError', { catchError: err.message });
     }
   }
 
@@ -205,7 +220,7 @@ export class CreatorsService {
       console.log(resetToken);
       console.log(hashedResetToken);
       creator.save();
-      const currUrl = 'http://localhost:8000';
+      const currUrl = 'https://82f2-102-88-82-69.ngrok-free.app';
       this.mailservice.sendVerificationEmail({
         email: creator.email,
         subject: 'We received your request for password reset',
@@ -330,7 +345,7 @@ export class CreatorsService {
         res,
       );
 
-      res.cookie('jwt', token, { maxAge: 60 * 60 * 1000 });
+      res.cookie('jwt', token, { maxAge: 2 * 60 * 60 * 1000 });
 
       return res.redirect(`/creators/creatorDashboard`);
     } catch (err) {
@@ -442,6 +457,87 @@ export class CreatorsService {
       return res.render('catchError', { catchError: err.message });
     }
   }
+
+  //-------------------Opening the Wallet----------------------
+  async openWallet(req:any, res:Response){
+    try{
+      await this.Authservice.ensureLogin(req, res);
+      const wallet = await this.walletModel.findOne({creatorId:res.locals.user.id, status:"active"}).populate("transactions")
+      if(!wallet){
+        return res.render("error", {message:"inactiveWallet"})
+      }
+
+      let theTransactions = []
+
+      for (const transactionId of wallet.transactions){
+        const transaction = await (await this.transactionModel.findOne({_id:transactionId}).populate("eventeeId")).populate("eventId")
+        theTransactions.push(transaction)
+      }
+
+      const successfulTransaction = req.flash("transactionSuccess")
+      await res.render("wallet", {user:res.locals.user, wallet, theTransactions, successfulTransaction})
+    }catch(err){
+      return res.render('catchError', { catchError: err.message });
+    }
+  }
+
+  // -----------------------Wallet Debit
+  async debitWallet(debitDto:debitDto, walletId:string, req:any, res:Response, ){
+    try{
+    await this.Authservice.ensureLogin(req, res)
+
+    const creator = await this.creatorModel.findOne({_id:res.locals.user.id})
+    if(!creator){
+      return res.render("error", {message:"creatorNotFound"})
+    }
+
+    const amount = parseInt(debitDto.debit_amount)
+    const wallet = await (await this.walletModel.findOne({_id:walletId, status:"active"})).populate("transactions")
+    if(!wallet){
+      return res.render("error", {message:"walletNotFound"})
+    }
+
+    if(wallet.balance - amount < 0){
+      return res.render("error", {message:"insufficientBalance"})
+    }
+
+    wallet.balance = wallet.balance - amount
+    wallet.updatedAt = DateTime.now().toFormat('LLL d, yyyy \'at\' HH:mm')
+    
+
+    const newTransaction = await this.transactionModel.create({
+      amount:`${-amount}`,
+      status:"success",
+      type:"debit",
+      creatorId:res.locals.user.id
+    })
+
+    wallet.transactions.push(newTransaction._id)
+    wallet.save()
+
+    await this.mailservice.sendVerificationEmail({
+      email:"maito4me@gmail.com",
+        subject: 'Credit request',
+        html: `<div style = "background-color:lightgrey; padding:16px"; border-radius:20px>
+          <p>Hi, Account officer</P>
+          <p>${creator.creator_name} of ${creator.company_name} just made a request to be credited with N${amount}</p>
+          <p>Ensure the user is credited within the next 24hrs</P>
+          <h2>Account Details</h2>
+          <p><strong>Account name</strong>${creator.account_name}</P>
+          <p><strong>Account number</strong>${creator.account_number}</P>
+          <p><strong>Bank name</strong>${creator.bank_name}</P>
+          <p>Thanks</P>
+      </div>`,
+    })
+
+    req.flash("transactionSuccess", "Successful Transaction ")
+    return res.redirect("/creators/myWallet")
+  }catch(err){
+    return res.render('catchError', { catchError: err.message });
+  }
+  }
+// ----------------------------------------------
+
 
   //---------------------------------------Filtering event by state--------------------------------
   async filterEventByState(req: Request, res: Response, page: any) {

@@ -12,6 +12,7 @@ import { UpdateEventDto } from 'src/events/dto/update-event.dto';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { emailVerifyDto } from './dto/email-verify.dto';
 import { newPasswordDto } from './dto/newPassword.dto';
+import { debitDto } from './dto/debit.dto';
 
 
 @Controller('creators')
@@ -81,6 +82,17 @@ export class CreatorsController {
   @Get('/creatorDashboard')
   async getDashboard(@Query("page") page:any , @Res() res:Response, @Req() req:Request) {
     await this.creatorsService.getDashboard(req, res, page || 0);
+  }
+
+  
+  @Get('/myWallet')
+  async openWallet(@Res() res:Response, @Req() req:Request) {
+    await this.creatorsService.openWallet(req, res);
+  }
+
+  @Post('/withdrawFund/:walletId')
+  async debitWallet(@Body() debitDto:debitDto, @Param("walletId") walletId:string,  @Req() req:Request, @Res() res:Response) {
+    await this.creatorsService.debitWallet(debitDto, walletId, req, res, );
   }
 
   @Get('/event/filter')

@@ -38,7 +38,7 @@
       
        <%if(boughtEvents != 0){%>
         <%if(count == 1){%>
-            <h1 style="text-align: center;">The event is:</h1>
+            <h1 style="text-align: center;margin-bottom: 50px;text-decoration: underline;">The event is:</h1>
            <ol id="allEventsContainer">
               <% for(const event of boughtEvents){%>
                 <div class="eventContainer"> 
@@ -50,7 +50,7 @@
                <%}%>
            </ol> 
         <%}else{%>
-            <h1 style="text-align: center;">They are:</h1>
+            <h1 style="text-align: center;margin-bottom: 50px;text-decoration: underline;">They are:</h1>
            <ol id="allEventsContainer">
               <% for(const event of boughtEvents){%>
                 <div class="eventContainer"> 
@@ -65,7 +65,7 @@
            
        <%}else{%>
         <div style="text-align: center;">
-            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <img src="/empty.jpg" alt="image" style="width:300px; height: 300px;">
               <h4>You have not bought ticket for any event.</h4> 
               <p>Get a ticket today.</p> 
         </div>

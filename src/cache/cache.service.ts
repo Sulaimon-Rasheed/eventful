@@ -5,7 +5,7 @@ import {caching} from "cache-manager"
 
 @Injectable()
 export class CacheService {
-    private memoryCache = caching('memory', {max: 100, ttl: 5 *60 * 1000 });
+    private memoryCache = caching('memory', {max: 100, ttl: 1 *60 * 1000 });
     constructor( ) {}
     
       async get(key: string): Promise<any> {

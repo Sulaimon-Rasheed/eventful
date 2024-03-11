@@ -39,13 +39,13 @@
        <%if(allTicketedEventees.length != 0){%>
     <div >
         <%if(count == 1){%>
-            <h1 style="text-align: center;">The person is:</h1>   
+            <h1 style="text-align: center;margin-bottom: 50px;text-decoration: underline;">The person is:</h1>   
            <ol id="allEventsContainer">
               <% for(const eventee of allTicketedEventees ){%>
                 <div class="eventContainer">  
                     <li>
                        <img src="<%=eventee.profileImage.url%>" alt="eventee image" style="height:50px; width: 50px; border-radius: 50%;vertical-align: middle;">
-                       <p><%=eventee.first_name%></p>
+                       <p><%=eventee.first_name%> <%=eventee.last_name%></p>
                        <p><%=eventee.email%></p>
                        <p><%=eventee.phoneNum%></p>
                    </li>
@@ -53,13 +53,13 @@
                <%}%>
            </ol> 
         <%}else{%>
-            <h2 style="text-align: center;">They are:</h2>
+            <h1 style="text-align: center;margin-bottom: 50px;text-decoration: underline;">They are:</h1>
            <ol id="allEventsContainer">
               <% for(const eventee of allTicketedEventees ){%>
                 <div class="eventContainer">  
                    <li>
                        <img src="<%=eventee.profileImage.url%>" alt="eventee image" style="height:50px; width: 50px; border-radius: 50%;vertical-align: middle;">
-                       <p><%=eventee.first_name%></p>
+                       <p><%=eventee.first_name%> <%=eventee.last_name%></p>
                        <p><%=eventee.email%></p>
                        <p><%=eventee.phoneNum%></p>
                    </li>
@@ -70,7 +70,7 @@
     </div>   
        <%}else{%>
         <div style="text-align: center;">
-            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <img src="/empty.jpg" alt="image" style="width:300px; height: 300px;">
               <h4>No one has bought ticket for your created events so far.</h4> 
               <p>Check back later.</p> 
           </div>

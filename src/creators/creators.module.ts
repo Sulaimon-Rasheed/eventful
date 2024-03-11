@@ -22,13 +22,14 @@ import { transactionSchema } from 'src/transactions/transactions.model';
 import { ConfigService } from '@nestjs/config';
 import { CronService } from 'src/cron/cron.service';
 import { CacheService } from 'src/cache/cache.service';
+import { walletSchema } from 'src/wallets/wallets.model';
 // import { QrcodescannerService } from 'src/qrcodescanner/qrcodescanner.service';
 // import { QrcodescannerController } from 'src/qrcodescanner/qrcodescanner.controller';
 
 
 @Module({
   imports:[EventsModule,EventeesModule,
-   MongooseModule.forFeature([{name:"Creator", schema:creatorSchema},{name:"Event", schema:eventSchema},{name:"CreatorVerification", schema:creatorVerificationSchema}, {name:"Eventee", schema:eventeeSchema}, {name:"EventeeVerification", schema:eventeeVerificationSchema}, {name:"Transaction", schema:transactionSchema}]),
+   MongooseModule.forFeature([{name:"Creator", schema:creatorSchema},{name:"Event", schema:eventSchema},{name:"CreatorVerification", schema:creatorVerificationSchema}, {name:"Eventee", schema:eventeeSchema}, {name:"EventeeVerification", schema:eventeeVerificationSchema}, {name:"Transaction", schema:transactionSchema}, {name:"Wallet", schema:walletSchema}]),
   MulterModule.register({dest:"uploads/"})
   ],
   controllers: [CreatorsController, EventsController, EventeesController],

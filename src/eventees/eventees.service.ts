@@ -18,6 +18,7 @@ import { Request, Response } from 'express';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginEventeeDto } from './dto/login-eventee.dto';
 import { Event } from '../events/events.model';
+import { Wallet } from '../wallets/wallets.model';
 import { Transaction } from '../transactions/transactions.model';
 import axios from 'axios';
 import * as qrcode from 'qrcode';
@@ -35,8 +36,8 @@ export class EventeesService {
     private readonly eventeeVerificationModel: Model<EventeeVerification>,
     @InjectModel('Event') private readonly eventModel: Model<Event>,
     @InjectModel('Creator') private readonly creatorModel: Model<Creator>,
-    @InjectModel('Transaction')
-    private readonly transactionModel: Model<Transaction>,
+    @InjectModel('Transaction') private readonly transactionModel: Model<Transaction>,
+    @InjectModel('Wallet') private readonly walletModel: Model<Wallet>,
     private readonly mailservice: MailerService,
     private readonly Authservice: AuthService,
     private readonly cacheService: CacheService,
@@ -91,7 +92,7 @@ export class EventeesService {
         }
       });
 
-      const currUrl = 'https://d016-102-88-71-81.ngrok-free.app';
+      const currUrl = 'https://82f2-102-88-82-69.ngrok-free.app';
       let uniqueString = newEventee._id + uuidv4();
       const hashedUniqueString = await encoding.encodePassword(uniqueString);
 
@@ -251,7 +252,7 @@ export class EventeesService {
       eventee.passwordResetToken = hashedResetToken;
       eventee.passwordResetExpireDate = Date.now() + 10 * 60 * 1000;
       eventee.save();
-      const currUrl = 'http://localhost:8000';
+      const currUrl = 'https://82f2-102-88-82-69.ngrok-free.app';
       this.mailservice.sendVerificationEmail({
         email: eventee.email,
         subject: 'We received your request for password reset',
@@ -654,10 +655,20 @@ export class EventeesService {
   async buyTicket(eventId: string, price: number, req: Request, res: Response) {
     try {
       await this.Authservice.ensureLogin(req, res);
-
-      const event = await this.eventModel.findOne({_id:eventId})
+      
+      const event = await this.eventModel.findOne({_id:eventId}).populate("creatorId")
       if(!event){
         return res.render("error", {message:"eventNotFound"})
+      }
+
+      const creator = await this.creatorModel.findOne({_id:event.creatorId})
+      if(!creator){
+        return res.render("error", {message:"creatorNotFound"})
+      }
+     
+     const wallet = await this.walletModel.findOne({creatorId:creator.id, status:"active"})
+      if(!wallet){
+        return res.render("error", {message:"inactiveWallet"})
       }
 
       let regDeadline = DateTime.fromFormat(event.registration_deadline, "LLL d, yyyy")
@@ -673,9 +684,11 @@ export class EventeesService {
       });
 
       const transaction = await this.transactionModel.create({
-        amount: price,
+        amount: `${+price}`,
+        type:"credit",
         eventId: eventId,
         eventeeId: eventee._id,
+        creatorId:creator._id
       });
 
       const data = {
@@ -740,6 +753,16 @@ export class EventeesService {
         eventee.event_count = eventee.event_count + 1;
         eventee.bought_eventsId.push(event._id);
         eventee.save();
+
+      const wallet = await this.walletModel.findOne({creatorId:creator.id, status:"active"})
+      if(!wallet){
+        return res.render("error", {message:"inactiveWallet"})
+      }
+
+      wallet.balance = wallet.balance + (parseInt(transaction.amount) - (0.2 * parseInt(transaction.amount)))
+      wallet.transactions.push(transaction._id)
+      wallet.updatedAt = DateTime.now().toFormat('LLL d, yyyy \'at\' HH:mm')
+      wallet.save()
 
         const data = {
           name: `${eventee.first_name} ${eventee.last_name}`,

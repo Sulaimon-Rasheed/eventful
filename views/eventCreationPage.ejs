@@ -39,6 +39,10 @@
       <p style="color: green; text-align: center; font-size: 24px;"><%=successfulCreation%></p>
     <%}%>
 
+    <%if(eventDelMessage){%>
+      <p style="color: green; text-align: center; font-size: 24px;"><%=eventDelMessage%></p>
+    <%}%>
+
     <form action="/events/createEvent" , method="post" id="form" enctype="multipart/form-data">
       <h2 style="margin-bottom: 50px;">Create Event</h2>
         <label for="title" class="label">Title:</label>
@@ -48,7 +52,7 @@
           name="title"
           class="input"
         /><br /><br /><br />
-        <label for="description" class="label">Description:</label>
+        <p><label for="description" class="label">Description:</label></p>
         <textarea name="description" cols="100" rows="10"></textarea>
         <!-- <textarea name="description" id="editor"></textarea> -->
         <!-- <script>
@@ -103,16 +107,16 @@
         <label for="reminder_days" class="label">Choose a day for Eventful to send notification to Eventees.</label>
         <select name="reminder_days" class="input">
           <option value="">---How many days to the event ?----</option>
-          <option name="reminder_days" value="">1</option>
-          <option name="reminder_days" value="">2</option>
-          <option name="reminder_days" value="">3</option>
-          <option name="reminder_days" value="">4</option>
-          <option name="reminder_days" value="">5</option>
-          <option name="reminder_days" value="">6</option>
-          <option name="reminder_days" value="">7</option>
-          <option name="reminder_days" value="">8</option>
-          <option name="reminder_days" value="">9</option>
-          <option name="reminder_days" value="">10</option>
+          <option name="reminder_days" value="1">1</option>
+          <option name="reminder_days" value="2">2</option>
+          <option name="reminder_days" value="3">3</option>
+          <option name="reminder_days" value="4">4</option>
+          <option name="reminder_days" value="5">5</option>
+          <option name="reminder_days" value="6">6</option>
+          <option name="reminder_days" value="7">7</option>
+          <option name="reminder_days" value="8">8</option>
+          <option name="reminder_days" value="9">9</option>
+          <option name="reminder_days" value="10">10</option>
         </select><br /><br /><br />
 
         <label for="registration_deadline" class="label">Ticket Purchase deadline: </label>
@@ -130,21 +134,15 @@
           class="input"
         /><br /><br /><br />
     
-        <label for="ticket_price" class="label">Ticket Price:</label>
+        <label for="ticket_price" class="label">Ticket Price (&#8358;):</label>
         <input
           type="text"
           name="ticket_price"
           class="input"
         /><br /><br /><br />
         
-        <label for="discount" class="label">discount:</label>
-        <input
-          type="text"
-          name="discount"
-          class="input"
-        /><br /><br /><br />
 
-        <label for="additional_info" class="label">Additional Info:</label>
+        <p><label for="additional_info" class="label">Additional Info: (optional)</label></p>
         <textarea name="additional_info" cols="100" rows="10"></textarea>
         <!-- <textarea name="additional_info" id="info"></textarea> -->
         <!-- <script>

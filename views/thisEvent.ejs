@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:url"           content="https://697e-102-89-34-92.ngrok-free.app/events/thisEvent/share/<%=event._id%>" />
+    <meta property="og:url"           content="https://82f2-102-88-82-69.ngrok-free.app/events/thisEvent/share/<%=event._id%>" />
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="<%=event.title%>" />
     <meta property="og:description"   content="<%=event.description%>" />
@@ -27,7 +27,7 @@
     </style>
 </head>
 <body>
-
+<div>
   <nav>
     <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
     <div>
@@ -40,67 +40,100 @@
   <div id="welcomeContainer">
     <div id="eventTitle">
       <h1 style="font-size: 70px;"><%=event.title%></h1>
-    </div>
+      <p><img id="shareBtn" src="/share-button.webp" alt="image"></p>
+      <div style="display: flex; gap:20px; justify-content: center;">
+            <!--------------------- Loading Facebook SDK for JavaScript---------------------------- -->
+            <script>(function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0];
+              if (d.getElementById(id)) return;
+              js = d.createElement(s); js.id = id;
+              js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+              fjs.parentNode.insertBefore(js, fjs);
+              }(document, 'script', 'facebook-jssdk'));
+            </script>
+        
+            <!-- button -->
+            <div id="facebookBtn" class="fb-share-button" data-layout="button_count" 
+            data-href="https://82f2-102-88-82-69.ngrok-free.app/events/thisEvent/share/<%=event._id%>" 
+            >
+            </div>
+            <!-- ----- -->
+        
+            <div id="twitterBtn">
+            <!------------------- Twitter post button----------------------- -->
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
+            <!-- ------------------------------------------ -->
+            </div>
+            
+            
+            <!-- Loading Twitter javascript snippest -->
+            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            <!-- ----------------------------------- -->
+          
+        </div>
+          </div>
 
-    <div id="imageContainer">
-    <img id="indexImage" src="<%=event.event_image.url%>"  alt="image">
-    </div>
-  </div>
+          <div id="imageContainer">
+          <img id="indexImage" src="<%=event.event_image.url%>"  alt="image">
+          </div>
+        </div>
+          
+        <div style="margin: 24px;">
+          <h2 class="readHeadings">About:</h2>
+          <p><%=event.description%></p>
+
+          <h2 class="readHeadings">Date and Time:</h2>
+          <div style="display: flex; gap: 20px;">
+            <p><%=event.event_date%></p>
+            <p>||</p>
+            <p><%=event.starting_time%> - <%=event.ending_time%> WAT</p>
+          </div>
+
+          <h2 class="readHeadings">Venue:</h2>
+          <p><%=event.venue%></p>
+
+          <h2 class="readHeadings">Registration Deadline:</h2>
+          <p><%=event.registration_deadline%></p>
+          
+          <h2 class="readHeadings" id="inputHead">Ticket:</h2>
+          <input type="text" value="&#8358;<%=event.ticket_price%>" readonly style="border-radius: 100%; padding: 5px; text-align: center; width:50px; height: 50px; background-color: brown; color: white; border: none;font-weight: bold;">
+          
+          <h2 class="readHeadings">More Info:</h2>
+          <p><%=event.additional_info%></p>
+
+      <!-- <h2 class="readHeadings" id="inputHead">Please click below to share</h2> -->
+      <p style="text-align: center;"><img id="shareBtn2" src="/share-button.webp" alt="image"></p>
+      <div style="display: flex; gap:20px; justify-content: center;">
+            <!--------------------- Loading Facebook SDK for JavaScript---------------------------- -->
+            <script>(function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0];
+              if (d.getElementById(id)) return;
+              js = d.createElement(s); js.id = id;
+              js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+              fjs.parentNode.insertBefore(js, fjs);
+              }(document, 'script', 'facebook-jssdk'));
+            </script>
+        
+            <!-- button -->
+            <div id="facebookBtn" class="fb-share-button" data-layout="button_count" 
+            data-href="https://82f2-102-88-82-69.ngrok-free.app/events/thisEvent/share/<%=event._id%>" 
+            >
+            </div>
+            <!-- ----- -->
+        
+      <div id="twitterBtn">
+      <!------------------- Twitter post button----------------------- -->
+      <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
+      <!-- ------------------------------------------ -->
+      </div>
+      <!-- Loading Twitter javascript snippest -->
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      <!-- ----------------------------------- -->
     
-  <div>
-    <h2 style="margin-bottom: 0;">About:</h2>
-    <p><%=event.description%></p>
-
-    <h2 style="margin-bottom: 0;">Date and Time:</h2>
-    <div style="display: flex; gap: 20px; margin-bottom: 0;">
-      <p><%=event.event_date%></p>
-      <p>||</p>
-      <p><%=event.starting_time%> - <%=event.ending_time%> WAT</p>
-    </div>
-
-    <h2 style="margin-bottom: 0;">Venue:</h2>
-    <p><%=event.venue%></p>
-
-    <h2 style="margin-bottom: 0;">Registration Deadline:</h2>
-    <p><%=event.registration_deadline%></p>
-    
-    <h2 style="margin-bottom: 0;">More Info:</h2>
-    <p><%=event.additional_info%></p>
-
-    <h2 style="margin-bottom: 0;">Ticket:</h2>
-    <input type="text" value="N<%=event.ticket_price%>" readonly style="border-radius: 100%; padding: 5px; text-align: center; width:50px; height: 50px; background-color: brown; color: white; border: none;font-weight: bold;">
-  
-</div>
-<h2>Please share with others:</h2>
-<div style="display: flex; gap:20px">
-  <!--------------------- Loading Facebook SDK for JavaScript---------------------------- -->
-  <script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
-    fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-  </script>
-  
-    <!-- button -->
-    <div class="fb-share-button" data-layout="button_count" 
-    data-href="https://a9d7-102-89-33-96.ngrok-free.app/events/thisEvent/share/<%=event._id%>" 
-    >
-    </div>
-    <!-- ----- -->
-  
-      
-  <!------------------- Twitter post button----------------------- -->
-  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
-  <!-- ------------------------------------------ -->
-   <!-- Loading Twitter javascript snippest -->
-   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-   <!-- ----------------------------------- -->
-  
   </div>
 
-    <h2 style="margin-bottom: 10px;">Enquiry:</h2>
+  <hr style="margin-top: 30px;">
+    <h2 style="margin-bottom: 10px;" class="readHeadings">Enquiry:</h2>
     <div style="background-color:whitesmoke; border-radius: 20px;padding: 16px;margin-bottom:20px; width: 50%;">
     <p id="enq"><img src="<%=event.creatorId.profileImage.url%>" alt="creator image" style="height:40px; width: 40px; border-radius: 50%;vertical-align: middle;"></p>
     <p id="enq"><strong>Name: </strong><%=event.creatorId.creator_name%></p>
@@ -108,10 +141,10 @@
     <p id="enq"><strong>Phone Number: </strong><%=event.creatorId.phoneNum%></p>
     <p id="enq"><strong>Email: </strong><%=event.creatorId.email%></p>
     </div>
+</div> 
     <footer>
       <%-include("partials/footer.ejs")-%>
     </footer>
-</body>
-
-
+  </div>
+  </body>
 </html>

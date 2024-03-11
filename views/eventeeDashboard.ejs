@@ -17,7 +17,8 @@
     <nav>
       <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>  
       <div>
-        <span><a id="navLink" href="/eventees/boughtEvents">Ticketed Events</a></li>
+        <span><a id="navLink" href="/events/myCheckList">Checklist</a></span>
+        <span><a id="navLink" href="/eventees/boughtEvents">Bought Events</a></li>
         <span><a id="navLink" href="/eventees/attendedEvents">Attended Events</a></span>
         <span><a id="logoutLink" href="/eventees/logout">Logout</a></span>
         <img src="<%=user.image.url%>" alt="user Image" style="height:40px; width: 40px; border-radius: 50%; vertical-align: middle;margin-left: 50px;">
@@ -246,7 +247,7 @@
 
     <%}else{%>
       <div style="text-align: center;">
-      <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+      <img src="/empty.jpg" alt="image" style="width:300px; height: 300px;">
         <h4>There is no event post for now or selected event category is not found</h4> 
         <p>Check back later.</p> 
       </div>

@@ -39,6 +39,7 @@ dotenv.config()
   controllers: [AppController],
   providers: [AppService, FlashMiddleware, AuthService, MailerService, CronService, CacheService],
 })
+
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(FlashMiddleware).forRoutes('*');

@@ -12,6 +12,7 @@ import { creatorSchema } from 'src/creators/creators.model';
 import { creatorVerificationSchema } from 'src/creators/verifiedCreators.model';
 import mongoose from 'mongoose';
 import { eventeeSchema } from 'src/eventees/eventees.model';
+import { walletSchema } from 'src/wallets/wallets.model';
 import { EventeesController } from 'src/eventees/eventees.controller';
 import { EventeesService } from 'src/eventees/eventees.service';
 import { eventeeVerificationSchema } from 'src/eventees/verifiedEventee.model';
@@ -22,7 +23,7 @@ import { CacheService } from 'src/cache/cache.service';
 // import { QrcodescannerService } from 'src/qrcodescanner/qrcodescanner.service';
 
 @Module({
-  imports:[MongooseModule.forFeature([{name:"Event", schema:eventSchema}, {name:"Creator", schema:creatorSchema}, {name:"CreatorVerification", schema:creatorVerificationSchema}, {name:"Eventee", schema:eventeeSchema}, {name:"EventeeVerification", schema:eventeeVerificationSchema}, {name:"Transaction", schema:transactionSchema}]),
+  imports:[MongooseModule.forFeature([{name:"Event", schema:eventSchema}, {name:"Creator", schema:creatorSchema}, {name:"CreatorVerification", schema:creatorVerificationSchema}, {name:"Eventee", schema:eventeeSchema}, {name:"EventeeVerification", schema:eventeeVerificationSchema}, {name:"Transaction", schema:transactionSchema}, {name:"Wallet", schema:walletSchema}]),
   MulterModule.register({dest:"/uploads"})
 ],
   controllers: [EventsController, EventeesController],

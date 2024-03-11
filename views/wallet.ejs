@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <link rel="stylesheet" href="/style.css">
+    <title>Wallet</title>
+</head>
+<body>
+    <div>
+
+        <nav>
+            <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+            <div>
+              <span style="color:rgb(0, 72, 255); font-weight: bold;">Scanner &rArr;</span>
+              <a href="/creators/scanner"><img style="height:40px; width: 40px; vertical-align: middle;margin-right: 50px;" src="/qrcode2.png" alt="scannerImage"></a>
+              <span><a id="navLink" href="/creators/creatorDashboard">Dashboard</a></span>
+              <span><a id="navLink" href="/creators/allTicketedEventees">All the time ticketed Eventees</a></span>
+              <span><a id="navLink" href="/creators/allScannedEventees">All the time scanned Eventees</a></span>
+              <span><a id="logoutLink"  href="/creators/logout">Logout</a></span>
+              <img src="<%=user.image.url%>" alt="user Image" style="height:40px; width: 40px; border-radius: 50%; vertical-align: middle;margin-left: 50px;">
+            </div>
+          </nav>
+          
+          <div id="welcomeContainer">
+            <div id="welcomeMessage">
+              <h1 style="font-size: 70px;">Wallet</h1>
+              <p style="font-size: 70px;"><strong>Balance: </strong><span style="color: black;">&#8358;<%=wallet.balance%></span></p>
+            </div>
+      
+            <div id="imageContainer">
+              <img id="indexImage" src="/wallet.jpg" alt="image">
+            </div>
+          </div>
+           
+          <%if(successfulTransaction){%>
+            <p style="color: green; text-align: center; font-size: 24px;"><%=successfulTransaction%></p>
+           <%}%>
+          
+        <div id="openCloseContainer">
+          <p style="text-align: center;">Transaction History</p>
+      
+          <p id="action"><span id="plus">Close</span></p>
+          
+        </div>
+        <p style="text-align: center;"><strong>Last update: </strong><%=wallet.updatedAt%></p>
+
+          <div id="transactionContainer">
+          <table id = "theTable">
+            <tr>
+              <th>Name</th>
+              <th>Amount (&#8358;)</th>
+              <th>Transaction type</th>
+              <th>Event</th>
+              <th>Transaction date</th>
+              <th>Payment status</th>
+            </tr>
+            <%for(const transaction of theTransactions){%>
+              <tr>
+                <%if(transaction.type == "credit"){%>
+                  <td><%=transaction.eventeeId.first_name%> <%=transaction.eventeeId.last_name%></td>
+                <%}else{%>
+                  <td><%=user.name%></td> 
+                <%}%>
+                
+                <td><%=transaction.amount%></td>
+                <td><%=transaction.type%></td>
+                <%if(transaction.type == "credit"){%>
+                  <td><%=transaction.eventId.title%></td>
+                <%}else{%>
+                  <td>null</td> 
+                <%}%>
+                
+                <td><%=transaction.created_date%></td>
+                <td><%=transaction.status%></td>
+              </tr>
+            <%}%>
+          </table>
+        </div>  
+
+        <!------------------- withdrawal form---------------- -->
+        <form id="form" action="/creators/withdrawFund/<%=wallet._id%>" method="PUT">
+          <h2 style="text-decoration: underline;">Withdrawal</h2>
+          <label for="debit_amount">Amount to withdraw</label>
+          <input class="input" type="text" name="debit_amount">
+          <button id="navLink" type="submit" formmethod="post">Send</button>
+        </form>
+        <!------------------------------------------------  -->
+
+
+        <!----------- Script to open and close transaction history------------ -->
+          <script>
+            const plus = document.getElementById("plus")
+            const container = document.getElementById("transactionContainer")
+            const table = document.getElementById("theTable")
+            const action = document.getElementById("action")
+
+            const emptyTable = document.createElement("div")
+            emptyTable.style.visibility = "hidden"
+
+            const minus = document.createElement("span")
+            minus.id = "minus"
+            minus.innerHTML = "Open"
+
+            plus.addEventListener("click", ()=>{
+              container.replaceChild(emptyTable, table)
+              action.replaceChild(minus, plus)
+              
+            })
+
+            
+            minus.addEventListener("click", ()=>{
+              container.replaceChild(table,emptyTable)
+              action.replaceChild(plus,minus)
+            })
+          </script>
+ <!-- --------------------------------------------------------------------- -->
+          <footer>
+            <%-include("partials/footer.ejs")-%>
+        </footer>
+    </div>
+</body>
+</html>

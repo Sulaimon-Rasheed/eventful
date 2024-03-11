@@ -17,8 +17,12 @@ export const creatorSchema = new Schema({
     freePlan:{type:Boolean, default:true},
     paidPlan:{type:Boolean, default:false},
     paymentStatus:{type:String, default:"pending", enum:["pending", "failed", "successful"]},
+    account_name:{type:String},
+    account_number:{type:String},
+    bank_name:{type:String},
     creationDate:{type:Date},
-    eventsId:[{type:Schema.Types.ObjectId, ref:"events"}],
+    eventsId:[{type:Schema.Types.ObjectId, ref:"Event"}],
+    walletId:{type:Schema.Types.ObjectId, ref:"Wallet"},
     allScannedEventeesId:[{type:Schema.Types.ObjectId, ref:"Eventee"}],
     allTicketedEventeesId:[{type:Schema.Types.ObjectId, ref:"Eventee"}],
 })
@@ -36,6 +40,9 @@ export interface Creator extends mongoose.Document{
     profileImage:Object,
     phoneNum:string
     paymentStatus:string
+    account_name:string
+    account_number:string
+    bank_name:string
     verified:boolean
     passwordResetToken:string
     passwordResetExpireDate:any
@@ -43,6 +50,7 @@ export interface Creator extends mongoose.Document{
     paidPlan:boolean
     creationDate:Date
     eventsId:object[]
+    walletId:object
     allScannedEventeesId:string[]
     allTicketedEventeesId:string[]
 }

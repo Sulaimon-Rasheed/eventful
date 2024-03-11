@@ -19,6 +19,7 @@
       <div>
         <span style="color:rgb(0, 72, 255); font-weight: bold;">Scanner &rArr;</span>
         <a href="/creators/scanner"><img style="height:40px; width: 40px; vertical-align: middle;margin-right: 50px;" src="/qrcode2.png" alt="scannerImage"></a>
+        <span><a id="navLink" href="/creators/myWallet">My Wallet</a></span>
         <span><a id="navLink" href="/creators/allTicketedEventees">All the time ticketed Eventees</a></span>
         <span><a id="navLink" href="/creators/allScannedEventees">All the time scanned Eventees</a></span>
         <span><a id="logoutLink"  href="/creators/logout">Logout</a></span>
@@ -208,9 +209,9 @@
 
 <%}else{%>
   <div style="text-align: center;">
-    <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
-      <h4>Event not found.</h4> 
-      <p>Check back later.</p> 
+    <img src="/empty.jpg" alt="image" style="width:300px; height: 300px;">
+      <h4>Event not found yet.</h4> 
+      <p><a id="navLink" href="/events/createEvent">Create one</a></p>
   </div>
     
 <%}%>
