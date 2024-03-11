@@ -9,6 +9,7 @@ import { Creator } from '../creators/creators.model';
 import { MailerService } from 'src/mailer/mailer.service';
 import { AuthService } from 'src/auth/auth.service';
 import { v2 } from 'cloudinary';
+import * as fs from 'fs';
 import * as dotenv from 'dotenv';
 dotenv.config();
 import {DateTime} from "luxon"
@@ -44,6 +45,10 @@ export class EventsService {
         folder: 'eventful_event_image',
       });
 
+      if (!result) {
+        return res.render('error', { message: 'fileUploadError' });
+      }
+
       const luxonDeadlineDateTime = DateTime.fromISO(createEventDto.registration_deadline);
       const formattedDeadlineDate = luxonDeadlineDateTime.toFormat('LLL d, yyyy');
 
@@ -69,6 +74,12 @@ export class EventsService {
         event_image: result,
         additional_info:sanitizedAddContent,
         creatorId: res.locals.user.id,
+      });
+
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.log(err.message)
+        }
       });
 
       const creator = await this.creatorModel.findOne({_id:res.locals.user.id})

@@ -88,7 +88,7 @@ export class EventeesService {
 
       fs.unlink(filePath, (err) => {
         if (err) {
-          throw new Error('file unlink failed');
+          console.log(err.message)
         }
       });
 

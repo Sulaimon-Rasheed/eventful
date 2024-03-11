@@ -60,6 +60,7 @@ export class CreatorsService {
       }
 
       const password = await encoding.encodePassword(createCreatorDto.password);
+      
       const result = await v2.uploader.upload(filePath, {
         folder: 'eventful_creators_ProfileImage',
       });
@@ -83,7 +84,7 @@ export class CreatorsService {
 
       fs.unlink(filePath, (err) => {
         if (err) {
-          throw new Error('file unlink failed');
+          console.log(err.message)
         }
       });
 
