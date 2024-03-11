@@ -6,7 +6,6 @@ dotenv.config()
 import { join } from 'path'
 import * as cookieParser from "cookie-parser"
 import * as session from 'express-session';
-// import flash = require('connect-flash');
 import * as flash from 'connect-flash'
 
 

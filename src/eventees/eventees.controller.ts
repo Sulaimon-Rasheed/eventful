@@ -18,7 +18,7 @@ export class EventeesController {
   @Post("signup")
   @UseInterceptors(FileInterceptor('profileImage'))
   
-  async createEventee(@UploadedFile() file:Express.Multer.File ,@Body(new ValidationPipe) createEventeeDto: CreateEventeeDto,@Req() req:Request, @Res() res:Response) {
+  async createEventee(@UploadedFile() file:any ,@Body(new ValidationPipe) createEventeeDto: CreateEventeeDto,@Req() req:Request, @Res() res:Response) {
       await this.eventeesService.createEventee(createEventeeDto, file.path,req, res)
   }
 

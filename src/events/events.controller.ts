@@ -19,7 +19,7 @@ export class EventsController {
 
   @Post('/createEvent')
   @UseInterceptors(FileInterceptor("event_image"))
-  async createEvent(@UploadedFile() file:Express.Multer.File, @Body(new ValidationPipe) CreateEventDto:CreateEventDto, @Req() req:Request, @Res() res:Response){
+  async createEvent(@UploadedFile() file:any, @Body(new ValidationPipe) CreateEventDto:CreateEventDto, @Req() req:Request, @Res() res:Response){
     await this.eventsService.createEvent(CreateEventDto, file.path, req, res)
   }
 

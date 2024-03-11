@@ -21,7 +21,6 @@ export class EventsService {
   constructor(
     @InjectModel('Event') private eventModel: Model<Event>,
     @InjectModel('Creator') private readonly creatorModel: Model<Creator>,
-    private readonly mailservice: MailerService,
     private readonly Authservice: AuthService,
     private readonly cacheService:CacheService
   ) {

@@ -20,13 +20,11 @@ import { debitDto } from './dto/debit.dto';
 export class CreatorsController {
   constructor(
     private readonly creatorsService: CreatorsService,
-    private readonly eventsService:EventsService
-    // private readonly mailService:MailerService,
     ) {}
 
   @Post("signup")
   @UseInterceptors(FileInterceptor("profileImage"))
-  async createCreator(@UploadedFile() file:Express.Multer.File, @Body(new ValidationPipe) createCreatorDto: CreateCreatorDto, @Req() req:Request, @Res() res:Response) {
+  async createCreator(@UploadedFile() file:any, @Body(new ValidationPipe) createCreatorDto: CreateCreatorDto, @Req() req:Request, @Res() res:Response) {
       await this.creatorsService.createCreator(createCreatorDto, file.path,req, res)
   }
 

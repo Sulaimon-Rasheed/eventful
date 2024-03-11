@@ -66,6 +66,7 @@ export class EventeesService {
       }
 
       const password = await encoding.encodePassword(createEventeeDto.password);
+      
       const result = await v2.uploader.upload(filePath, {
         folder: 'eventful_eventees_ProfileImage',
       });
