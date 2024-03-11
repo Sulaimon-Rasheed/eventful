@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="/style.css">
     <title>Attended Eventees</title>
 </head>
@@ -24,8 +24,8 @@
         </nav>
         <div id="welcomeContainer">
             <div id="welcomeMessage">
-              <h1 style="font-size: 70px;">Attended events</h1 >
-              <p style="font-size: 70px;"><b>Result: </b><%=count%></p>
+              <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Attended events</h1 >
+              <p data-aos="fade-right" data-aos-duration="1000" style="font-size: 70px;"><b>Result: </b><%=count%></p>
              
             </div>
       
@@ -37,10 +37,10 @@
       
        <%if(attendedEvents != 0){%>
         <%if(count == 1){%>
-            <h1 style="text-align: center;margin-bottom: 50px;text-decoration: underline;">The event is:</h1>
+            <h1 style="text-align: center;margin-bottom: 50px;text-decoration: underline;"data-aos="zoom-in" data-aos-duration="1000">The event is:</h1>
            <ol id="allEventsContainer">
               <% for(const event of attendedEvents){%>
-                <div class="eventContainer">
+                <div class="eventContainer" data-aos="fade-up" data-aos-duration="1000">
                 <li>
                        <p><%=event.title%></p>
                        <img src="<%=event.event_image.url%>" alt="event image" style="height:100px; width: 200px"> 
@@ -49,10 +49,10 @@
                <%}%>
            </ol> 
         <%}else{%>
-            <h1 style="text-align: center;margin-bottom: 50px;text-decoration: underline;">They are:</h1>
+            <h1 style="text-align: center;margin-bottom: 50px;text-decoration: underline;" data-aos="zoom-in" data-aos-duration="1000">They are:</h1>
            <ol id="allEventsContainer">
               <% for(const event of attendedEvents){%>
-                <div class="eventContainer">  
+                <div class="eventContainer" data-aos="fade-up" data-aos-duration="1000">  
                 <li>
                     <p><%=event.title%></p>
                     <img src="<%=event.event_image.url%>" alt="event image" style="height:100px; width: 200px"> 
@@ -64,14 +64,17 @@
            
        <%}else{%>
         <div style="text-align: center;">
-            <img src="/empty.jpg" alt="image" style="width:300px; height: 300px;">
-              <h4>You have not attended any event yet.</h4> 
-              <p>Get a ticket today.</p> 
+            <img data-aos="zoom-in" data-aos-duration="1000" src="/empty.jpg" alt="image" style="width:300px; height: 300px;">
+              <h4 data-aos="fade-up" data-aos-duration="1000">You have not attended any event yet.</h4> 
+              <p data-aos="fade-up" data-aos-duration="1000">Get a ticket today.</p> 
         </div>
        <%}%>
        <footer>
         <%-include("partials/footer.ejs")-%>
     </footer>
 </div>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
 </body>
 </html>

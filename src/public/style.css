@@ -265,6 +265,10 @@ flex-wrap: wrap;
 #howTitle{
     text-align: center;
     margin-bottom: 0;
+    text-decoration: underline;
+    text-underline-offset: 10px;
+    margin-bottom: 50px;
+    color: purple;
 }
 
 #updateHeading{

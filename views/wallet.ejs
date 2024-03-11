@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="/style.css">
     <title>Wallet</title>
 </head>
@@ -29,8 +29,8 @@
           
           <div id="welcomeContainer">
             <div id="welcomeMessage">
-              <h1 style="font-size: 70px;">Wallet</h1>
-              <p style="font-size: 70px;"><strong>Balance: </strong><span style="color: black;">&#8358;<%=wallet.balance%></span></p>
+              <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Wallet</h1>
+              <p data-aos="fade-left" data-aos-duration="1000" style="font-size: 70px;"><strong>Balance: </strong><span style="color: black;">&#8358;<%=wallet.balance%></span></p>
             </div>
       
             <div id="imageContainer">
@@ -39,19 +39,19 @@
           </div>
            
           <%if(successfulTransaction){%>
-            <p style="color: green; text-align: center; font-size: 24px;"><%=successfulTransaction%></p>
+            <p data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=successfulTransaction%></p>
            <%}%>
           
         <div id="openCloseContainer">
-          <p style="text-align: center;">Transaction History</p>
+          <p data-aos="zoom-in" data-aos-duration="1000" style="text-align: center;">Transaction History</p>
       
           <p id="action"><span id="plus">Close</span></p>
           
         </div>
-        <p style="text-align: center;"><strong>Last update: </strong><%=wallet.updatedAt%></p>
+        <p data-aos="zoom-out" data-aos-duration="1000" style="text-align: center;"><strong>Last update: </strong><%=wallet.updatedAt%></p>
 
           <div id="transactionContainer">
-          <table id = "theTable">
+          <table data-aos="fade-up" data-aos-duration="1000" id = "theTable">
             <tr>
               <th>Name</th>
               <th>Amount (&#8358;)</th>
@@ -84,10 +84,10 @@
         </div>  
 
         <!------------------- withdrawal form---------------- -->
-        <form id="form" action="/creators/withdrawFund/<%=wallet._id%>" method="PUT">
+        <form data-aos="flip-left" data-aos-duration="1000" id="form" action="/creators/withdrawFund/<%=wallet._id%>" method="PUT">
           <h2 style="text-decoration: underline;">Withdrawal</h2>
-          <label for="debit_amount">Amount to withdraw</label>
-          <input class="input" type="text" name="debit_amount">
+          <label for="debit_amount">Amount to withdraw (&#8358;):</label>
+          <input class="input" type="text" name="debit_amount" placeholder="50000">
           <button id="navLink" type="submit" formmethod="post">Send</button>
         </form>
         <!------------------------------------------------  -->
@@ -124,5 +124,8 @@
             <%-include("partials/footer.ejs")-%>
         </footer>
     </div>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
 </body>
 </html>

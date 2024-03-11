@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="/style.css">
     <title>Error</title>
 </head>
@@ -18,12 +18,15 @@
           
     </nav>
     <div style="text-align: center;">
-        <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
-        <h2><%=catchError%></h2>
-        <a id="navLink" href="/">Home</a>
+        <img data-aos="zoom-in" data-aos-duration="1000"  src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+        <h2 data-aos="fade-up" data-aos-duration="1000"><%=catchError%></h2>
+        <a data-aos="fade-up" data-aos-duration="1000" id="navLink" href="/">Home</a>
     </div>
 <footer>
     <%-include("partials/footer.ejs")-%>
 </footer>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
 </body>
 </html>

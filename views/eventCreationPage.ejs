@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="/style.css">
     <title>Create Event</title>
     <!-- <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script> -->
@@ -27,7 +27,7 @@
     
   <div id="welcomeContainer">
     <div id="creatorLogSign">
-      <h1 style="font-size: 70px;">Event creation</h1>
+      <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Event creation</h1>
     </div>
   
     <div id="imageContainer">
@@ -36,17 +36,18 @@
   </div>
     
     <%if(successfulCreation){%>
-      <p style="color: green; text-align: center; font-size: 24px;"><%=successfulCreation%></p>
+      <p data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=successfulCreation%></p>
     <%}%>
 
     <%if(eventDelMessage){%>
-      <p style="color: green; text-align: center; font-size: 24px;"><%=eventDelMessage%></p>
+      <p data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=eventDelMessage%></p>
     <%}%>
 
     <form action="/events/createEvent" , method="post" id="form" enctype="multipart/form-data">
       <h2 style="margin-bottom: 50px;">Create Event</h2>
-        <label for="title" class="label">Title:</label>
+        <label data-aos="fade-left" data-aos-duration="1000" for="title" class="label">Title:</label>
         <input
+          data-aos="fade-right" data-aos-duration="1000"
           style="width: 40%; padding: 10px;"
           type="text"
           name="title"
@@ -54,18 +55,10 @@
         /><br /><br /><br />
         <p><label for="description" class="label">Description:</label></p>
         <textarea name="description" cols="100" rows="10"></textarea>
-        <!-- <textarea name="description" id="editor"></textarea> -->
-        <!-- <script>
-          ClassicEditor
-          .create( document.querySelector('#editor') )
-          .catch( error => {
-              console.error( error );
-          } );
-        </script> -->
         <br /><br /><br />
 
-        <label for="category" class="label">Category:</label>
-        <select name="category" class="input" type="text">
+        <label data-aos="fade-left" data-aos-duration="1000" for="category" class="label">Category:</label>
+        <select data-aos="fade-right" data-aos-duration="1000" name="category" class="input" type="text">
           <option value="">--select a category--</option>      
           <option name="category" value="Charity">Charity</option>
           <option name="category" value="Concert">Concert</option>
@@ -83,29 +76,32 @@
         </select>
         <br /><br /><br />
 
-        <label for="event_date" class="label">Event Date:</label>
+        <label  data-aos="fade-left" data-aos-duration="1000" for="event_date" class="label">Event Date:</label>
         <input
+        data-aos="fade-right" data-aos-duration="1000"
           type="date"
           name="event_date"
           class="input"
         /><br /><br /><br />
 
-        <label for="starting_time" class="label">Starting Time:</label>
+        <label data-aos="fade-left" data-aos-duration="1000" for="starting_time" class="label">Starting Time:</label>
         <input
+        data-aos="fade-right" data-aos-duration="1000"
           type="time"
           name="starting_time"
           class="input"
         /><br /><br /><br />
 
-        <label for="ending_time" class="label">Ending Time:</label>
+        <label data-aos="fade-left" data-aos-duration="1000" for="ending_time" class="label">Ending Time:</label>
         <input
+        data-aos="fade-right" data-aos-duration="1000"
           type="time"
           name="ending_time"
           class="input"
         /><br /><br /><br />
 
-        <label for="reminder_days" class="label">Choose a day for Eventful to send notification to Eventees.</label>
-        <select name="reminder_days" class="input">
+        <label data-aos="fade-left" data-aos-duration="1000" for="reminder_days" class="label">Choose a day for Eventful to send notification to Eventees.</label>
+        <select data-aos="fade-right" data-aos-duration="1000" name="reminder_days" class="input">
           <option value="">---How many days to the event ?----</option>
           <option name="reminder_days" value="1">1</option>
           <option name="reminder_days" value="2">2</option>
@@ -119,31 +115,34 @@
           <option name="reminder_days" value="10">10</option>
         </select><br /><br /><br />
 
-        <label for="registration_deadline" class="label">Ticket Purchase deadline: </label>
+        <label data-aos="fade-left" data-aos-duration="1000" for="registration_deadline" class="label">Ticket Purchase deadline: </label>
         <input
+        data-aos="fade-right" data-aos-duration="1000"
           type="date"
           name="registration_deadline"
           class="input"
         /><br /><br /><br />
 
-        <label for="venue" class="label">Venue/Address:</label>
+        <label data-aos="fade-left" data-aos-duration="1000" for="venue" class="label">Venue/Address:</label>
         <input
+        data-aos="fade-right" data-aos-duration="1000"
         style="width: 40%; padding: 10px;"
           type="text"
           name="venue"
           class="input"
         /><br /><br /><br />
     
-        <label for="ticket_price" class="label">Ticket Price (&#8358;):</label>
+        <label data-aos="fade-left" data-aos-duration="1000" for="ticket_price" class="label">Ticket Price (&#8358;):</label>
         <input
+        data-aos="fade-right" data-aos-duration="1000"
           type="text"
           name="ticket_price"
           class="input"
         /><br /><br /><br />
         
 
-        <p><label for="additional_info" class="label">Additional Info: (optional)</label></p>
-        <textarea name="additional_info" cols="100" rows="10"></textarea>
+        <p data-aos="fade-left" data-aos-duration="1000"><label for="additional_info" class="label">Additional Info: (optional)</label></p>
+        <textarea data-aos="fade-right" data-aos-duration="1000" name="additional_info" cols="100" rows="10"></textarea>
         <!-- <textarea name="additional_info" id="info"></textarea> -->
         <!-- <script>
           ClassicEditor
@@ -154,8 +153,9 @@
         </script> -->
         <br /><br /><br />
 
-        <label for="event_image" class="label">Upload your Event banner:</label>
+        <label data-aos="fade-left" data-aos-duration="1000" for="event_image" class="label">Upload your Event banner:</label>
         <input
+        data-aos="fade-right" data-aos-duration="1000"
           type="file"
           name="event_image"
           accept="image/*"
@@ -163,8 +163,11 @@
           class="input"
         /> <br><br><br>
       
-        <button type="submit" class="submit">submit</button>
+        <button data-aos="fade-up" data-aos-duration="1000" type="submit" class="submit">submit</button>
       </form> 
     </div>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+    <script>AOS.init();</script>
     </body>
 </html>

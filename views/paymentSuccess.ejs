@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="/style.css">
     <title>Payment Successful</title>
 </head>
@@ -22,17 +22,20 @@
     </nav>
 
     <div style="text-align: center;">
-        <h1>Successful payment</h1>
+        <h1 data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;">Successful payment</h1>
         <img src="/successLogo.png" alt="image" style="width:300px; height: 300px;">
-        <h4>Check your email for your QRcode</h4>
-        <p>The QRcode is your ticket for the Event.</p>
-         <p>You will be asked to present it at the venue for access to the event</p>
-         <p>We will appreciate your cooperation.</p>
-         <p>Thanks.</p>
+        <h4 data-aos="zoom-in" data-aos-duration="1000">Check your email for your QRcode</h4>
+        <p data-aos="zoom-in" data-aos-duration="1000">The QRcode is your ticket for the Event.</p>
+         <p data-aos="zoom-in" data-aos-duration="1000">You will be asked to present it at the venue for access to the event</p>
+         <p data-aos="zoom-in" data-aos-duration="1000">We will appreciate your cooperation.</p>
+         <p data-aos="zoom-in" data-aos-duration="1000">Thanks.</p>
     </div>  
 <footer>
     <%-include("partials/footer.ejs")-%>
 </footer>   
 </div>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
 </body>
 </html>

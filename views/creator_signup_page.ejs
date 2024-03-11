@@ -5,7 +5,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
-
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 <link rel="stylesheet" href="/style.css">
 <title>Sign Up</title>
 </head>
@@ -23,7 +23,7 @@
 
   <div id="welcomeContainer">
     <div id="creatorLogSign">
-      <h1 style="font-size: 70px;">Creator Signup</h1>
+      <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Creator Signup</h1>
     </div>
   
     <div id="imageContainer">
@@ -33,64 +33,72 @@
  
   <div id="formBox">
     <%if(creatorSignup){%>
-      <p style="color: green; text-align: center; font-size: 24px;"><%=creatorSignup%></p>
+      <p data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=creatorSignup%></p>
     <%}%>
 <form action="/creators/signup"  method="post" id="form" enctype="multipart/form-data">
   <h2 style="margin-bottom: 50px;">Sign Up</h2>
-    <label for="creator_name" class="label">Full Name:</label>
+    <label data-aos="fade-left" data-aos-duration="1000" for="creator_name" class="label">Full Name:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       name="creator_name"
       class="input"
     /><br /><br /><br />
-    <label for="company_name" class="label">Company Name:</label>
+    <label data-aos="fade-left" data-aos-duration="1000"  for="company_name" class="label">Company Name:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       ,
       name="company_name"
       class="input"
     /><br /><br /><br />
-    <label for="email" class="label">Email:</label>
+    <label data-aos="fade-left" data-aos-duration="1000" for="email" class="label">Email:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       ,
       name="email"
       class="input"
     /><br /><br /><br />
 
-    <label for="country" class="label">Country:</label>
+    <label  data-aos="fade-left" data-aos-duration="1000" for="country" class="label">Country:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       ,
       name="country"
       class="input"
     /><br /><br /><br />
 
-    <label for="state" class="label">State:</label>
+    <label  data-aos="fade-left" data-aos-duration="1000" for="state" class="label">State:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       ,
       name="state"
       class="input"
     /><br /><br /><br />
 
-    <label for="phoneNum" class="label">Phone Number:</label>
+    <label  data-aos="fade-left" data-aos-duration="1000" for="phoneNum" class="label">Phone Number:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       ,
       name="phoneNum"
       class="input"
     /><br /><br /><br />
 
-    <label for="password" class="label">Password:</label>
+    <label  data-aos="fade-left" data-aos-duration="1000" for="password" class="label">Password:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="password"
       ,
       name="password"
       class="input"
     /><br /><br /><br />
-    <label for="profileImage" class="label">Upload Your Picture:</label>
+    <label  data-aos="fade-left" data-aos-duration="1000" for="profileImage" class="label">Upload Your Picture:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="file"
       name="profileImage"
       accept="image/*"
@@ -98,26 +106,29 @@
       class="input"
     /><br /><br /><br />
     
-    <h3>Accouunt Details</h3>
+    <h3  data-aos="zoom-in" data-aos-duration="1000">Accouunt Details</h3>
    
-    <label for="account_name" class="label">Account Name:</label>
+    <label  data-aos="fade-left" data-aos-duration="1000" for="account_name" class="label">Account Name:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       ,
       name="account_name"
       class="input"
     /><br /><br /><br />
 
-    <label for="account_number" class="label">Account Number:</label>
+    <label  data-aos="fade-left" data-aos-duration="1000" for="account_number" class="label">Account Number:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       ,
       name="account_number"
       class="input"
     /><br /><br /><br />
 
-    <label for="bank_name" class="label">Bank Name:</label>
+    <label  data-aos="fade-left" data-aos-duration="1000" for="bank_name" class="label">Bank Name:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       ,
       name="bank_name"
@@ -126,12 +137,15 @@
     
     
   
-    <button type="submit" class="submit">submit</button>
+    <button  data-aos="fade-up" data-aos-duration="1000" type="submit" class="submit">submit</button>
   </form>
 </div>
   <footer>
     <%-include("partials/footer.ejs")-%>
   </footer>
 </div>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
 </body>
 </html>

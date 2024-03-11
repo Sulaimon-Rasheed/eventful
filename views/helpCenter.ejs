@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="/style.css">
     <title>Help Center</title>
 </head>
@@ -26,7 +26,7 @@
 
       <div id="welcomeContainer">
         <div id="welcomeMessage">
-          <h1 style="font-size: 70px;">How can we help you ?</h1>
+          <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">How can we help you ?</h1>
           
         </div>
   
@@ -36,25 +36,25 @@
       </div>
 <div id="content">
       <div id="helpOptions">
-        <p id="eventeeHelp">Attending an event</p>
-        <p id="creatorHelp">Creating an event</p>
+        <p data-aos="zoom-in" data-aos-duration="1000" id="eventeeHelp">Attending an event</p>
+        <p data-aos="zoom-in" data-aos-duration="1000" id="creatorHelp">Creating an event</p>
       </div>
 
-      <h3 id="readArticle">Featuring Documentations:</h3>
+      <h3 data-aos="fade-right" data-aos-duration="1000" id="readArticle">Featuring Documentations:</h3>
     <div id="helpContainer" >
         <div id="eventeesGuide">
-            <p><a class="helpLink" href="/help/checklisiting">Event Checklisting</a></p> 
-            <p><a class="helpLink" href="/help/ticketPurchase">Ticket purchase</a></p> 
-            <p><a class="helpLink" href="/help/share">How to share event</a></p>
-            <p><a class="helpLink" href="/help/eventeeAnalytics">Analytics</a></p>
+            <p data-aos="zoom-in" data-aos-duration="1000"><a class="helpLink" href="/help/checklisiting">Event Checklisting</a></p> 
+            <p data-aos="zoom-out" data-aos-duration="1000"><a class="helpLink" href="/help/ticketPurchase">Ticket purchase</a></p> 
+            <p data-aos="zoom-in" data-aos-duration="1000"><a class="helpLink" href="/help/share">How to share event</a></p>
+            <p data-aos="zoom-out" data-aos-duration="1000"><a class="helpLink" href="/help/eventeeAnalytics">Analytics</a></p>
         </div> 
     </div>
 
     <div id="creatorsGuide">
-        <p><a class="helpLink" href="/help/ticketScanning">Ticket scanning</a></p> 
-        <p><a class="helpLink" href="/help/update">making update to created events</a></p> 
-        <p><a class="helpLink" href="/help/payout">Payment payout</a></p>
-        <p><a class="helpLink" href="/help/creatorAnalytics">Analytics</a></p>
+        <p data-aos="zoom-in" data-aos-duration="1000"><a class="helpLink" href="/help/ticketScanning">Ticket scanning</a></p> 
+        <p data-aos="zoom-out" data-aos-duration="1000"><a class="helpLink" href="/help/update">making update to created events</a></p> 
+        <p data-aos="zoom-in" data-aos-duration="1000"><a class="helpLink" href="/help/payout">Payment payout</a></p>
+        <p data-aos="zoom-out" data-aos-duration="1000"><a class="helpLink" href="/help/creatorAnalytics">Analytics</a></p>
     </div> 
 </div>
     
@@ -94,5 +94,8 @@
     <%-include("partials/footer.ejs")-%>
   </footer>
 </div> 
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
 </body>
 </html>

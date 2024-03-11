@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="/style.css">
     <title>Dashboard</title>
     <style>
@@ -47,8 +47,8 @@
   
   <div id="welcomeContainer">
     <div id="welcomeMessage">
-      <p style="font-size: 30px;">Welcome <b><%=user.name%>.</b></p >
-      <h1 style="font-size: 70px;">The Dashboard</h1>
+      <p data-aos="fade-right" data-aos-duration="1000" style="font-size: 30px;">Welcome <b><%=user.name%>.</b></p >
+      <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">The Dashboard</h1>
      
       <a id="btn" href="/events/myCheckList">Checklist</a>
     </div>
@@ -61,11 +61,8 @@
 
     <!--------------------------------------------------------------------------------------->
 
-
-        
-        <h2 id="howTitle">GET A TICKET TODAY</h2>
-        
-        <div id="howContainer">
+    <h2 data-aos="fade-up" data-aos-duration="1000" id="howTitle">JUST <span style="color: blue;font-size: 40px;">3</span> CLICKS TO GET A TICKET</h2>
+        <div data-aos="fade-up" data-aos-duration="1000" id="howContainer">
           <ol id="howList">
             <li>Add event to Checklist</li>
             <li>Open the Checklist</li>
@@ -76,7 +73,7 @@
 <form action="/eventees/event/filter" method="get">
   <label for="category"
     >Filter the events by categories:</label>
-    <select name="category">
+    <select name="category" style="padding: 5px; width: 400px; text-align: center; font-size: 18px;">
       <option value="">
         --Select a category--
       </option> 
@@ -107,7 +104,7 @@
 <hr>
 <form action="/eventees/event/titleSearch" method="get">
 <label for="title">Search for event by "Title": </label>
-<input type="text" name="title" placeholder="Enter the title here">
+<input type="text" name="title" placeholder="Enter the title here" style="padding: 5px; width: 400px; text-align: center; font-size: 18px;">
 <button type="submit">Search</button>
 </form>
 <hr>
@@ -117,7 +114,7 @@
     <%if(event){%>
 
 <div id="allEventsContainer">
-<div id="eventContainer" > 
+<div id="eventContainer" data-aos="fade-up" data-aos-duration="1000" > 
 <p id="title" style="text-align: center;font-size: 24px;font-weight: bold;"><%=event.title%></p>
         
     <p id="time"><b>Posted:</b><%=event.posted_date%> <span>(<%= Math.round(passday)%> days ago)</span></p> 
@@ -126,14 +123,15 @@
     <a id="link" href="/events/thisEvent/share/<%=event.id%>" title="Click to read more and share the event" target="_blank" >
       <p><img src="<%=event.event_image.url%>" alt="event image" style="width: 300px; height: 200px;"></p>
     </a>
-    <p><%=event.event_date%></p>
-    <p><%=event.starting_time%> - <%=event.ending_time%> WAT</p>
-    <p><%=event.venue%></p>
-    <p><%=event.creatorId.company_name%></p>
+    <p data-aos="zoom-in" data-aos-duration="1000"><%=event.event_date%></p>
+    <p data-aos="zoom-out" data-aos-duration="1000"><%=event.starting_time%> - <%=event.ending_time%> WAT</p>
+    <p data-aos="zoom-in" data-aos-duration="1000"><%=event.venue%></p>
+    <p data-aos="zoom-out" data-aos-duration="1000"><%=event.creatorId.company_name%></p>
 
     <div style="display: flex; gap: 20px; justify-content: center;">
         <form action="/events/chooseEvent/<%=event.id%>" method="PUT">
             <button
+            data-aos="fade-left" data-aos-duration="1000"
             style="text-decoration: none;padding: 5px; background-color: green;color: white; border: none; cursor: pointer;"
               id="state"
               type="submit"
@@ -146,6 +144,7 @@
 
         <form action="/events/removeEvent/<%=event.id%>" method="PUT">
           <button
+          data-aos="fade-right" data-aos-duration="1000"
           style="text-decoration: none;padding: 5px; background-color: green;color: white; border: none; cursor: pointer;"
             id="state"
             type="submit"
@@ -161,9 +160,9 @@
  <%}else{%>
 
 <div style="text-align: center;">
-  <img src="/empty.jpg" alt="image" style="width:300px; height: 300px;">
-    <h4>Event not found</h4> 
-    <p>Check back later.</p> 
+  <img data-aos="fade-up" data-aos-duration="1000" src="/empty.jpg" alt="image" style="width:300px; height: 300px;">
+    <h4 data-aos="fade-up" data-aos-duration="1000">Event not found</h4> 
+    <p data-aos="fade-up" data-aos-duration="1000">Check back later.</p> 
 </div>
     
 <%}%>
@@ -192,5 +191,8 @@ link.addEventListener("mouseleave", ()=>{
 <footer>
   <%-include("partials/footer.ejs")-%>
 </footer>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
 </body>
 </html>

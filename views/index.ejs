@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="/style.css">
     <title>Home</title>
 </head>
@@ -38,14 +38,14 @@
     </div>
      
   <div id="homeContent">
-    <p>Eventful is more than just a ticketing platform.It is your passport to a world of unforgettable moments.
+    <p data-aos="zoom-in" data-aos-duration="1000">Eventful is more than just a ticketing platform.It is your passport to a world of unforgettable moments.
         From pulsating concerts to captivating theater performances, and thrilling sports events to enlightening cultural gatherings, we curate a diverse array of experiences that cater to every taste and passion.
     </p>
 
     <!-- ----------------------------- -->
     <ul id="allEventsContainer"  style="list-style-type: none;padding:0;">
       <%for(let i = 0; i < events.length; i++){%>
-    <div class="eventContainer">
+    <div class="eventContainer" data-aos="fade-up" data-aos-duration="1000">
       <h2 class="title"><%=events[i].title%></h2>
       <li>
           <a class="link" href="/events/thisEvent/share/<%=events[i].id%>" title="Click to read more and share the event" target="_blank" >
@@ -63,9 +63,9 @@
     
         <!-- --------------------------------- -->
 
-    <h2 style="text-align: center; font-size: 24px;margin-top: 100px;">Are you an event Creator ?</h2>
-    <div style="display: flex; gap: 10px; justify-content:space-around; font-size: 24px;">
-        <a id="creatorBtn" href="/creators/creatorHomePage">Get started for free</a>
+    <h2 style="text-align: center; font-size: 24px;margin-top: 100px;" data-aos="fade-right" data-aos-duration="1000">Are you an event Creator ?</h2>
+    <div style="display: flex; gap: 10px; justify-content:space-around; font-size: 24px;" data-aos="fade-left" data-aos-duration="1000">
+        <a id="creatorBtn" href="/creators/creatorHomePage" data-aos="zoom-in" data-aos-duration="1000">Get started for free</a>
     </div>
   </div>
 
@@ -113,5 +113,9 @@
         })
         });
       </script>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
 </body>
 </html>

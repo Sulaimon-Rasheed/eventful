@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="/style.css">
     <title>Dashboard</title>
 </head>
@@ -27,10 +27,10 @@
 
     <div id="welcomeContainer">
       <div id="welcomeMessage">
-        <p style="font-size: 30px;">Welcome <b><%=user.name%>.</b></p >
-        <h1 style="font-size: 70px;">The Dashboard</h1>
+        <p data-aos="fade-right" data-aos-duration="1000" style="font-size: 30px;">Welcome <b><%=user.name%>.</b></p >
+        <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">The Dashboard</h1>
        
-        <a id="btn" href="/events/myCheckList">Checklist</a>
+        <a data-aos="fade-left" data-aos-duration="1000" id="btn" href="/events/myCheckList">Checklist</a>
       </div>
 
       <div id="imageContainer">
@@ -40,15 +40,15 @@
     </div>
      
     <div style="margin:0 16px;">
-        <span id="date"><strong>Today is: </strong><%=date%></span>
+        <span data-aos="fade-left" data-aos-duration="1000" id="date"><strong>Today is: </strong><%=date%></span>
         
-        <h2 id="howTitle">GET A TICKET TODAY</h2>
+        <h2 data-aos="fade-right" data-aos-duration="1000" id="howTitle">JUST <span style="color: blue;font-size: 40px;">3</span> CLICKS TO GET A TICKET</h2>
         
-        <div id="howContainer">
+        <div data-aos="fade-up" data-aos-duration="1000" id="howContainer">
           <ol id="howList">
-            <li>Add event to Checklist</li>
-            <li>Open the Checklist</li>
-            <li>Buy ticket</li>
+            <li data-aos="zoom-in" data-aos-duration="1000">Add event to Checklist</li>
+            <li data-aos="zoom-out" data-aos-duration="1000">Open the Checklist</li>
+            <li data-aos="zoom-in" data-aos-duration="1000">Buy ticket</li>
           </ol>
         </div>
 
@@ -166,13 +166,14 @@
                   <img src="<%=postedEvents[i].event_image.url%>" alt="event image" style="width: 300px; height: 200px;">    
               </a>
 
-              <p><%=postedEvents[i].event_date%></p>
-              <p><%=postedEvents[i].starting_time%> - <%=postedEvents[i].ending_time%> WAT</p>
-              <p><%=postedEvents[i].venue%></p>
-              <p><%=postedEvents[i].creatorId.company_name%></p>
+              <p data-aos="fade-left" data-aos-duration="1000"><%=postedEvents[i].event_date%></p>
+              <p data-aos="fade-right" data-aos-duration="1000"><%=postedEvents[i].starting_time%> - <%=postedEvents[i].ending_time%> WAT</p>
+              <p data-aos="fade-left" data-aos-duration="1000"><%=postedEvents[i].venue%></p>
+              <p data-aos="fade-right" data-aos-duration="1000"><%=postedEvents[i].creatorId.company_name%></p>
               <div style="display: flex; gap: 20px; justify-content: center;">
                 <form action="/events/chooseEvent/<%=postedEvents[i].id%>" method="PUT">
                     <button
+                    data-aos="fade-left" data-aos-duration="1000"
                       class="addBtn"
                       type="submit"
                       formmethod="post"
@@ -185,6 +186,7 @@
 
                 <form action="/events/removeEvent/<%=postedEvents[i].id%>" method="PUT">
                   <button
+                    data-aos="fade-right" data-aos-duration="1000"
                     class="removeBtn"
                     type="submit"
                     formmethod="post"
@@ -248,8 +250,8 @@
     <%}else{%>
       <div style="text-align: center;">
       <img src="/empty.jpg" alt="image" style="width:300px; height: 300px;">
-        <h4>There is no event post for now or selected event category is not found</h4> 
-        <p>Check back later.</p> 
+        <h4 data-aos="fade-up" data-aos-duration="1000">There is no event post for now or selected event category is not found</h4> 
+        <p data-aos="fade-up" data-aos-duration="1000">Check back later.</p> 
       </div>
         <%}%>
 
@@ -296,5 +298,8 @@
     <%-include("partials/footer.ejs")-%>
   </footer>
 </div>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
 </body>
 </html>

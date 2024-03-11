@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="/style.css">
     <title>Check List</title>
 </head>
@@ -25,9 +25,9 @@
 
     <div id="welcomeContainer">
       <div id="welcomeMessage">
-        <h1 style="font-size: 70px;">Ticketing Room</h1>
-        <p style="font-size: 30px;">Almost there, <b><%=user.name%>.</b></p >
-        <p>Now, you can buy ticket for your chosen events.</p>
+        <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Ticketing Room</h1>
+        <p data-aos="fade-left" data-aos-duration="1000" style="font-size: 30px;">Almost there, <b><%=user.name%>.</b></p >
+        <p data-aos="zoom-out" data-aos-duration="1000">Now, you can buy ticket for your chosen events.</p>
       </div>
 
       <div id="imageContainer">
@@ -43,7 +43,7 @@
     <%if(lists.length != 0){%>
         <ul id="allEventsContainer"  style="list-style-type: none;padding:0;margin-bottom: 80px;">
             <%for(const list of lists){%>
-              <div class="eventContainer">
+              <div data-aos="fade-up" data-aos-duration="1000" class="eventContainer">
                 <li>
                     <p><%=list.title%></p>
                     <p><img src="<%=list.event_image.url%>" alt="event image" style="width: 200px; height: 100px;"></p>
@@ -58,8 +58,8 @@
                   </div>
                     
                   <form action="/eventees/setReminder/<%=list.id%>/<%=user.id%>" method="post" style="text-align: center; padding: 10px;">
-                        <label for="eventeeReminder_days" style="font-weight: bold; text-decoration: underline;">Set a notification day to get a reminder</label>
-                        <select name="eventeeReminder_days" style="padding: 5px; width:80%; text-align: center; font-size: 18px;margin-top: 20px;">
+                        <label data-aos="fade-left" data-aos-duration="1000" for="eventeeReminder_days" style="font-weight: bold; text-decoration: underline;">Set a notification day to get a reminder</label>
+                        <select data-aos="fade-right" data-aos-duration="1000" name="eventeeReminder_days" style="padding: 5px; width:80%; text-align: center; font-size: 18px;margin-top: 20px;">
                             <option value="">--How many days to the event ?-----</option>
                             <option name="eventeeReminder_days" value="1">1</option>
                             <option name="eventeeReminder_days" value="2">2</option>
@@ -76,8 +76,9 @@
                       </form>
                 <%}else{%>
                     <form action="/eventees/buyTicket/<%=list.id%>/<%=list.ticket_price%>" method="GET" style="margin-bottom: 20px;margin-top: 50px; text-align: center;" target="_blank">
-                        <input type="text" value="&#8358;<%=list.ticket_price%>" readonly style="border-radius: 100%; padding: 5px; text-align: center; width:50px; height: 50px; background-color: brown; color: white; border: none;font-weight: bold;">
+                        <input data-aos="fade-right" data-aos-duration="1000" type="text" value="&#8358;<%=list.ticket_price%>" readonly style="border-radius: 100%; padding: 5px; text-align: center; width:50px; height: 50px; background-color: brown; color: white; border: none;font-weight: bold;">
                         <button
+                        data-aos="fade-up" data-aos-duration="1000"
                           id="state"
                           type="submit"
                           formmethod="get"
@@ -95,14 +96,17 @@
         </ul>
     <%}else{%>
       <div style="text-align: center;">
-        <h4>You have not chosen any event yet.</h4> 
+        <h4 data-aos="fade-up" data-aos-duration="1000">You have not chosen any event yet.</h4> 
         <img src="/empty.jpg" alt="image" style="width:300px; height: 300px;">
-          <p>Go back to the dashboard to choose an event.</p> 
+          <p data-aos="fade-left" data-aos-duration="1000">Go back to the dashboard to choose an event.</p> 
       </div>
    <%}%>
    <footer>
     <%-include("partials/footer.ejs")-%>
   </footer>
   </div> 
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
 </body>
 </html>

@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="/style.css">
     <title><%=event.title%></title>
     <style>
@@ -39,8 +39,8 @@
 
   <div id="welcomeContainer">
     <div id="eventTitle">
-      <h1 style="font-size: 70px;"><%=event.title%></h1>
-      <p><img id="shareBtn" src="/share-button.webp" alt="image"></p>
+      <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;"><%=event.title%></h1>
+      <p data-aos="zoom-out" data-aos-duration="1000"><img id="shareBtn" src="/share-button.webp" alt="image"></p>
       <div style="display: flex; gap:20px; justify-content: center;">
             <!--------------------- Loading Facebook SDK for JavaScript---------------------------- -->
             <script>(function(d, s, id) {
@@ -79,31 +79,31 @@
         </div>
           
         <div style="margin: 24px;">
-          <h2 class="readHeadings">About:</h2>
-          <p><%=event.description%></p>
+          <h2 data-aos="zoom-in" data-aos-duration="1000" class="readHeadings">About:</h2>
+          <p data-aos="fade-right" data-aos-duration="1000"><%=event.description%></p>
 
-          <h2 class="readHeadings">Date and Time:</h2>
-          <div style="display: flex; gap: 20px;">
+          <h2 data-aos="zoom-in" data-aos-duration="1000" class="readHeadings">Date and Time:</h2>
+          <div data-aos="fade-right" data-aos-duration="1000" style="display: flex; gap: 20px;">
             <p><%=event.event_date%></p>
             <p>||</p>
             <p><%=event.starting_time%> - <%=event.ending_time%> WAT</p>
           </div>
 
-          <h2 class="readHeadings">Venue:</h2>
-          <p><%=event.venue%></p>
+          <h2 data-aos="zoom-in" data-aos-duration="1000" class="readHeadings">Venue:</h2>
+          <p data-aos="fade-left" data-aos-duration="1000"><%=event.venue%></p>
 
-          <h2 class="readHeadings">Registration Deadline:</h2>
-          <p><%=event.registration_deadline%></p>
+          <h2 data-aos="zoom-in" data-aos-duration="1000" class="readHeadings">Registration Deadline:</h2>
+          <p data-aos="fade-right" data-aos-duration="1000"><%=event.registration_deadline%></p>
           
-          <h2 class="readHeadings" id="inputHead">Ticket:</h2>
-          <input type="text" value="&#8358;<%=event.ticket_price%>" readonly style="border-radius: 100%; padding: 5px; text-align: center; width:50px; height: 50px; background-color: brown; color: white; border: none;font-weight: bold;">
+          <h2 data-aos="zoom-in" data-aos-duration="1000" class="readHeadings" id="inputHead">Ticket:</h2>
+          <input data-aos="fade-left" data-aos-duration="1000" type="text" value="&#8358;<%=event.ticket_price%>" readonly style="border-radius: 100%; padding: 5px; text-align: center; width:50px; height: 50px; background-color: brown; color: white; border: none;font-weight: bold;">
           
-          <h2 class="readHeadings">More Info:</h2>
-          <p><%=event.additional_info%></p>
+          <h2 data-aos="zoom-in" data-aos-duration="1000" class="readHeadings">More Info:</h2>
+          <p data-aos="fade-left" data-aos-duration="1000"><%=event.additional_info%></p>
 
       <!-- <h2 class="readHeadings" id="inputHead">Please click below to share</h2> -->
-      <p style="text-align: center;"><img id="shareBtn2" src="/share-button.webp" alt="image"></p>
-      <div style="display: flex; gap:20px; justify-content: center;">
+      <p data-aos="zoom-in" data-aos-duration="1000" style="text-align: center;"><img id="shareBtn2" src="/share-button.webp" alt="image"></p>
+      <div data-aos="fade-left" data-aos-duration="1000" style="display: flex; gap:20px; justify-content: center;">
             <!--------------------- Loading Facebook SDK for JavaScript---------------------------- -->
             <script>(function(d, s, id) {
               var js, fjs = d.getElementsByTagName(s)[0];
@@ -134,7 +134,7 @@
 
   <hr style="margin-top: 30px;">
     <h2 style="margin-bottom: 10px;" class="readHeadings">Enquiry:</h2>
-    <div style="background-color:whitesmoke; border-radius: 20px;padding: 16px;margin-bottom:20px; width: 50%;">
+    <div data-aos="fade-up" data-aos-duration="1000" style="background-color:whitesmoke; border-radius: 20px;padding: 16px;margin-bottom:20px; width: 50%;">
     <p id="enq"><img src="<%=event.creatorId.profileImage.url%>" alt="creator image" style="height:40px; width: 40px; border-radius: 50%;vertical-align: middle;"></p>
     <p id="enq"><strong>Name: </strong><%=event.creatorId.creator_name%></p>
     <p id="enq"><strong>Company name: </strong><%=event.creatorId.company_name%></p>
@@ -146,5 +146,8 @@
       <%-include("partials/footer.ejs")-%>
     </footer>
   </div>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
   </body>
 </html>

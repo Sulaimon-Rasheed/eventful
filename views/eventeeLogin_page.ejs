@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="/style.css">
     <title>Login</title>
 </head>
@@ -26,8 +26,8 @@
   
   <div id="welcomeContainer">
     <div id="eventTitle">
-      <h1 style="font-size: 70px;">Eventee Login</h1>
-      <a id="eventeeForget" href="/eventees/passwordResetPage">Forgot password ?</a><br><br>
+      <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Eventee Login</h1>
+      <a data-aos="fade-left" data-aos-duration="1000" id="eventeeForget" href="/eventees/passwordResetPage">Forgot password ?</a><br><br>
     </div>
   
     <div id="imageContainer">
@@ -40,21 +40,23 @@
   <div id="formBox">
     <form action="/eventees/login" method="post" id="form">
        <h2 style="margin-bottom: 50px;">Login</h2>
-        <label for="email" class="label">Email:</label>
+        <label data-aos="fade-left" data-aos-duration="1000" for="email" class="label">Email:</label>
         <input
+        data-aos="fade-right" data-aos-duration="1000"
           type="text"
           ,
           name="email"
           class="input"
         /><br><br><br>
     
-        <label for="password" class="label">Password:</label>
+        <label data-aos="fade-left" data-aos-duration="1000" for="password" class="label">Password:</label>
         <input
+        data-aos="fade-right" data-aos-duration="1000"
           type="password"
           name="password"
           class="input"
         /> <br><br><br>
-        <button type="submit" class="submit">submit</button><br><br><br>
+        <button data-aos="fade-up" data-aos-duration="1000" type="submit" class="submit">submit</button><br><br><br>
         <a id="forgetLink" href="/eventees/passwordResetPage">Forgot password ?</a><br><br>
       
       </form>
@@ -64,5 +66,8 @@
     <%-include("partials/footer.ejs")-%>
   </footer>
 </div>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
 </body>
 </html>

@@ -5,7 +5,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
-
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 <link rel="stylesheet" href="/style.css">
 <title>Sign Up</title>
 </head>
@@ -23,7 +23,7 @@
   
   <div id="welcomeContainer">
     <div id="eventTitle">
-      <h1 style="font-size: 70px;">Eventee Sign Up</h1>
+      <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Eventee Sign Up</h1>
     </div>
   
     <div id="imageContainer">
@@ -37,42 +37,48 @@
 <%}%>
 <form action="/eventees/signup" , method="post" id="form" enctype="multipart/form-data">
   <h2 style="margin-bottom: 50px;">Sign Up</h2>
-    <label for="first_name" class="label">First Name:</label>
+    <label data-aos="fade-left" data-aos-duration="1000" for="first_name" class="label">First Name:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       name="first_name"
       class="input"
     /><br /><br /><br />
-    <label for="last_name" class="label">Last Name:</label>
+    <label data-aos="fade-left" data-aos-duration="1000" for="last_name" class="label">Last Name:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       ,
       name="last_name"
       class="input"
     /><br /><br /><br />
-    <label for="email" class="label">Email:</label>
+    <label data-aos="fade-left" data-aos-duration="1000" for="email" class="label">Email:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       name="email"
       class="input"
     /><br /><br /><br />
 
-    <label for="sex" class="label">Sex:</label>
+    <label data-aos="fade-left" data-aos-duration="1000" for="sex" class="label">Sex:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       name="sex"
       class="input"
     /><br /><br /><br />
 
-    <label for="country" class="label">Country:</label>
+    <label data-aos="fade-left" data-aos-duration="1000" for="country" class="label">Country:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       name="country"
       class="input"
     /><br /><br /><br />
 
-    <label for="state" class="label">State:</label>
+    <label data-aos="fade-left" data-aos-duration="1000" for="state" class="label">State:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       name="state"
       class="input"
@@ -87,28 +93,31 @@
       hidden
     />
 
-    <label for="phoneNum" class="label">Phone Number:</label>
+    <label data-aos="fade-left" data-aos-duration="1000" for="phoneNum" class="label">Phone Number:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="text"
       name="phoneNum"
       class="input"
     /><br /><br /><br />
     
-    <label for="password" class="label">Password:</label>
+    <label data-aos="fade-left" data-aos-duration="1000" for="password" class="label">Password:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="password"
       name="password"
       class="input"
     /><br /><br /><br />
-    <label for="profileImage" class="label">Upload Your Picture:</label>
+    <label data-aos="fade-left" data-aos-duration="1000" for="profileImage" class="label">Upload Your Picture:</label>
     <input
+    data-aos="fade-right" data-aos-duration="1000"
       type="file"
       name="profileImage"
       accept="image/*"
       placeholder="Choose a file"
       class="input"
     /><br /><br /><br />
-    <button type="submit" class="submit">Submit</button>
+    <button data-aos="fade-up" data-aos-duration="1000" type="submit" class="submit">Submit</button>
   </form>
   </div>
   
@@ -117,5 +126,8 @@
   </footer>
 
 </div>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
 </body>
 </html>
