@@ -93,7 +93,7 @@ export class EventeesService {
         }
       });
 
-      const currUrl = 'https://82f2-102-88-82-69.ngrok-free.app';
+      const currUrl = 'https://eventful-8xm4.onrender.com';
       let uniqueString = newEventee._id + uuidv4();
       const hashedUniqueString = await encoding.encodePassword(uniqueString);
 
@@ -253,7 +253,7 @@ export class EventeesService {
       eventee.passwordResetToken = hashedResetToken;
       eventee.passwordResetExpireDate = Date.now() + 10 * 60 * 1000;
       eventee.save();
-      const currUrl = 'https://82f2-102-88-82-69.ngrok-free.app';
+      const currUrl = 'https://eventful-8xm4.onrender.com';
       this.mailservice.sendVerificationEmail({
         email: eventee.email,
         subject: 'We received your request for password reset',

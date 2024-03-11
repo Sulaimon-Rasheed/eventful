@@ -88,7 +88,7 @@ export class CreatorsService {
         }
       });
 
-      const currUrl = 'https://82f2-102-88-82-69.ngrok-free.app';
+      const currUrl = 'https://eventful-8xm4.onrender.com';
       let uniqueString = newCreator._id + uuidv4();
 
       const hashedUniqueString = await encoding.encodePassword(uniqueString);
@@ -221,7 +221,7 @@ export class CreatorsService {
       console.log(resetToken);
       console.log(hashedResetToken);
       creator.save();
-      const currUrl = 'https://82f2-102-88-82-69.ngrok-free.app';
+      const currUrl = 'https://eventful-8xm4.onrender.com';
       this.mailservice.sendVerificationEmail({
         email: creator.email,
         subject: 'We received your request for password reset',
