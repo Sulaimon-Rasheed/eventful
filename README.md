@@ -7,7 +7,7 @@
 
 ## Description
 
-[Eventful](https://eventful-8xm4.onrender.com) is more than just a ticketing platform; it’s your passport to a world of unforgettable moments. From pulsating concerts to captivating theater performances, and thrilling sports events to enlightening cultural gatherings. We curate a diverse array of experiences that cater to every taste and passion.We seeks to ensure a seamless search and purchase of tickets for an event organized by verified creators and ensure a swift payout system for event creators. 
+[Eventful](https://eventful-8xm4.onrender.com) is more than just a ticketing platform. It is your passport to a world of unforgettable moments. From pulsating concerts to captivating theater performances, and thrilling sports events to enlightening cultural gatherings. We curate a diverse array of experiences that cater to every taste and passion.We seeks to ensure a seamless search and purchase of tickets for an event organized by verified creators and ensure a swift payout system for event creators. 
 .
 
 ## – Authentication and Authorization:
@@ -20,7 +20,7 @@ Event creators and users who can apply for events are authenticated.
 3. Scanned Eventees - These are those that really attended the event. Meaning that they got their QRcode scanned.
 
 ### Eventees
- Eventees can see all the events they can attend and also attended.
+ Eventees can see all the events they can attend and also attended. They can also see events they bought it ticket but fails to attend for a reason.
 
 ## – QR Code Generation:
 
