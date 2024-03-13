@@ -1,73 +1,55 @@
+# Evenful
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+  <img src="https://github.com/Sulaimon-Rasheed/eventful/blob/main/src/public/apple-touch-icon.png"/>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+  <p align="center"> ...your passport to a world of unforgettable moments</p>
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[Eventful](https://eventful-8xm4.onrender.com) is more than just a ticketing platform; it’s your passport to a world of unforgettable moments. From pulsating concerts to captivating theater performances, and thrilling sports events to enlightening cultural gatherings. We curate a diverse array of experiences that cater to every taste and passion.We seeks to ensure a seamless search and purchase of tickets for an event organized by verified creators and ensure a swift payout system for event creators. 
+.
 
-## Installation
+## – Authentication and Authorization:
 
-```bash
-$ npm install
-```
+Event creators and users who can apply for events are authenticated.
+### Creators
+ Creators can see events they have created and those that got engaged with their created events. Eventees engagements are in three (3) cartegories.
+1. Unticketed Eventees - These are those that added the event to their checklist but have not bought the event ticket.
+2. Ticketed Eventees - These are those that have bougth the event ticket but may or may not have attended the event.
+3. Scanned Eventees - These are those that really attended the event. Meaning that they got their QRcode scanned.
 
-## Running the app
+### Eventees
+ Eventees can see all the events they can attend and also attended.
 
-```bash
-# development
-$ npm run start
+## – QR Code Generation:
 
-# watch mode
-$ npm run start:dev
+Eventful generate QR codes for eventees as their ticket to the event when the tickets are bought. This QR code will be used to verify the eventee before access.
 
-# production mode
-$ npm run start:prod
-```
+## – QRCode Scanner:
+Eventful provides the Creators with a QRcode scanner interface to scan eventees QRcode at the event venue. The scanning result can then be saved by clicking on the save button to save the eventees datas. Eventful store these datas in the "scanned eventees" storage. 
 
-## Test
+## – Wallet generation:
+Eventful generate a Wallet address for every creators as they signup to enable them monitor every eventee paymnent for their created event. There is a transaction history feature to view past transactions. Creators can also make fund withdrawal from their wallet any time. Our financial team ensure that every creators registered account is credited within 48hrs after withdrawal. 
 
-```bash
-# unit tests
-$ npm run test
+## – Event Update:
+Creators can make update to their created event description before or aftter posting the event. This is to give room to error correction in case of any.
 
-# e2e tests
-$ npm run test:e2e
+## – Shareability: 
+When events are created on Eventful, eventees and creators can share these events on leading social media platforms.e.g facebook
 
-# test coverage
-$ npm run test:cov
-```
+## – Notifications:
+ Eventful remind eventees of events that are coming up by default. When creators are creating the events, they can also set the reminder; e.g 1 - 10 days before the event date. Eventees can also set their own reminder for the events.
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## – Analytics:
+Through our analytics features both creators and attendees can easily access history of their events engagements at a click. Eventful provide creators the ability to see how many attendees they have had all the time and specific to events, how many tickets have been bought all the time and specific to events, how many eventees bought tickets and had their QR code scanned for specific events.
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Author - [Sulaimon Rasheed](https://dev-sulaimon.onrender.com)
+- Website - [ https://eventful-8xm4.onrender.com
+]( https://eventful-8xm4.onrender.com)
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+Eventful is [MIT licensed](LICENSE).
