@@ -30,6 +30,9 @@
           <div id="welcomeContainer">
             <div id="welcomeMessage">
               <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Wallet</h1>
+              <%if(successfulTransaction){%>
+                <p data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=successfulTransaction%></p>
+               <%}%>
               <p data-aos="fade-left" data-aos-duration="1000" style="font-size: 70px;"><strong>Balance: </strong><span style="color: black;">&#8358;<%=wallet.balance%></span></p>
             </div>
       
@@ -37,10 +40,6 @@
               <img id="indexImage" src="/wallet.jpg" alt="image">
             </div>
           </div>
-           
-          <%if(successfulTransaction){%>
-            <p data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=successfulTransaction%></p>
-           <%}%>
           
         <div id="openCloseContainer">
           <p data-aos="zoom-in" data-aos-duration="1000" style="text-align: center;">Transaction History</p>

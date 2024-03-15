@@ -27,6 +27,12 @@
       <div id="welcomeMessage">
         <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Update room for:</h1>
         <p data-aos="zoom-out" data-aos-duration="1000" style="font-size: 70px;"><%=event.title%></p>
+        <%if(updateSuccessMessage){%>
+          <p data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=updateSuccessMessage%></p>
+        <%}%>
+        <%if(reminderSuccessMessage){%>
+          <p data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=reminderSuccessMessage%></p>
+        <%}%>
       </div>
 
       <div id="imageContainer">
@@ -36,12 +42,7 @@
     </div>
     <!-- eventDelMessage -->
     <div style="padding: 16px;">
-    <%if(updateSuccessMessage){%>
-        <p data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=updateSuccessMessage%></p>
-      <%}%>
-      <%if(reminderSuccessMessage){%>
-        <p data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=reminderSuccessMessage%></p>
-      <%}%>
+    
     
     <h2 data-aos="fade-up" data-aos-duration="1000" style="text-decoration: underline;">Description:</h2>
     <p data-aos="fade-up" data-aos-duration="1000"><%=event.description%></p>

@@ -17,7 +17,7 @@ export class AppController {
     await this.appService.getHelpCenter(req, res)
   }
 
-  @Get("/help/checklisiting")
+  @Get("/help/checklisting")
   async getChecklisiting(@Req() req:Request, @Res() res:Response){
     await this.appService.getChecklisiting(req, res)
   }

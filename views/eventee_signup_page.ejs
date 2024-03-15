@@ -24,6 +24,9 @@
   <div id="welcomeContainer">
     <div id="eventTitle">
       <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Eventee Sign Up</h1>
+      <%if(eventeeSignup){%>
+        <p style="color: green; text-align: center; font-size: 24px;"><%=eventeeSignup%></p>
+      <%}%>
     </div>
   
     <div id="imageContainer">
@@ -32,9 +35,7 @@
   </div>
   
   <div id="formBox">
-<%if(eventeeSignup){%>
-  <p style="color: green; text-align: center; font-size: 24px;"><%=eventeeSignup%></p>
-<%}%>
+
 <form action="/eventees/signup" , method="post" id="form" enctype="multipart/form-data">
   <h2 style="margin-bottom: 50px;">Sign Up</h2>
     <label data-aos="fade-left" data-aos-duration="1000" for="first_name" class="label">First Name:</label>

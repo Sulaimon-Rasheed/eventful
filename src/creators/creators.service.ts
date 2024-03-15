@@ -476,7 +476,7 @@ export class CreatorsService {
       }
 
       const successfulTransaction = req.flash("transactionSuccess")
-      await res.render("wallet", {user:res.locals.user, wallet, theTransactions, successfulTransaction})
+      return res.render("wallet", {user:res.locals.user, wallet, theTransactions, successfulTransaction})
     }catch(err){
       return res.render('catchError', { catchError: err.message });
     }

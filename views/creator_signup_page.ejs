@@ -24,6 +24,9 @@
   <div id="welcomeContainer">
     <div id="creatorLogSign">
       <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Creator Signup</h1>
+      <%if(creatorSignup){%>
+        <p data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=creatorSignup%></p>
+      <%}%>
     </div>
   
     <div id="imageContainer">
@@ -32,9 +35,7 @@
   </div>
  
   <div id="formBox">
-    <%if(creatorSignup){%>
-      <p data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=creatorSignup%></p>
-    <%}%>
+    
 <form action="/creators/signup"  method="post" id="form" enctype="multipart/form-data">
   <h2 style="margin-bottom: 50px;">Sign Up</h2>
     <label data-aos="fade-left" data-aos-duration="1000" for="creator_name" class="label">Full Name:</label>

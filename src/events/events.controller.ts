@@ -60,11 +60,6 @@ export class EventsController {
     await this.eventsService.getMyCheckList(req, res)
   }
 
-  // @Get('share/:eventId')
-  // async shareEvent(@Param('eventId') eventId: string,@Res() res:Response ) {
-  //   await this.eventsService.shareEvent(eventId, res);
-  // }
-
   @Get('thisEvent/share/:eventId')
   async getThisEvent(@Param('eventId') eventId: string,@Res() res:Response ) {
     await this.eventsService.getThisEvent(eventId, res);
