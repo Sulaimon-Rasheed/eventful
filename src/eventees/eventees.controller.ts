@@ -8,6 +8,7 @@ import { UpdateEventeeDto } from './dto/update-eventee.dto';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { emailVerificationDto } from './dto/emailVerification.dto';
 import { newEpasswordDto } from './dto/newEpassword.dto';
+import { multerConfig } from '../config/multer.config';
 
 
 @Controller('eventees')
@@ -16,10 +17,11 @@ export class EventeesController {
   constructor(private readonly eventeesService: EventeesService) {}
 
   @Post("signup")
-  @UseInterceptors(FileInterceptor('profileImage'))
+  @UseInterceptors(FileInterceptor('profileImage', multerConfig))
   
-  async createEventee(@UploadedFile() file:any ,@Body(new ValidationPipe) createEventeeDto: CreateEventeeDto,@Req() req:Request, @Res() res:Response) {
-      await this.eventeesService.createEventee(createEventeeDto, file.path,req, res)
+  async createEventee(@UploadedFile() profileImage: Express.Multer.File ,@Body(new ValidationPipe) createEventeeDto: CreateEventeeDto,@Req() req:Request, @Res() res:Response) {
+    console.log(profileImage)
+    await this.eventeesService.createEventee(createEventeeDto, profileImage, req, res)
   }
 
   @Get("signup")

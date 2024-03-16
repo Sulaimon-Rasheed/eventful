@@ -35,4 +35,6 @@ export class CreateEventeeDto {
     @IsString()
     @IsNotEmpty()
     phoneNum:string
+
+    profileImage: any;
 }

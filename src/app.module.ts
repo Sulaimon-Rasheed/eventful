@@ -26,6 +26,7 @@ dotenv.config()
     CreatorsModule,
    EventsModule,
     EventeesModule,
+    // MongooseModule.forRoot("mongodb://localhost:27017/eventfulApi"),
       MongooseModule.forRoot(process.env.DB_URL),
       MongooseModule.forFeature([{name:"Event", schema:eventSchema},{name:"Eventee", schema:eventeeSchema} ]),
       MailerModule,

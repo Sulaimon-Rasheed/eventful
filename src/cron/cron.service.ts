@@ -64,8 +64,8 @@ export class CronService {
         let currentDate = DateTime.now()
         let daysDiff = Math.round(parsedDate.diff(currentDate, 'days').toObject().days)
         let NumReminder_days = parseInt(event.reminder_days)
-        console.log(daysDiff)
-        let currUrl = "http://localhost:8000"
+
+        let currUrl = "https://eventful-8xm4.onrender.com"
         if(daysDiff === NumReminder_days){
             for(const eventeeId of event.unticketedEventeesId){
             const eventee = await eventeeModel.findOne({_id:eventeeId})

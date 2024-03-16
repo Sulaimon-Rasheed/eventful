@@ -13,6 +13,7 @@ import { ThrottlerGuard } from '@nestjs/throttler';
 import { emailVerifyDto } from './dto/email-verify.dto';
 import { newPasswordDto } from './dto/newPassword.dto';
 import { debitDto } from './dto/debit.dto';
+import { multerConfig } from '../config/multer.config';
 
 
 @Controller('creators')
@@ -23,9 +24,9 @@ export class CreatorsController {
     ) {}
 
   @Post("signup")
-  @UseInterceptors(FileInterceptor("profileImage"))
-  async createCreator(@UploadedFile() file:any, @Body(new ValidationPipe) createCreatorDto: CreateCreatorDto, @Req() req:Request, @Res() res:Response) {
-      await this.creatorsService.createCreator(createCreatorDto, file.path,req, res)
+  @UseInterceptors(FileInterceptor("profileImage", multerConfig))
+  async createCreator(@UploadedFile() profileImage:Express.Multer.File, @Body(new ValidationPipe) createCreatorDto: CreateCreatorDto, @Req() req:Request, @Res() res:Response) {
+      await this.creatorsService.createCreator(createCreatorDto, profileImage ,req, res)
   }
 
   @Get("signup")

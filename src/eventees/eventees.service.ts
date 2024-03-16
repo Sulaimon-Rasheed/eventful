@@ -27,6 +27,7 @@ import { emailVerificationDto } from './dto/emailVerification.dto';
 import { newEpasswordDto } from './dto/newEpassword.dto';
 import { DateTime } from 'luxon';
 import { Creator } from 'src/creators/creators.model';
+import { Readable } from 'stream'
 
 @Injectable()
 export class EventeesService {
@@ -49,11 +50,22 @@ export class EventeesService {
     });
   }
 
+//   bufferFromBufferString(bufferStr) {
+//     return Buffer.from(
+//         bufferStr
+//             .replace(/[<>]/g, '') // Remove < > symbols from the string
+//             .split(' ') // Create an array by splitting it by space
+//             .slice(1) // Remove the 'Buffer' word from the array
+//             .reduce((acc, val) => acc.concat(parseInt(val, 16)), []) // Convert hex strings to integers
+//     ).toString();
+// }
+
+
   //-----------------------------------Eventee Creation------------------------------------------------
 
   async createEventee(
     createEventeeDto: CreateEventeeDto,
-    filePath: string,
+    profileImage:Express.Multer.File,
     req:any,
     res: Response,
   ) {
@@ -67,13 +79,13 @@ export class EventeesService {
 
       const password = await encoding.encodePassword(createEventeeDto.password);
       
-      const result = await v2.uploader.upload(filePath, {
-        folder: 'eventful_eventees_ProfileImage',
-      });
+      const result = await v2.uploader.upload(profileImage.path, {folder:"eventful_eventees_ProfileImage"})
 
       if (!result) {
         return res.render('error', { message: 'fileUploadError' });
       }
+
+      console.log(result)
 
       const newEventee = await this.eventeeModel.create({
         first_name: createEventeeDto.first_name,
@@ -87,7 +99,7 @@ export class EventeesService {
         password: password,
       });
 
-      fs.unlink(filePath, (err) => {
+      fs.unlink(profileImage.path, (err) => {
         if (err) {
           console.log(err.message)
         }

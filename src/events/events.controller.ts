@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as cron from "node-cron"
 import { ThrottlerGuard } from '@nestjs/throttler';
-
+import { multerConfig } from '../config/multer.config';
 @Controller('events')
 @UseGuards(ThrottlerGuard)
 export class EventsController {
@@ -18,9 +18,9 @@ export class EventsController {
   }
 
   @Post('/createEvent')
-  @UseInterceptors(FileInterceptor("event_image"))
-  async createEvent(@UploadedFile() file:any, @Body(new ValidationPipe) CreateEventDto:CreateEventDto, @Req() req:Request, @Res() res:Response){
-    await this.eventsService.createEvent(CreateEventDto, file.path, req, res)
+  @UseInterceptors(FileInterceptor("event_image", multerConfig))
+  async createEvent(@UploadedFile() event_image:Express.Multer.File, @Body(new ValidationPipe) CreateEventDto:CreateEventDto, @Req() req:Request, @Res() res:Response){
+    await this.eventsService.createEvent(CreateEventDto, event_image, req, res)
   }
 
   

@@ -33,14 +33,14 @@ export class EventsService {
 
   async createEvent(
     createEventDto: CreateEventDto,
-    filePath: string,
+    event_image:Express.Multer.File,
     req: any,
     res: Response,
   ) {
     try {
       await this.Authservice.ensureLogin(req, res);
 
-      const result = await v2.uploader.upload(filePath, {
+      const result = await v2.uploader.upload(event_image.path, {
         folder: 'eventful_event_image',
       });
 
@@ -75,7 +75,7 @@ export class EventsService {
         creatorId: res.locals.user.id,
       });
 
-      fs.unlink(filePath, (err) => {
+      fs.unlink(event_image.path, (err) => {
         if (err) {
           console.log(err.message)
         }

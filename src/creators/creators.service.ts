@@ -47,7 +47,7 @@ export class CreatorsService {
   }
   async createCreator(
     createCreatorDto: CreateCreatorDto,
-    filePath: string,
+    profileImage:Express.Multer.File,
     req:any,
     res: Response,
   ) {
@@ -61,7 +61,7 @@ export class CreatorsService {
 
       const password = await encoding.encodePassword(createCreatorDto.password);
       
-      const result = await v2.uploader.upload(filePath, {
+      const result = await v2.uploader.upload( profileImage.path, {
         folder: 'eventful_creators_ProfileImage',
       });
       if (!result) {
@@ -82,7 +82,7 @@ export class CreatorsService {
         password: password,
       });
 
-      fs.unlink(filePath, (err) => {
+      fs.unlink(profileImage.path, (err) => {
         if (err) {
           console.log(err.message)
         }
