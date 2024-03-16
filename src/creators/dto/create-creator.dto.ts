@@ -40,4 +40,6 @@ export class CreateCreatorDto {
     @IsString()
     @IsNotEmpty()
     bank_name:string
+
+    profileImage:any
 }

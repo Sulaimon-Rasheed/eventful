@@ -28,6 +28,9 @@
         <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Ticketing Room</h1>
         <p data-aos="fade-left" data-aos-duration="1000" style="font-size: 30px;">Almost there, <b><%=user.name%>.</b></p >
         <p data-aos="zoom-out" data-aos-duration="1000">Now, you can buy ticket for your chosen events.</p>
+        <%if(reminderDaySuccess){%>
+          <p id="flashMessage" style="color: green; text-align: center; font-size: 24px;"><%=reminderDaySuccess%></p>
+        <%}%>
       </div>
 
       <div id="imageContainer">
@@ -35,10 +38,6 @@
       </div>
     
     </div>
-    
-    <%if(reminderDaySuccess){%>
-      <p style="color: green; text-align: center; font-size: 24px;"><%=reminderDaySuccess%></p>
-    <%}%>
 
     <%if(lists.length != 0){%>
         <ul id="allEventsContainer"  style="list-style-type: none;padding:0;margin-bottom: 80px;">

@@ -14,7 +14,10 @@ nav{
     font-size: 18px;
 }
 
-
+#flashMessage{
+    padding: 10px;
+    background-color: white;
+}
 
 #navLink, #eventeeForget, #logoutLink{
     flex:3;
