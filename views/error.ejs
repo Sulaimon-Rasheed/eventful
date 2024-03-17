@@ -184,6 +184,11 @@
             <h4>Insufficient fund.</h4>
             <p>You can't withdraw amount above your wallet balance.</p>
         </div>
+    <%}else if(message == "globalError"){%>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>Something broke</h4>
+        </div>
     <%}%>
         <footer>
         <%-include("partials/footer.ejs")-%>

@@ -7,6 +7,7 @@ import { join } from 'path'
 import * as cookieParser from "cookie-parser"
 import * as session from 'express-session';
 import * as flash from 'connect-flash'
+import { Response } from 'express';
 
 
 
@@ -28,6 +29,10 @@ async function bootstrap() {
     
   }))
   app.use(flash());
+
+  app.use((res:Response) => {
+    res.render("error", {message:"globalError"})
+  })
 
   await app.listen(process.env.PORT);
 }
