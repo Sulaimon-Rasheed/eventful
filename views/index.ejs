@@ -31,17 +31,38 @@
         <a id="btn" href="/eventees/signup">Create an account</a>
       </div>
 
+     
+
       <div id="imageContainer">
-      <img id="indexImage" src="/happy_eventee3.jpg" alt="image">
+      
       </div>
+
+
+      <script>
+        let images = ["/happy_eventee3.jpg",  "/rejoice1.jpg", "/rejoice2.jpg", "/rejoice3.webp", "/rejoice4.jpg"]
+        let index = Math.floor(Math.random()*images.length)
+
+        let imageContainer = document.getElementById("imageContainer")
+        let newImage = document.createElement("img")
+        newImage.id = "newImage"
+        newImage.src = `${images[index]}`
+        
+
+        document.addEventListener('DOMContentLoaded', ()=>{
+          imageContainer.appendChild(newImage)
+    })
+
+      </script>
     
     </div>
      
   <div id="homeContent">
-    <p data-aos="zoom-in" data-aos-duration="1000">Eventful is more than just a ticketing platform.It is your passport to a world of unforgettable moments.
+    <p style="line-height: 1.5;" data-aos="zoom-in" data-aos-duration="1000">Eventful is more than just a ticketing platform. It is your passport to a world of unforgettable moments.
         From pulsating concerts to captivating theater performances, and thrilling sports events to enlightening cultural gatherings. We curate a diverse array of experiences that cater to every taste and passion.
     </p>
 
+    <h2 style="color:purple;">Latest events coming up...</h2>
+    <p style="color:purple; font-weight: bold;">Click on the event banner to read more...</p>
     <!-- ----------------------------- -->
     <ul id="allEventsContainer"  style="list-style-type: none;padding:0;">
       <%for(let i = 0; i < events.length; i++){%>
@@ -62,13 +83,69 @@
   </ul>
     
         <!-- --------------------------------- -->
-
-    <h2 style="text-align: center; font-size: 24px;margin-top: 100px;" data-aos="fade-right" data-aos-duration="1000">Are you an event Creator ?</h2>
-    <div style="display: flex; gap: 10px; justify-content:space-around; font-size: 24px;" data-aos="fade-left" data-aos-duration="1000">
-        <a id="creatorBtn" href="/creators/creatorHomePage" data-aos="zoom-in" data-aos-duration="1000">Get started for free</a>
+    <div style="border-radius: 20px;background-color: lightgrey;padding: 10px;margin:100px;">
+      <h2 style="text-align: center; font-size: 24px;" data-aos="fade-right" data-aos-duration="1000">Are you an event Creator ?</h2>
+      <div style="display: flex; gap: 10px; justify-content:space-around; font-size: 24px;" data-aos="fade-left" data-aos-duration="1000">
+          <a id="creatorBtn" href="/creators/creatorHomePage" data-aos="zoom-in" data-aos-duration="1000">Get started for free</a>
+      </div>
     </div>
+  
   </div>
 
+
+  <!-- -----------Details----------------- -->
+  <div style="position: relative;">
+    
+    <h1 style="text-align: center;margin-bottom:100px; color: purple;">Enjoy the best services ever...</h1>
+    
+    <img id="happyman2" src="/happyman.jpg" alt="image">
+    <img id="happywoman2" src="/happywoman.png" alt="image">
+
+  <div style="margin: 20px 24px;width: 50%;">
+    
+    <div data-aos="fade-up" data-aos-duration="1000" id="serviceContainer">
+      <img data-aos="zoom-in" data-aos-duration="1000" id="serviceLogo" src="/code.png" alt="image">
+      <h2 data-aos="fade-left" data-aos-duration="1000" id="serviceHead">Event Ticketing</h2>
+      <p data-aos="fade-left" data-aos-duration="1000" id="servicePara">Get your mobile ticket for events as a <b>QRcode</b> sent to your email without delay. <a href="/help/ticketPurchase">Read the guideline</a>.</p>
+    </div>
+
+    <div data-aos="fade-up" data-aos-duration="1000" id="serviceContainer">
+      <img data-aos="zoom-in" data-aos-duration="1000" id="serviceLogo" src="/camera.jpeg" alt="image">
+      <h2 data-aos="fade-right" data-aos-duration="1000" id="serviceHead">Event Listing</h2>
+      <p data-aos="fade-right" data-aos-duration="1000" id="servicePara">We save you the time of getting ticket for your desired events. Like you add items to cart when shopping, you can add (save) desired events to your checklist and come back later to purchase the saved events ticket. <a href="/help/checklisting">Read the guideline</a>.</p>
+    </div>
+
+    <div data-aos="fade-up" data-aos-duration="1000" id="serviceContainer">
+      <img data-aos="zoom-in" data-aos-duration="1000" id="serviceLogo" src="/reminder2.jpg" alt="image">
+      <h2 data-aos="fade-left" data-aos-duration="1000" id="serviceHead">Event Reminder</h2>
+      <p data-aos="fade-left" data-aos-duration="1000" id="servicePara">With us, you can't miss your event with our Reminder system.For every event in your checklist, Eventful will send you an email to remind you of each event 2 days before each event.
+        We make this flexible,meaning you can also choose the day to be reminded.
+      </p>
+    </div>
+
+    <div data-aos="fade-up" data-aos-duration="1000" id="serviceContainer">
+      <img data-aos="zoom-in" data-aos-duration="1000" id="serviceLogo" src="/marketing2.webp" alt="image">
+      <h2 data-aos="fade-right" data-aos-duration="1000" id="serviceHead">Marketing Tools</h2>
+      <p data-aos="fade-right" data-aos-duration="1000" id="servicePara">Our shearablity feature allows you to share desired events
+         with family and friends. <a href="/help/share">Read the guideline</a></p>
+    </div>
+
+    <div data-aos="fade-up" data-aos-duration="1000" id="serviceContainer">
+      <img data-aos="zoom-in" data-aos-duration="1000" id="serviceLogo" src="/analysis.jpg" alt="image">
+      <h2 data-aos="fade-left" data-aos-duration="1000" id="serviceHead">Reporting & Analytics</h2>
+      <p data-aos="fade-left" data-aos-duration="1000" id="servicePara">A top notch analysis is guranteed with Eventful as we allow you to record the count and details of events you have attended in the past or event you bought it ticket but forgot to attend for a reason.<a href="/help/eventeeAnalytics"> How ?</a></p>
+    </div>
+  
+  </div>
+
+</div>
+
+<div style="border-radius: 20px;background-color: lightgrey;padding: 10px;margin: 0 100px;">
+  <h2 style="text-align: center; font-size: 24px" data-aos="fade-right" data-aos-duration="1000">You want to organize an event ?</h2>
+    <div style="display: flex; gap: 10px; justify-content:space-around; font-size: 24px;" data-aos="fade-left" data-aos-duration="1000">
+        <a id="creatorBtn" href="/creators/creatorHomePage" data-aos="zoom-in" data-aos-duration="1000">Register for free</a>
+    </div>
+ </div>
 
   <footer>
     <%-include("partials/footer.ejs")-%>

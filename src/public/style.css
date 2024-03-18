@@ -14,6 +14,30 @@ nav{
     font-size: 18px;
 }
 
+#happyman,#happyman2{
+    position: absolute;
+    width: 350px;
+    height: 500px;
+    right: 100px;
+    top:0px
+}
+
+#happyman2{
+    top:150px
+}
+
+#happywoman, #happywoman2{
+    position: absolute;
+    width: 350px;
+    height: 500px;
+    right: 100px;
+    bottom:400px
+}
+
+#happywoman2{
+    bottom:100px 
+}
+
 #flashMessage{
     padding: 10px;
     background-color: white;
@@ -163,7 +187,7 @@ textarea{
     margin: 0;
 }
 
-#indexImage{
+#indexImage,#newImage{
     height: 400px;
 }
 
@@ -228,7 +252,7 @@ flex-wrap: wrap;
 }
 
 #homeContent{
-    padding:0 16px;
+    padding:0 24px;
 }
 
 #form{

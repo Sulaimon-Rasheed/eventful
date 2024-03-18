@@ -19,7 +19,7 @@ export class AppService {
       .find({state:"Posted"})
       .populate("creatorId")
       .sort({ created_date: 'desc' })
-      .limit(5)
+      .limit(6)
 
       this.cacheService.set(`homePage`, events)
       return res.render("index", {message:'Eventful', events})

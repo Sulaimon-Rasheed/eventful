@@ -33,7 +33,7 @@
               <%if(successfulTransaction){%>
                 <p data-aos="zoom-in" data-aos-duration="1000" style="color: green; text-align: center; font-size: 34px; font-weight: bold; background-color: white;text-align: center; border-radius: 10px;margin:auto 24px;"><%=successfulTransaction%></p>
                <%}%>
-              <p data-aos="fade-left" data-aos-duration="1000" style="font-size: 70px;"><strong>Balance: </strong><span style="color: black;">&#8358;<%=wallet.balance%></span></p>
+              <p data-aos="fade-left" data-aos-duration="1000" style="font-size: 70px;"><strong>Balance: </strong><span style="color: black;">&#36;<%=wallet.balance%></span></p>
             </div>
       
             <div id="imageContainer">
@@ -53,7 +53,7 @@
           <table data-aos="fade-up" data-aos-duration="1000" id = "theTable">
             <tr>
               <th>Name</th>
-              <th>Amount (&#8358;)</th>
+              <th>Amount (&#36;)</th>
               <th>Transaction type</th>
               <th>Event</th>
               <th>Transaction date</th>
@@ -85,7 +85,7 @@
         <!------------------- withdrawal form---------------- -->
         <form data-aos="flip-left" data-aos-duration="1000" id="form" action="/creators/withdrawFund/<%=wallet._id%>" method="PUT">
           <h2 style="text-decoration: underline;">Withdrawal</h2>
-          <label for="debit_amount">Amount to withdraw (&#8358;):</label>
+          <label for="debit_amount">Amount to withdraw (&#36;):</label>
           <input class="input" type="text" name="debit_amount" placeholder="50000">
           <button id="navLink" type="submit" formmethod="post">Send</button>
         </form>

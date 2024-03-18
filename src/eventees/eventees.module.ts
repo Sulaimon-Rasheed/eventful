@@ -17,12 +17,13 @@ import { ConfigService } from '@nestjs/config';
 import { CronService } from 'src/cron/cron.service';
 import { CacheService } from 'src/cache/cache.service';
 import { MulterModule } from '@nestjs/platform-express';
+import { CurrencyService } from 'src/exchanger/currencyExchange.service';
 
 @Module({
   imports:[EventsModule, MongooseModule.forFeature([{name:"Eventee", schema:eventeeSchema},{name:"EventeeVerification", schema:eventeeVerificationSchema}, {name:"Event", schema:eventSchema},{name:"Creator", schema:creatorSchema}, {name:"Transaction", schema:transactionSchema}, {name:"Wallet", schema:walletSchema}]),
 // MulterModule.register({ dest: './uploads' })
 ],
   controllers: [EventeesController, EventsController],
-  providers: [EventeesService, MailerService, AuthService, EventsService, ConfigService, CronService, CacheService],
+  providers: [EventeesService, MailerService, AuthService, EventsService, ConfigService, CronService, CacheService, CurrencyService],
 })
 export class EventeesModule {}

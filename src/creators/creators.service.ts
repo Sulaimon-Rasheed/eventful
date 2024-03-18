@@ -103,7 +103,7 @@ export class CreatorsService {
       // create a wallet for the creator
       const newWallet = await this.walletModel.create({
         creatorId:newCreator._id,
-        currency:"Naira",
+        currency:"USD",
       })
 
       newCreator.walletId = newWallet._id
@@ -521,8 +521,8 @@ export class CreatorsService {
         subject: 'Credit request',
         html: `<div style = "background-color:lightgrey; padding:16px"; border-radius:20px>
           <p>Hi, Account officer</P>
-          <p>${creator.creator_name} of ${creator.company_name} just made a request to be credited with N${amount}</p>
-          <p>Ensure the user is credited within the next 24hrs</P>
+          <p>${creator.creator_name} of ${creator.company_name} just made a request to be credited with ${amount}USD</p>
+          <p>Ensure the user is credited within the next 48hrs</P>
           <h2>Account Details</h2>
           <p><strong>Account name</strong>${creator.account_name}</P>
           <p><strong>Account number</strong>${creator.account_number}</P>

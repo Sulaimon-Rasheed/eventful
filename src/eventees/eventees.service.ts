@@ -27,7 +27,7 @@ import { emailVerificationDto } from './dto/emailVerification.dto';
 import { newEpasswordDto } from './dto/newEpassword.dto';
 import { DateTime } from 'luxon';
 import { Creator } from 'src/creators/creators.model';
-import { Readable } from 'stream'
+import { CurrencyService } from '../exchanger/currencyExchange.service';
 
 @Injectable()
 export class EventeesService {
@@ -42,6 +42,7 @@ export class EventeesService {
     private readonly mailservice: MailerService,
     private readonly Authservice: AuthService,
     private readonly cacheService: CacheService,
+    private readonly currencyService :CurrencyService ,
   ) {
     v2.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -679,6 +680,7 @@ export class EventeesService {
         return res.render("error", {message:"creatorNotFound"})
       }
      
+
      const wallet = await this.walletModel.findOne({creatorId:creator.id, status:"active"})
       if(!wallet){
         return res.render("error", {message:"inactiveWallet"})
@@ -696,8 +698,11 @@ export class EventeesService {
         _id: res.locals.user.id,
       });
 
+      let NairaPerDollar = await this.currencyService.getExchangeRate(res)
+      let thePriceInNaira = await this.currencyService.convertDollarToNaira(price , NairaPerDollar ) 
+
       const transaction = await this.transactionModel.create({
-        amount: `${+price}`,
+        amount: `${+thePriceInNaira}`,
         type:"credit",
         eventId: eventId,
         eventeeId: eventee._id,
@@ -705,7 +710,7 @@ export class EventeesService {
       });
 
       const data = {
-        amount: price * 100,
+        amount: thePriceInNaira * 100,
         email: eventee.email,
         reference: transaction._id,
       };
@@ -772,7 +777,11 @@ export class EventeesService {
         return res.render("error", {message:"inactiveWallet"})
       }
 
-      wallet.balance = wallet.balance + (parseInt(transaction.amount) - (0.2 * parseInt(transaction.amount)))
+      let NairaPerDollar = await this.currencyService.getExchangeRate(res)
+      let amountInDollar = parseInt(transaction.amount) / NairaPerDollar
+
+      wallet.balance = wallet.balance + (amountInDollar - (0.2 * amountInDollar))
+      
       wallet.transactions.push(transaction._id)
       wallet.updatedAt = DateTime.now().toFormat('LLL d, yyyy \'at\' HH:mm')
       wallet.save()
@@ -780,7 +789,7 @@ export class EventeesService {
         const data = {
           name: `${eventee.first_name} ${eventee.last_name}`,
           event_title: event.title,
-          amount: `N${transaction.amount}`,
+          amount: `NGN${transaction.amount}`,
           ticketed_date: transaction.created_date,
           transactionId: transaction._id,
           eventId:event._id
