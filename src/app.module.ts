@@ -19,7 +19,14 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { CacheService } from './cache/cache.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import {join} from "path"
+// import { globalModule } from './globalError/global.module';
 dotenv.config()
+import { APP_FILTER } from '@nestjs/core';
+import { NotFoundExceptionFilter } from './globalError/global.controller';
+import { GlobalExceptionFilter } from './globalError/global.filter';
+import { GlobalLoggerInterceptor } from './globalError/globalLogger.interceptor';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+
 
 @Module({
   imports: [
@@ -38,7 +45,17 @@ dotenv.config()
       }),
     ],
   controllers: [AppController],
-  providers: [AppService, FlashMiddleware, AuthService, MailerService, CronService, CacheService],
+  providers: [AppService, FlashMiddleware, AuthService, MailerService, CronService, CacheService,
+     {
+    provide: APP_FILTER,
+    useClass: NotFoundExceptionFilter,
+  },{
+    provide: APP_FILTER,
+    useClass: GlobalExceptionFilter,
+  }, {
+    provide: APP_INTERCEPTOR,
+    useClass: GlobalLoggerInterceptor,
+  },],
 })
 
 export class AppModule implements NestModule {

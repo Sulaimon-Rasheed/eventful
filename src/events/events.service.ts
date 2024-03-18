@@ -132,13 +132,15 @@ export class EventsService {
         
         const updateSuccessMessage = req.flash('updateSuccess')
         const reminderSuccessMessage = req.flash('reminderUpdate')
+        const priceChangeMessage = req.flash("priceChange")
         
-        return res.render("eventUpdatePage", {event, user:res.locals.user.id, updateSuccessMessage, reminderSuccessMessage})
+        return res.render("eventUpdatePage", {event, user:res.locals.user.id, updateSuccessMessage, reminderSuccessMessage, priceChangeMessage })
       }
 
       const updateSuccessMessage = req.flash('updateSuccess')
       const reminderSuccessMessage = req.flash('reminderUpdate')
-      return res.render("eventUpdatePage", {event, user:res.locals.user.id, updateSuccessMessage, reminderSuccessMessage})
+      const priceChangeMessage = req.flash("priceChange")
+      return res.render("eventUpdatePage", {event, user:res.locals.user.id, updateSuccessMessage, reminderSuccessMessage, priceChangeMessage})
     }catch(err){
       return res.render("catchError", {catchError:err.message});
     }
@@ -159,7 +161,7 @@ export class EventsService {
         await this.cacheService.remove(`creatorDashBoard_${res.locals.user.id}_${page}`)
       }
 
-        req.flash('updateSuccess', 'Successful event update')
+        req.flash('updateSuccess', 'Successful description update')
         return res.redirect(`/events/eventUpdatePage/${event._id}`)
       
     }catch(err){
@@ -298,6 +300,31 @@ export class EventsService {
     }catch(err){
         return res.render("catchError", {catchError:err.message});
       }
+  }
+
+
+  async changePrice(eventId:string, req: any, res:Response, UpdateEventDto:UpdateEventDto){
+    try{
+      await this.Authservice.ensureLogin(req, res);
+      let newPrice = UpdateEventDto.ticket_price
+      const event = await this.eventModel.findByIdAndUpdate(eventId, {ticket_price:newPrice})
+      if(!event){
+        return res.render("error", {message:"eventNotFound"})
+      }
+
+      await this.cacheService.remove(`eventUpdate_${res.locals.user.id}_${eventId}`)
+
+    for(let page = 0; page<100; page++){
+      await this.cacheService.remove(`creatorDashBoard_${res.locals.user.id}_${page}`)
+    }
+
+      req.flash('priceChange', 'Successful price change')
+      return res.redirect(`/events/eventUpdatePage/${event._id}`)
+
+
+    }catch(err){
+      return res.render("catchError", {catchError:err.message});
+    }
   }
 
 }

@@ -62,4 +62,5 @@ export class AppController {
   async getFaq(@Req() req:Request, @Res() res:Response){
     await this.appService.getFaq(req, res)
   }
+
 }

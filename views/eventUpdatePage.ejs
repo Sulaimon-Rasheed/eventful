@@ -28,10 +28,13 @@
         <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Update room for:</h1>
         <p data-aos="zoom-out" data-aos-duration="1000" style="font-size: 70px;"><%=event.title%></p>
         <%if(updateSuccessMessage){%>
-          <p id="flashMessage" data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=updateSuccessMessage%></p>
-        <%}%>
+          <p data-aos="zoom-in" data-aos-duration="1000" style="color: green; text-align: center; font-size: 34px; font-weight: bold; background-color: white;text-align: center; border-radius: 10px;margin:auto 24px;"><%=updateSuccessMessage%></p>
+          <%}%>
         <%if(reminderSuccessMessage){%>
-          <p id="flashMessage" data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=reminderSuccessMessage%></p>
+          <p  data-aos="zoom-in" data-aos-duration="1000" style="color: green; text-align: center; font-size: 34px; font-weight: bold; background-color: white;text-align: center; border-radius: 10px;margin:auto 24px;"><%=reminderSuccessMessage%></p>
+          <%}%>
+        <%if(priceChangeMessage){%>
+          <p data-aos="zoom-in" data-aos-duration="1000" style="color: green; text-align: center; font-size: 34px; font-weight: bold; background-color: white;text-align: center; border-radius: 10px;margin:auto 24px;"><%=priceChangeMessage%></p>
         <%}%>
       </div>
 
@@ -53,6 +56,13 @@
         
         <textarea data-aos="fade-up" data-aos-duration="1000" name="description" cols="100" rows="10" style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 18px; margin:0 auto;"></textarea>
         <figcaption data-aos="fade-up" data-aos-duration="1000" style="text-align: center;">Description</figcaption>
+        <button data-aos="fade-up" data-aos-duration="1000" type="submit" formmethod="post" class="updateBtn">Update</button>
+    </form>
+
+    <h2 data-aos="zoom-in" data-aos-duration="1000" id="updateHeading">CHANGE TICKET PRICE FOR LATE BIRDS</h2>
+    <form action="/events/changePrice/<%=event._id%>" id="form" method="PUT" >
+      <label data-aos="fade-left" data-aos-duration="1000" for="ticket_price" style="text-decoration: underline;font-weight: bold;">Enter the late bird ticket price (&#8358;): </label> 
+      <input data-aos="fade-right" data-aos-duration="1000" type="text" name="ticket_price" class="input" placeholder="3000">
         <button data-aos="fade-up" data-aos-duration="1000" type="submit" formmethod="post" class="updateBtn">Update</button>
     </form>
 

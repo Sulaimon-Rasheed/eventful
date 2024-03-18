@@ -30,10 +30,6 @@ async function bootstrap() {
   }))
   app.use(flash());
 
-  app.use((res:Response) => {
-    res.render("error", {message:"globalError"})
-  })
-
   await app.listen(process.env.PORT);
 }
 bootstrap();

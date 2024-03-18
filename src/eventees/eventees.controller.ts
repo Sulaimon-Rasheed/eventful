@@ -116,4 +116,5 @@ export class EventeesController {
       await res.clearCookie("jwt")
       res.redirect("/eventees/login")
      }
+
 }
