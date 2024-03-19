@@ -436,7 +436,7 @@ export class CreatorsService {
         let postDate = event.created_date;
         let parsedDate = DateTime.fromFormat(
           postDate,
-          "LLL d, yyyy 'at' HH:mm",
+          'LLL d, yyyy \'at\' HH:mm',
         );
         let currentDate = DateTime.now();
 
