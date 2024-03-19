@@ -51,17 +51,6 @@ export class EventeesService {
     });
   }
 
-//   bufferFromBufferString(bufferStr) {
-//     return Buffer.from(
-//         bufferStr
-//             .replace(/[<>]/g, '') // Remove < > symbols from the string
-//             .split(' ') // Create an array by splitting it by space
-//             .slice(1) // Remove the 'Buffer' word from the array
-//             .reduce((acc, val) => acc.concat(parseInt(val, 16)), []) // Convert hex strings to integers
-//     ).toString();
-// }
-
-
   //-----------------------------------Eventee Creation------------------------------------------------
 
   async createEventee(
@@ -106,7 +95,7 @@ export class EventeesService {
         }
       });
 
-      const currUrl = 'https://b66a-197-210-226-88.ngrok-free.app';
+      const currUrl = 'https://eventful-8xm4.onrender.com';
       let uniqueString = newEventee._id + uuidv4();
       const hashedUniqueString = await encoding.encodePassword(uniqueString);
 
@@ -266,7 +255,7 @@ export class EventeesService {
       eventee.passwordResetToken = hashedResetToken;
       eventee.passwordResetExpireDate = Date.now() + 10 * 60 * 1000;
       eventee.save();
-      const currUrl = 'https://b66a-197-210-226-88.ngrok-free.app';
+      const currUrl = 'https://eventful-8xm4.onrender.com';
       this.mailservice.sendVerificationEmail({
         email: eventee.email,
         subject: 'We received your request for password reset',
