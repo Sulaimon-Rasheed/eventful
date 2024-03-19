@@ -22,7 +22,7 @@ export class CronService {
     // Cron job to remind ticketed eventees of the event
     cron.schedule('0 0 * * *', async () => {
       this.logger.debug('Running scheduled task of Creators for ticketed eventees...');
-      const events:any = await this.eventModel.find().populate("ticketedEventeesId")
+      const events = await this.eventModel.find().populate("ticketedEventeesId")
       for(const event of events){
         let parsedDate = DateTime.fromFormat(event.event_date , 'LLL d, yyyy');
         let currentDate = DateTime.now()
@@ -37,7 +37,7 @@ export class CronService {
                     subject:`${event.reminder_days} days to go`,
                     html:`<div>
                     <p>Hi, ${eventee.first_name}</P>
-                    <img src="${event.event_image.url}" alt="event image" style="length:300px; width:300px">
+                    <img src="${event.event_image}" alt="event image" style="length:300px; width:300px">
                     <p>This is a reminder from the Organizer of the upcoming event.</P>
                     <p>We are glad that you will be attending the event.</P>
                     <h2>Event Details:</h2>
@@ -58,7 +58,7 @@ export class CronService {
     // Cron job to remind Unticketed eventees of the event
     cron.schedule('0 0 * * *', async () => {
       this.logger.debug('Running scheduled task of Creators for unticketed eventees...');
-      const events:any = await this.eventModel.find().populate("unticketedEventeesId")
+      const events = await this.eventModel.find().populate("unticketedEventeesId")
       for(const event of events){
         let parsedDate = DateTime.fromFormat(event.event_date , 'LLL d, yyyy');
         let currentDate = DateTime.now()
@@ -74,7 +74,7 @@ export class CronService {
                     subject:`Proceed to buy your ticket. Just ${event.reminder_days} days to go`,
                     html:`<div>
                     <p>Hi, ${eventee.first_name}</P>
-                    <img src="${event.event_image.url}" alt="event image" style="length:300px; width:300px">
+                    <img src="${event.event_image}" alt="event image" style="length:300px; width:300px">
                     <p>You listed this event on Eventful but it seems you forgot to buy the ticket for the event.</P>
                     <p>We will be glad to see you attend the event.</P>
                     <p>So,<a href="${currUrl + "/eventees/login"}">login</a> to buy your ticket today.</P>
@@ -100,7 +100,7 @@ export class CronService {
       for(const eventee of eventees){
         let eventsId = eventee.bought_eventsId
         for(const eventId of eventsId){
-          const event:any = await eventModel.findOne({_id:eventId})
+          const event = await eventModel.findOne({_id:eventId})
           let parsedDate = DateTime.fromFormat(event.event_date , 'LLL d, yyyy');
           let currentDate = DateTime.now()
           let daysDiff = Math.round(parsedDate.diff(currentDate, 'days').toObject().days)
@@ -112,7 +112,7 @@ export class CronService {
               subject:`${eventee.eventeeReminder_days} days to go`,
               html:`<div>
                     <p>Hi, ${eventee.first_name}. You set this reminder.</P>
-                    <img src="${event.event_image.url}" alt="event image" style="length:300px; width:300px">
+                    <img src="${event.event_image}" alt="event image" style="length:300px; width:300px">
                     <p>This is a reminder for the upcoming event.</P>
                     <p>We are glad that you will be attending the event.</P>
                     <h2>Event Details:</h2>
@@ -128,6 +128,23 @@ export class CronService {
         
       }
     })
+
+
+    // Event deleting cron job
+    cron.schedule("0 0 1 * *", async()=>{
+      this.logger.debug('Running old events deleting task...');
+      const events = await this.eventModel.find()
+      for(const event of events){
+        let parsedDate = DateTime.fromFormat(event.event_date , 'LLL d, yyyy');
+        let currentDate = DateTime.now()
+        let daysDiff = Math.round(currentDate.diff(parsedDate, 'days').toObject().days)
+
+        if(daysDiff > 90){
+            await eventModel.findByIdAndDelete(event._id)
+        }
+      }
+    })
+
   }
 }
 
