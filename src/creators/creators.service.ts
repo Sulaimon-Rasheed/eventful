@@ -88,7 +88,7 @@ export class CreatorsService {
         }
       });
 
-      const currUrl = 'https://eventful-8xm4.onrender.com';
+      const currUrl = 'https://b66a-197-210-226-88.ngrok-free.app';
       let uniqueString = newCreator._id + uuidv4();
 
       const hashedUniqueString = await encoding.encodePassword(uniqueString);
@@ -221,7 +221,7 @@ export class CreatorsService {
       console.log(resetToken);
       console.log(hashedResetToken);
       creator.save();
-      const currUrl = 'https://eventful-8xm4.onrender.com';
+      const currUrl = 'https://b66a-197-210-226-88.ngrok-free.app';
       this.mailservice.sendVerificationEmail({
         email: creator.email,
         subject: 'We received your request for password reset',
@@ -471,13 +471,21 @@ export class CreatorsService {
       let theTransactions = []
 
       for (const transactionId of wallet.transactions){
-        const transaction = await (await this.transactionModel.findOne({_id:transactionId}).populate("eventeeId")).populate("eventId")
+        const transaction = await this.transactionModel.findOne({_id:transactionId}).populate("eventeeId").populate("eventId")
+        if(transaction.creatorId == res.locals.user.id && transaction.type == "debit"){
+          theTransactions.push(transaction)
+        }
+        const event = await this.eventModel.findOne({_id:transaction.eventId})
+        if(!event){
+          continue;
+        }
         theTransactions.push(transaction)
       }
 
       const successfulTransaction = req.flash("transactionSuccess")
       return res.render("wallet", {user:res.locals.user, wallet, theTransactions, successfulTransaction})
     }catch(err){
+      console.log(err)
       return res.render('catchError', { catchError: err.message });
     }
   }
@@ -493,7 +501,7 @@ export class CreatorsService {
     }
 
     const amount = parseInt(debitDto.debit_amount)
-    const wallet = await (await this.walletModel.findOne({_id:walletId, status:"active"})).populate("transactions")
+    const wallet = await this.walletModel.findOne({_id:walletId, status:"active"}).populate("transactions")
     if(!wallet){
       return res.render("error", {message:"walletNotFound"})
     }

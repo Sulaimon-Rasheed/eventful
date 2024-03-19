@@ -106,7 +106,7 @@ export class EventeesService {
         }
       });
 
-      const currUrl = 'https://eventful-8xm4.onrender.com';
+      const currUrl = 'https://b66a-197-210-226-88.ngrok-free.app';
       let uniqueString = newEventee._id + uuidv4();
       const hashedUniqueString = await encoding.encodePassword(uniqueString);
 
@@ -266,7 +266,7 @@ export class EventeesService {
       eventee.passwordResetToken = hashedResetToken;
       eventee.passwordResetExpireDate = Date.now() + 10 * 60 * 1000;
       eventee.save();
-      const currUrl = 'https://eventful-8xm4.onrender.com';
+      const currUrl = 'https://b66a-197-210-226-88.ngrok-free.app';
       this.mailservice.sendVerificationEmail({
         email: eventee.email,
         subject: 'We received your request for password reset',
@@ -702,7 +702,7 @@ export class EventeesService {
       let thePriceInNaira = await this.currencyService.convertDollarToNaira(price , NairaPerDollar ) 
 
       const transaction = await this.transactionModel.create({
-        amount: `${+thePriceInNaira}`,
+        amount: `${+price}`,
         type:"credit",
         eventId: eventId,
         eventeeId: eventee._id,
@@ -727,6 +727,7 @@ export class EventeesService {
 
       return res.redirect(response.data.data.authorization_url)
     } catch (err) {
+      console.log(err)
       res.render('catchError', { catchError: err.message });
     }
   }
@@ -777,8 +778,7 @@ export class EventeesService {
         return res.render("error", {message:"inactiveWallet"})
       }
 
-      let NairaPerDollar = await this.currencyService.getExchangeRate(res)
-      let amountInDollar = parseInt(transaction.amount) / NairaPerDollar
+      let amountInDollar = parseInt(transaction.amount) 
 
       wallet.balance = wallet.balance + (amountInDollar - (0.2 * amountInDollar))
       
@@ -786,10 +786,13 @@ export class EventeesService {
       wallet.updatedAt = DateTime.now().toFormat('LLL d, yyyy \'at\' HH:mm')
       wallet.save()
 
+      const exchangeRate = await this.currencyService.getExchangeRate(res)
+      const amountPaidInNaira = Math.round(parseInt(transaction.amount)  * exchangeRate)
+
         const data = {
           name: `${eventee.first_name} ${eventee.last_name}`,
           event_title: event.title,
-          amount: `NGN${transaction.amount}`,
+          amount: `NGN${amountPaidInNaira}`,
           ticketed_date: transaction.created_date,
           transactionId: transaction._id,
           eventId:event._id

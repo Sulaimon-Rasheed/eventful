@@ -20,6 +20,6 @@ export class CurrencyService {
   }
 
   convertDollarToNaira(amountInDollar: number, exchangeRate: number): number {
-    return amountInDollar * exchangeRate;
+    return Math.round(amountInDollar * exchangeRate);
   }
 }

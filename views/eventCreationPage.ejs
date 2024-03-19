@@ -28,21 +28,22 @@
   <div id="welcomeContainer">
     <div id="creatorLogSign">
       <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Event creation</h1>
+       
+    <%if(successfulCreation){%>
+      <p data-aos="zoom-in" data-aos-duration="1000" style="color: green; text-align: center; font-size: 34px; font-weight: bold; background-color: white;text-align: center; border-radius: 10px;margin:auto 24px;"><%=successfulCreation%></p>
+    <%}%>
+
+    <%if(eventDelMessage){%>
+      <p data-aos="zoom-in" data-aos-duration="1000" style="color: green; text-align: center; font-size: 34px; font-weight: bold; background-color: white;text-align: center; border-radius: 10px;margin:auto 24px;"><%=eventDelMessage%></p>
+    <%}%>
+
     </div>
   
     <div id="imageContainer">
       <img id="indexImage" src="/hand-signing-form.jpg"  alt="image">
     </div>
   </div>
-    
-    <%if(successfulCreation){%>
-      <p data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=successfulCreation%></p>
-    <%}%>
-
-    <%if(eventDelMessage){%>
-      <p data-aos="fade-right" data-aos-duration="1000" style="color: green; text-align: center; font-size: 24px;"><%=eventDelMessage%></p>
-    <%}%>
-
+   
     <form action="/events/createEvent" , method="post" id="form" enctype="multipart/form-data">
       <h2 style="margin-bottom: 50px;">Create Event</h2>
         <label data-aos="fade-left" data-aos-duration="1000" for="title" class="label">Title:</label>
