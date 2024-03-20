@@ -687,8 +687,8 @@ export class EventeesService {
         _id: res.locals.user.id,
       });
 
-      // let NairaPerDollar = await this.currencyService.getExchangeRate(res)
-      // let thePriceInNaira = await this.currencyService.convertDollarToNaira(price , NairaPerDollar ) 
+      let NairaPerDollar = await this.currencyService.getExchangeRate(res)
+      let thePriceInNaira = await this.currencyService.convertDollarToNaira(price , NairaPerDollar ) 
 
       const transaction = await this.transactionModel.create({
         amount: `${+price}`,
@@ -699,7 +699,7 @@ export class EventeesService {
       });
 
       const data = {
-        amount: price * 100,
+        amount: thePriceInNaira * 100,
         email: eventee.email,
         reference: transaction._id,
       };
