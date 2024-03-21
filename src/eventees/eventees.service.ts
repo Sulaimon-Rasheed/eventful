@@ -688,8 +688,11 @@ export class EventeesService {
       });
 
       let NairaPerDollar = await this.currencyService.getExchangeRate(res)
+      console.log(NairaPerDollar)
+     
       let thePriceInNaira = await this.currencyService.convertDollarToNaira(price , NairaPerDollar ) 
-
+      console.log(thePriceInNaira)
+      
       const transaction = await this.transactionModel.create({
         amount: `${+price}`,
         type:"credit",
@@ -712,9 +715,10 @@ export class EventeesService {
         'https://api.paystack.co/transaction/initialize',
         data,
         { headers },
-      );
+      )
 
-      return res.redirect(response.data.data.authorization_url)
+      return res.redirect(response.data.data.authorization_url) 
+    
     } catch (err) {
       console.log(err)
       res.render('catchError', { catchError: err.message });
