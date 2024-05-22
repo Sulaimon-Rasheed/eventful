@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CreatorsModule } from './creators/creators.module';
@@ -19,13 +19,14 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { CacheService } from './cache/cache.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import {join} from "path"
-// import { globalModule } from './globalError/global.module';
 dotenv.config()
 import { APP_FILTER } from '@nestjs/core';
 import { NotFoundExceptionFilter } from './globalError/global.controller';
 import { GlobalExceptionFilter } from './globalError/global.filter';
 import { GlobalLoggerInterceptor } from './globalError/globalLogger.interceptor';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AdminsModule } from './admins/admins.module';
+import { APP_PIPE } from '@nestjs/core';
 
 
 @Module({
@@ -33,7 +34,6 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     CreatorsModule,
    EventsModule,
     EventeesModule,
-    // MongooseModule.forRoot("mongodb://localhost:27017/eventfulApi"),
       MongooseModule.forRoot(process.env.DB_URL),
       MongooseModule.forFeature([{name:"Event", schema:eventSchema},{name:"Eventee", schema:eventeeSchema} ]),
       MailerModule,
@@ -43,6 +43,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
         rootPath: join(__dirname, 'src', 'public'),
         serveRoot: '/public/',
       }),
+      AdminsModule,
     ],
   controllers: [AppController],
   providers: [AppService, FlashMiddleware, AuthService, MailerService, CronService, CacheService,
@@ -55,7 +56,12 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
   }, {
     provide: APP_INTERCEPTOR,
     useClass: GlobalLoggerInterceptor,
-  },],
+  },
+  {
+    provide: APP_PIPE,
+    useClass:ValidationPipe,
+  },
+],
 })
 
 export class AppModule implements NestModule {

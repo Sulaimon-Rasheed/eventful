@@ -9,7 +9,7 @@ export const creatorSchema = new Schema({
     email:{type:String,required:true},
     country:{type:String},
     state:{type:String},
-    profileImage:{type:Object},
+    profileImage:{type:Object, require:true},
     phoneNum:{type:String},
     verified:{type:Boolean, default:false},
     passwordResetToken:{type:String},
@@ -20,6 +20,7 @@ export const creatorSchema = new Schema({
     account_name:{type:String},
     account_number:{type:String},
     bank_name:{type:String},
+    has_signed_agreement:{type:String, require:true},
     creationDate:{type:Date},
     eventsId:[{type:Schema.Types.ObjectId, ref:"Event"}],
     walletId:{type:Schema.Types.ObjectId, ref:"Wallet"},
@@ -43,6 +44,7 @@ export interface Creator extends mongoose.Document{
     account_name:string
     account_number:string
     bank_name:string
+    has_signed_agreement:string
     verified:boolean
     passwordResetToken:string
     passwordResetExpireDate:any

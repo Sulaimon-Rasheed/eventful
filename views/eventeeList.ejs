@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="/style.css">
+    <title>Eventee List</title>
+</head>
+<body>
+    <div>
+
+        <nav>
+            <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+            <div>
+              <span><a id="navLink" href="/admins/adminDashboard">Dashboard</a></span>
+              <span><a id="logoutLink"  href="/creators/logout">Logout</a></span>
+              <img src="<%=user.image.url%>" alt="user Image" style="height:40px; width: 40px; border-radius: 50%; vertical-align: middle;margin-left: 50px;">
+            </div>
+          </nav>
+          
+          <div id="welcomeContainer">
+            <div id="welcomeMessage">
+              <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Creators List</h1>
+              
+              <p data-aos="fade-left" data-aos-duration="1000" style="font-size: 70px;"><strong>Total Count: </strong><span style="color: black;"><%=count%></span></p>
+            </div>
+      
+            <div id="imageContainer">
+              <img id="indexImage" src="/creator5.webp" alt="image">
+            </div>
+          </div>
+          
+        <div id="openCloseContainer">
+          <p data-aos="zoom-in" data-aos-duration="1000" style="text-align: center;">The List</p>
+      
+          <p id="action"><span id="plus">Close</span></p>
+          
+        </div>
+
+          <div id="transactionContainer">
+          <table data-aos="fade-up" data-aos-duration="1000" id = "theTable">
+            <tr>
+              <th>Profile picture</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone Number</th>
+              <th>Sex</th>
+              <th>State</th>
+              <th>Country</th>
+              <th>No of ticket bought</th>
+              
+              
+            </tr>
+            <%for(const eventee of eventeesList){%>
+              <tr>
+                <td><img src="<%=eventee.image%>" alt="user Image" style="height:60px; width: 60px; border-radius: 50%; vertical-align: middle;margin:auto;"></td>
+                <td><%=eventee.name%></td>
+                <td><%=eventee.email%></td>
+                <td><%=eventee.phoneNum%></td>
+                <td><%=eventee.sex%></td> 
+                <td><%=eventee.state%></td>
+                <td><%=eventee.country%></td>
+                <td><%=eventee.event_count%></td>
+              </tr>
+            <%}%>
+          </table>
+        </div>  
+
+
+
+        <!----------- Script to open and close creator List------------ -->
+          <script>
+            const plus = document.getElementById("plus")
+            const container = document.getElementById("transactionContainer")
+            const table = document.getElementById("theTable")
+            const action = document.getElementById("action")
+
+            const emptyTable = document.createElement("div")
+            emptyTable.style.visibility = "hidden"
+
+            const minus = document.createElement("span")
+            minus.id = "minus"
+            minus.innerHTML = "Open"
+
+            plus.addEventListener("click", ()=>{
+              container.replaceChild(emptyTable, table)
+              action.replaceChild(minus, plus)
+              
+            })
+
+            
+            minus.addEventListener("click", ()=>{
+              container.replaceChild(table,emptyTable)
+              action.replaceChild(plus,minus)
+            })
+          </script>
+ <!-- --------------------------------------------------------------------- -->
+          <footer>
+            <%-include("partials/footer.ejs")-%>
+        </footer>
+    </div>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
+</body>
+</html>

@@ -25,7 +25,7 @@ export class CreatorsController {
 
   @Post("signup")
   @UseInterceptors(FileInterceptor("profileImage", multerConfig))
-  async createCreator(@UploadedFile() profileImage:Express.Multer.File, @Body(new ValidationPipe) createCreatorDto: CreateCreatorDto, @Req() req:Request, @Res() res:Response) {
+  async createCreator(@UploadedFile() profileImage:Express.Multer.File, @Body() createCreatorDto: CreateCreatorDto, @Req() req:Request, @Res() res:Response) {
       await this.creatorsService.createCreator(createCreatorDto, profileImage ,req, res)
   }
 

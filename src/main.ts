@@ -16,7 +16,6 @@ async function bootstrap() {
     AppModule,
   );
 
-  console.log(__dirname)
   app.useStaticAssets(join(".",'src','public'));
   app.setBaseViewsDir(join(".", 'views'));
   app.setViewEngine('ejs');

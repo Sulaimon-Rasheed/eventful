@@ -29,7 +29,22 @@
         <a data-aos="fade-up" data-aos-duration="1000" id="navLink" href="/eventees/login">Login</a> 
     </div>  
    
-    <%}else{%>
+    <%}else if(user== "admin"){%>
+        <nav>
+            <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+            <div>
+                <span><a id="navLink" href="/">Home</a></span>
+                <span><a id="logoutLink"  href="/admins/login">Login</a></span>
+            </div>
+        </nav>
+        <div style="text-align: center;">
+            <h1 data-aos="zoom-in" data-aos-duration="1000">Admin is successfully verified</h1>
+            <img src="/successLogo.png" alt="image" style="width:300px; height: 300px;">
+            <p >The Admin can now login.</p> 
+            <a data-aos="fade-up" data-aos-duration="1000" id="navLink" href="/admins/login">Login</a> 
+        </div>  
+
+    <%}else{%>  
     <nav>
         <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
         <div>

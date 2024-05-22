@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="/style.css">
+    <title>Login</title>
+</head>
+<body id="login">
+<div>
+  <nav>
+    <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+    <div>
+      <span><a id="navLink" href="/">Home</a></li>
+      <span><a id="navLink" href="/admins/adminDashboard">Dashboard</a></span>
+      <span><a id="navLink" href="/admins/signup">Sign Up</a></span>
+    </div>
+  </nav>
+
+    
+  <div id="welcomeContainer">
+    <div id="creatorLogSign">
+      <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Admin Login</h1>
+    </div>
+  
+    <div id="imageContainer">
+      <img id="indexImage" src="/loginImage2.avif"  alt="image">
+    </div>
+  </div>
+<!-- -------------------------------------------- -->
+<div id="formBox">
+<form action="/admins/login" method="post" id="form">
+   <h2 style="margin-bottom: 50px;">Login</h2>
+    <label data-aos="fade-left" data-aos-duration="1000" for="email" class="label">Email:</label>
+    <input
+    data-aos="fade-right" data-aos-duration="1000"
+      type="text"
+      ,
+      name="email"
+      class="input"
+    /><br><br><br>
+
+    <label data-aos="fade-left" data-aos-duration="1000" for="admin_key" class="label">Your admin_key:</label>
+    <input
+    data-aos="fade-right" data-aos-duration="1000"
+      type="password"
+      name="admin_key"
+      class="input"
+    /> <br><br><br>
+    <button data-aos="fade-up" data-aos-duration="1000" type="submit" class="submit">submit</button><br><br><br>
+  </form>
+</div>
+  <footer>
+    <%-include("partials/footer.ejs")-%>
+  </footer>
+
+</div>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
+</body>
+</html>

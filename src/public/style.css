@@ -131,6 +131,11 @@ nav{
     font-weight: bold;
 }
 
+#termsList{
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
 .input{
     padding: 10px;
     border:2px solid grey;

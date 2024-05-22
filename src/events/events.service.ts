@@ -55,7 +55,8 @@ export class EventsService {
       const formattedEventDate = luxonEventDateTime.toFormat('LLL d, yyyy');
 
       const upperCaseTittle = createEventDto.title.toUpperCase()
-
+      const upperCaseLocation = createEventDto.hosting_state.toUpperCase()
+      
       const sanitizedContent = sanitizeHtml(createEventDto.description);
       const sanitizedAddContent = sanitizeHtml(createEventDto.additional_info);
       const newEvent = await this.eventModel.create({
@@ -66,6 +67,8 @@ export class EventsService {
         starting_time:createEventDto.starting_time,
         ending_time:createEventDto.ending_time,
         venue:createEventDto.venue,
+        hosting_state:upperCaseLocation,
+        hosting_country:createEventDto.hosting_country,
         reminder_days:createEventDto.reminder_days,
         category:createEventDto.category,
         registration_deadline:formattedDeadlineDate,

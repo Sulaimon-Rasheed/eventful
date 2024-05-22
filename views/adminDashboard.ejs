@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="/style.css">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+  <div>
+    <nav>
+      <a href="/" id="navFlex1"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+      <div>
+        <span><a id="navLink" href="/admins/getCreatorsList">Creators List</a></span>
+        <span><a id="navLink" href="/admins/getEventeesList">Eventees List</a></span>
+        <span><a id="logoutLink"  href="/admins/logout">Logout</a></span>
+      </div>
+    </nav>
+    
+    <div id="welcomeContainer">
+      <div id="welcomeMessage">
+        <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Admin's Dashboard</h1>
+        <h2>You are welcome, <b style="color:purple;"><%=user.name%>.</b></h2>
+        <%if(walletSuspension){%>
+          <p data-aos="zoom-in" data-aos-duration="1000" style="color: green; text-align: center; font-size: 34px; font-weight: bold; background-color: white;text-align: center; border-radius: 10px;margin:auto 24px;"><%=walletSuspension%></p>
+        <%}%>
+
+        <%if(walletActivated){%>
+          <p data-aos="zoom-in" data-aos-duration="1000" style="color: green; text-align: center; font-size: 34px; font-weight: bold; background-color: white;text-align: center; border-radius: 10px;margin:auto 24px;"><%=walletActivated%></p>
+        <%}%>
+      </div>
+
+      <div id="imageContainer">
+        <img id="indexImage" src="<%=user.image.url%>" alt="image">
+      </div>
+    
+    </div>
+
+    <hr>
+    <form action="/admins/suspendWallet" method="PUT">
+      <h2>Suspend a Creator's Wallet</h2>
+      <label for="email">Creator's email: </label>
+      <input type="text" name="email" placeholder="Enter the Creator's email" style="padding: 5px; width: 400px; text-align: center; font-size: 18px;">
+      <button type="submit"   formmethod="post" class="creatorLink1">Submit</button>
+    </form>
+    <hr>
+
+    <hr>
+    <form action="/admins/activateWallet" method="PUT">
+      <h2>Activate a Creator's Wallet</h2>
+      <label for="email">Creator's email: </label>
+      <input type="text" name="email" placeholder="Enter the Creator's email" style="padding: 5px; width: 400px; text-align: center; font-size: 18px;">
+      <button type="submit"   formmethod="post" class="creatorLink1">Submit</button>
+    </form>
+    <hr>
+
+<footer>
+  <%-include("partials/footer.ejs")-%>
+</footer>
+</div>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
+</body>
+</html>

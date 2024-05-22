@@ -18,9 +18,7 @@ export class EventeesController {
 
   @Post("signup")
   @UseInterceptors(FileInterceptor('profileImage', multerConfig))
-  
-  async createEventee(@UploadedFile() profileImage: Express.Multer.File ,@Body(new ValidationPipe) createEventeeDto: CreateEventeeDto,@Req() req:Request, @Res() res:Response) {
-    console.log(profileImage)
+  async createEventee(@UploadedFile() profileImage: Express.Multer.File ,@Body() createEventeeDto: CreateEventeeDto,@Req() req:Request, @Res() res:Response) {
     await this.eventeesService.createEventee(createEventeeDto, profileImage, req, res)
   }
 
@@ -78,6 +76,11 @@ export class EventeesController {
     @Get('/event/titleSearch')
    async searchForTitle(@Query("title") title:string , @Res() res:Response, @Req() req:Request) {
       await this.eventeesService.searchForTitle(req, res, title);
+    }
+
+    @Get('/event/hosting_stateSearch')
+   async searchForHosting_state(@Query("hosting_state") hosting_state:string , @Res() res:Response, @Req() req:Request) {
+      await this.eventeesService.searchForHosting_state(req, res, hosting_state);
     }
 
     @Get('/buyTicket/:eventId/:price')

@@ -44,6 +44,7 @@
       type="text"
       name="creator_name"
       class="input"
+      required
     /><br /><br /><br />
     <label data-aos="fade-left" data-aos-duration="1000"  for="company_name" class="label">Company Name:</label>
     <input
@@ -52,6 +53,7 @@
       ,
       name="company_name"
       class="input"
+      required
     /><br /><br /><br />
     <label data-aos="fade-left" data-aos-duration="1000" for="email" class="label">Email:</label>
     <input
@@ -60,6 +62,7 @@
       ,
       name="email"
       class="input"
+      required
     /><br /><br /><br />
 
     <label  data-aos="fade-left" data-aos-duration="1000" for="country" class="label">Country:</label>
@@ -69,6 +72,7 @@
       ,
       name="country"
       class="input"
+      required
     /><br /><br /><br />
 
     <label  data-aos="fade-left" data-aos-duration="1000" for="state" class="label">State:</label>
@@ -78,6 +82,7 @@
       ,
       name="state"
       class="input"
+      required
     /><br /><br /><br />
 
     <label  data-aos="fade-left" data-aos-duration="1000" for="phoneNum" class="label">Phone Number:</label>
@@ -87,6 +92,7 @@
       ,
       name="phoneNum"
       class="input"
+      required
     /><br /><br /><br />
 
     <label  data-aos="fade-left" data-aos-duration="1000" for="password" class="label">Password:</label>
@@ -96,6 +102,7 @@
       ,
       name="password"
       class="input"
+      required
     /><br /><br /><br />
     <label  data-aos="fade-left" data-aos-duration="1000" for="profileImage" class="label">Upload Your Picture:</label>
     <input
@@ -105,6 +112,7 @@
       accept="image/*"
       placeholder="Choose a file"
       class="input"
+      required
     /><br /><br /><br />
     
     <h3  data-aos="zoom-in" data-aos-duration="1000">Accouunt Details</h3>
@@ -116,6 +124,7 @@
       ,
       name="account_name"
       class="input"
+      required
     /><br /><br /><br />
 
     <label  data-aos="fade-left" data-aos-duration="1000" for="account_number" class="label">Account Number:</label>
@@ -125,6 +134,7 @@
       ,
       name="account_number"
       class="input"
+      required
     /><br /><br /><br />
 
     <label  data-aos="fade-left" data-aos-duration="1000" for="bank_name" class="label">Bank Name:</label>
@@ -134,10 +144,23 @@
       ,
       name="bank_name"
       class="input"
+      required
+    /><br /><br /><br />
+
+    <label  data-aos="fade-left" data-aos-duration="1000" for="agreement" class="label">I have read and agree to the</label>
+    <a href="/termsOf_service" target="_blank">terms of service of Eventful</a> and <a href="/privacy_policy" target="_blank">Privacy Policy</a>
+    <input
+    data-aos="zoom-in" data-aos-duration="1000"
+      type="checkbox"
+      name="agreement"
+      value="true"
+      class="input"
+      style="width: 20px;"
+      required
     /><br /><br /><br />
     
     
-  
+
     <button  data-aos="fade-up" data-aos-duration="1000" type="submit" class="submit">submit</button>
   </form>
 </div>

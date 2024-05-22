@@ -43,6 +43,14 @@ export class CreateEventDto {
     ticket_price:string
 
     @IsString()
+    @IsNotEmpty()
+    hosting_state:string
+
+    @IsString()
+    @IsNotEmpty()
+    hosting_country:string
+
+    @IsString()
     additional_info:string
 
     event_image:any

@@ -75,8 +75,6 @@ export class EventeesService {
         return res.render('error', { message: 'fileUploadError' });
       }
 
-      console.log(result)
-
       const newEventee = await this.eventeeModel.create({
         first_name: createEventeeDto.first_name,
         last_name: createEventeeDto.last_name,
@@ -85,6 +83,7 @@ export class EventeesService {
         phoneNum: createEventeeDto.phoneNum,
         country: createEventeeDto.country,
         state: createEventeeDto.state,
+        has_signed_agreement:createEventeeDto.agreement,
         profileImage: result,
         password: password,
       });
@@ -136,6 +135,7 @@ export class EventeesService {
       return res.redirect("/eventees/signup")
 
     } catch (err) {
+    console.log(err)
       return res.render('catchError', { catchError: err.message });
     }
   }
@@ -650,6 +650,122 @@ export class EventeesService {
     }catch(err){
       return res.render('catchError', { catchError: err.message });
     }    
+  }
+
+
+  //--------------------------Searching for event by Title------------------------
+  async searchForHosting_state(req:Request, res:Response, hosting_state:string){
+    try {
+      await this.Authservice.ensureLogin(req, res);
+
+      const allPages = [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        20,
+      ];
+      let stringifyPage:any = req.query.page || 0 
+      let page = parseInt(stringifyPage)
+
+      const lowerCaseLocation = req.query.hosting_state.toString()
+      const upperCaseLocation = lowerCaseLocation.toUpperCase()
+     
+          const allEvents = await this.cacheService.get(
+            `eventeeAllEvents_${res.locals.user.id}`,
+          );
+          const postedEvents = await this.cacheService.get(
+            `eventeeDashBoard_${res.locals.user.id}_${hosting_state}`,
+          );
+
+          if (!postedEvents) {
+            const eventPerPage: number = 10;
+
+            const allEvents = await this.eventModel
+              .find({ state: 'Posted', hosting_state:upperCaseLocation })
+              .sort({ created_date: 'desc' })
+              .populate('creatorId');
+
+            const postedEvents = await this.eventModel
+              .find({ state: 'Posted' , hosting_state:upperCaseLocation })
+              .sort({ created_date: 'desc' })
+              .skip(page * eventPerPage)
+              .limit(eventPerPage)
+              .populate('creatorId');
+
+            if (!postedEvents) {
+              return [];
+            }
+
+            const maxPage = Math.round(allEvents.length / eventPerPage);
+            const skip = page * eventPerPage;
+
+            let passdays = [];
+            postedEvents.forEach((event) => {
+              let postDate = event.posted_date;
+              let parsedDate = DateTime.fromFormat(
+                postDate,
+                "LLL d, yyyy",
+              );
+              let currentDate = DateTime.now();
+
+              passdays.push(
+                currentDate.diff(parsedDate, 'days').toObject().days,
+              );
+            });
+
+            await this.cacheService.set(
+              `eventeeAllEvents_${res.locals.user.id}`,
+              allEvents,
+            );
+
+           
+            await this.cacheService.set(
+              `eventeeDashBoard_${res.locals.user.id}_${hosting_state}`,
+              postedEvents,
+            );
+            
+
+            return res.render('eventeeDashboard', {
+              user: res.locals.user,
+              postedEvents,
+              page,
+              maxPage,
+              allPages,
+              skip,
+              passdays: passdays,
+              date: DateTime.now().toFormat('LLL d, yyyy'),
+            });
+          }
+          
+          const eventPerPage: number = 10;
+          const maxPage = Math.round(allEvents.length / eventPerPage);
+          const skip = page * eventPerPage;
+
+          let passdays = [];
+          postedEvents.forEach((event) => {
+            let postDate = event.posted_date;
+            let parsedDate = DateTime.fromFormat(
+              postDate,
+              "LLL d, yyyy",
+            );
+            let currentDate = DateTime.now();
+
+            passdays.push(currentDate.diff(parsedDate, 'days').toObject().days);
+          });
+
+          return res.render('eventeeDashboard', {
+            user: res.locals.user,
+            postedEvents,
+            page,
+            maxPage,
+            allPages,
+            skip,
+            passdays: passdays,
+            date: DateTime.now().toFormat('LLL d, yyyy'),
+          });
+      
+    } catch (err) {
+      return res.render('catchError', { catchError: err.message });
+    }
+
   }
 
 

@@ -1,0 +1,99 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<link rel="stylesheet" href="/style.css">
+<title>Sign Up</title>
+</head>
+<body>
+  <div>
+  <nav>
+    <a href="/"><img id="logo" src="/android-chrome-192x192.png" alt="logo"></a>
+    <div>
+      <span><a id="navLink" href="/">Home</a></li>
+      <span><a id="navLink" href="/admins/login">Login</a></span>
+      <span><a id="navLink" href="/admins/adminDashboard">Dashboard</a></span>
+      <span><a id="navLink" href="/admins/logout">Logout</a></span>
+    </div>
+  </nav>
+  
+  <div id="welcomeContainer">
+    <div id="eventTitle">
+      <h1 data-aos="zoom-in" data-aos-duration="1000" style="font-size: 70px;">Admin Sign Up</h1>
+      <%if(adminCreated){%>
+        <p data-aos="zoom-in" data-aos-duration="1000" style="color: green; text-align: center; font-size: 34px; font-weight: bold; background-color: white;text-align: center; border-radius: 10px;margin:auto 24px;"><%=adminCreated%></p>
+      <%}%>
+    </div>
+  
+    <div id="imageContainer">
+      <img id="indexImage" src="/hand-signing-form.jpg"  alt="image">
+    </div>
+  </div>
+  
+  <div id="formBox">
+
+<form action="/admins/signup" , method="post" id="form" enctype="multipart/form-data">
+  <h2 style="margin-bottom: 50px;">Sign Up</h2>
+    <label data-aos="fade-left" data-aos-duration="1000" for="first_name" class="label">First Name:</label>
+    <input
+    data-aos="fade-right" data-aos-duration="1000"
+      type="text"
+      name="first_name"
+      class="input"
+    /><br /><br /><br />
+
+    <label data-aos="fade-left" data-aos-duration="1000" for="last_name" class="label">Last Name:</label>
+    <input
+    data-aos="fade-right" data-aos-duration="1000"
+      type="text"
+      ,
+      name="last_name"
+      class="input"
+    /><br /><br /><br />
+
+    <label data-aos="fade-left" data-aos-duration="1000" for="email" class="label">Email:</label>
+    <input
+    data-aos="fade-right" data-aos-duration="1000"
+      type="text"
+      name="email"
+      class="input"
+    /><br /><br /><br />
+
+
+    <label data-aos="fade-left" data-aos-duration="1000" for="phoneNum" class="label">Phone Number:</label>
+    <input
+    data-aos="fade-right" data-aos-duration="1000"
+      type="text"
+      name="phoneNum"
+      class="input"
+    /><br /><br /><br />
+
+    <label  data-aos="fade-left" data-aos-duration="1000" for="profileImage" class="label">Upload Your Picture:</label>
+    <input
+    data-aos="fade-right" data-aos-duration="1000"
+      type="file"
+      name="profileImage"
+      accept="image/*"
+      placeholder="Choose a file"
+      class="input"
+    /><br /><br /><br />
+    
+    
+    <button data-aos="fade-up" data-aos-duration="1000" type="submit" class="submit">Submit</button>
+  </form>
+  </div>
+  
+  <footer>
+    <%-include("partials/footer.ejs")-%>
+  </footer>
+
+</div>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>AOS.init();</script>
+</body>
+</html>

@@ -4,7 +4,9 @@ import {DateTime} from "luxon"
 export const eventSchema = new Schema({
     title: { type: String, required:true},
     description: { type: String,required:true},
-    venue:{type:String},
+    venue:{type:String, required:true},
+    hosting_state:{type:String, required:true},
+    hosting_country:{type:String, required:true},
     starting_time:{type:String},
     ending_time:{type:String},
     event_date:{type:String, required:true},
@@ -30,6 +32,8 @@ export interface Event extends mongoose.Document{
     title:string
     description:string
     venue:string
+    hosting_state:string
+    hosting_country:string
     starting_time:string
     ending_time:string
     event_date:string

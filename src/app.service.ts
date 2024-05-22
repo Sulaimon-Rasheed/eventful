@@ -67,5 +67,21 @@ export class AppService {
   getFaq(req:Request, res:Response){
     return res.render("faq")
   }
+
+  getTermsPage(req:any, res:Response) {
+    try{
+      return res.render('terms_page')
+      } catch (err) {
+        return res.render('catchError', { catchError: err.message });
+      }
+    }
+
+    getPolicyPage(req:any, res:Response) {
+      try{
+        return res.render('policy_page')
+        } catch (err) {
+          return res.render('catchError', { catchError: err.message });
+        }
+      }
   
 }

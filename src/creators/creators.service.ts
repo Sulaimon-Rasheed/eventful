@@ -80,6 +80,7 @@ export class CreatorsService {
         bank_name:createCreatorDto. bank_name,
         profileImage: result,
         password: password,
+        has_signed_agreement:createCreatorDto.agreement
       });
 
       fs.unlink(profileImage.path, (err) => {

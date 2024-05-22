@@ -41,5 +41,8 @@ export class CreateCreatorDto {
     @IsNotEmpty()
     bank_name:string
 
+    @IsString()
+    agreement:string
+
     profileImage:any
 }

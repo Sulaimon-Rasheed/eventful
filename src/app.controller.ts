@@ -63,4 +63,14 @@ export class AppController {
     await this.appService.getFaq(req, res)
   }
 
+  @Get("/termsOf_service")
+  getTermsPage(@Req() req:Request, @Res() res:Response, ){
+    this.appService.getTermsPage(req,res)
+  }
+
+  @Get("/privacy_policy")
+  getPolicyPage(@Req() req:Request, @Res() res:Response, ){
+    this.appService.getPolicyPage(req,res)
+  }
+
 }

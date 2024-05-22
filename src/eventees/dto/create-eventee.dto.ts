@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsObject, IsString, IsNumber } from "class-validator"
+import { Prop } from "@nestjs/mongoose"
+import { IsNotEmpty, IsObject, IsString, IsNumber, IsBoolean } from "class-validator"
 
 export class CreateEventeeDto {
     @IsString()
@@ -35,6 +36,9 @@ export class CreateEventeeDto {
     @IsString()
     @IsNotEmpty()
     phoneNum:string
+
+    @IsString()
+    agreement:string
 
     profileImage: any;
 }

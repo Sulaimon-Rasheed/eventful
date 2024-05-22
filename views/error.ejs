@@ -189,7 +189,28 @@
             <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
             <h4>Page Not Found</h4>
         </div>
-    <%}%>
+    <%}else if(message == "admin_keyError"){%>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>email or admin_key is incorrect.</h4>
+        </div>
+    <%}else if(message == "email not found"){%>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>Creator with this Email is not found</h4>
+        </div>
+    <%}else if(message == "wallet already suspended"){%>
+        <div style="text-align: center;">
+            <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+            <h4>Wallet already suspended or closed</h4>
+        </div>
+        <%}else if(message == "wallet already activated"){%>
+            <div style="text-align: center;">
+                <img src="/opps.webp" alt="image" style="width:300px; height: 300px;">
+                <h4>Wallet already activated</h4>
+            </div>
+        <%}%>
+
         <footer>
         <%-include("partials/footer.ejs")-%>
       </footer>
